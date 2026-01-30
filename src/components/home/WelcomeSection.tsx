@@ -3,7 +3,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 const WelcomeSection = () => {
   return (
     <section className="bg-background py-20 lg:py-32">
-      <div className="container mx-auto px-6 lg:px-12">
+      <div className="container mx-auto px-4 lg:px-6">
         <AnimatedSection className="max-w-4xl mx-auto text-center">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-8 leading-tight">
             Fortify Your Growth, Armour Your Assets, Unite Generations
