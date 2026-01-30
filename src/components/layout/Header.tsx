@@ -3,14 +3,17 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   {
     label: "ABOUT US",
     href: "/",
     dropdown: [
-      { label: "Home", href: "/" },
-      { label: "History", href: "/history" },
+      { label: "Our Mission", href: "/" },
+      { label: "Executive Team", href: "/" },
+      { label: "Board of Directors", href: "/" },
+      { label: "Legacy", href: "/history" },
     ],
   },
   { label: "HISTORY", href: "/history" },
@@ -55,49 +58,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            {/* Golden Crest Logo - matching original site */}
-            <svg 
-              viewBox="0 0 80 90" 
-              className="w-12 h-14 lg:w-16 lg:h-[72px]"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Shield outline */}
-              <path 
-                d="M40 2L4 18v30c0 22 16 36 36 40 20-4 36-18 36-40V18L40 2z" 
-                fill="hsl(42, 47%, 60%)"
-                stroke="hsl(42, 47%, 50%)"
-                strokeWidth="1"
-              />
-              {/* Inner shield */}
-              <path 
-                d="M40 8L10 22v24c0 18 13 30 30 34 17-4 30-16 30-34V22L40 8z" 
-                fill="hsl(265, 33%, 12%)"
-              />
-              {/* Crown */}
-              <path 
-                d="M25 35l5-8 5 5 5-7 5 7 5-5 5 8v6H25v-6z" 
-                fill="hsl(42, 47%, 60%)"
-              />
-              {/* Shield center emblem */}
-              <path 
-                d="M40 48c-6 0-11 3-11 7s5 7 11 7 11-3 11-7-5-7-11-7z" 
-                fill="hsl(42, 47%, 60%)"
-              />
-              {/* Decorative elements */}
-              <circle cx="30" cy="55" r="2" fill="hsl(42, 47%, 60%)" />
-              <circle cx="50" cy="55" r="2" fill="hsl(42, 47%, 60%)" />
-              <path d="M35 65h10" stroke="hsl(42, 47%, 60%)" strokeWidth="1.5" />
-              {/* Lions/supporters simplified */}
-              <path 
-                d="M15 30c-3 0-5 2-5 5s2 6 5 8l3-3v-7l-3-3z" 
-                fill="hsl(42, 47%, 60%)"
-              />
-              <path 
-                d="M65 30c3 0 5 2 5 5s-2 6-5 8l-3-3v-7l3-3z" 
-                fill="hsl(42, 47%, 60%)"
-              />
-            </svg>
+            <img 
+              src={logo} 
+              alt="King Armour" 
+              className="h-14 lg:h-16 w-auto brightness-0 invert"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -128,13 +93,13 @@ const Header = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 min-w-[180px] bg-primary/95 backdrop-blur-sm rounded-lg shadow-xl py-2"
+                      className="absolute top-full left-0 mt-2 min-w-[220px] bg-primary/90 backdrop-blur-md rounded-lg shadow-xl py-3"
                     >
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.label}
                           to={subItem.href}
-                          className="block px-4 py-2 text-primary-foreground/80 hover:text-accent hover:bg-primary-foreground/5 font-sans text-sm transition-colors"
+                          className="block px-5 py-2.5 text-primary-foreground/80 hover:text-accent font-sans text-sm transition-colors"
                         >
                           {subItem.label}
                         </Link>
