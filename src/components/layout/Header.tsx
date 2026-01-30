@@ -54,13 +54,50 @@ const Header = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-accent flex items-center justify-center">
-              <span className="text-primary font-serif font-bold text-lg lg:text-xl">K</span>
-            </div>
-            <span className="text-primary-foreground font-serif text-xl lg:text-2xl font-semibold tracking-wide">
-              King Armour
-            </span>
+          <Link to="/" className="flex items-center">
+            {/* Golden Crest Logo - matching original site */}
+            <svg 
+              viewBox="0 0 80 90" 
+              className="w-12 h-14 lg:w-16 lg:h-[72px]"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Shield outline */}
+              <path 
+                d="M40 2L4 18v30c0 22 16 36 36 40 20-4 36-18 36-40V18L40 2z" 
+                fill="hsl(42, 47%, 60%)"
+                stroke="hsl(42, 47%, 50%)"
+                strokeWidth="1"
+              />
+              {/* Inner shield */}
+              <path 
+                d="M40 8L10 22v24c0 18 13 30 30 34 17-4 30-16 30-34V22L40 8z" 
+                fill="hsl(265, 33%, 12%)"
+              />
+              {/* Crown */}
+              <path 
+                d="M25 35l5-8 5 5 5-7 5 7 5-5 5 8v6H25v-6z" 
+                fill="hsl(42, 47%, 60%)"
+              />
+              {/* Shield center emblem */}
+              <path 
+                d="M40 48c-6 0-11 3-11 7s5 7 11 7 11-3 11-7-5-7-11-7z" 
+                fill="hsl(42, 47%, 60%)"
+              />
+              {/* Decorative elements */}
+              <circle cx="30" cy="55" r="2" fill="hsl(42, 47%, 60%)" />
+              <circle cx="50" cy="55" r="2" fill="hsl(42, 47%, 60%)" />
+              <path d="M35 65h10" stroke="hsl(42, 47%, 60%)" strokeWidth="1.5" />
+              {/* Lions/supporters simplified */}
+              <path 
+                d="M15 30c-3 0-5 2-5 5s2 6 5 8l3-3v-7l-3-3z" 
+                fill="hsl(42, 47%, 60%)"
+              />
+              <path 
+                d="M65 30c3 0 5 2 5 5s-2 6-5 8l-3-3v-7l3-3z" 
+                fill="hsl(42, 47%, 60%)"
+              />
+            </svg>
           </Link>
 
           {/* Desktop Navigation */}
