@@ -11,7 +11,7 @@ const CompanyInfoSection = () => {
     offset: ["start end", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1, 0.9]);
 
   return (
     <section ref={containerRef} className="bg-background py-16 lg:py-24">
