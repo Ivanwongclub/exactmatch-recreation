@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import marbleTexture from "@/assets/marble-texture.webp";
 
@@ -44,11 +45,17 @@ const CompanyInfoSection = () => {
               with local knowledge, leveraging our extensive network to unlock exclusive
               opportunities for our clients.
             </p>
-            <p className="text-foreground font-sans text-lg leading-relaxed">
+            <p className="text-foreground font-sans text-lg leading-relaxed mb-8">
               Join the ranks of distinguished families who have entrusted their legacies to
               King Armour. Together, we'll build a future that honors your past while
               embracing the possibilities of tomorrow.
             </p>
+            <Link 
+              to="/services" 
+              className="inline-block text-primary font-medium border-b-2 border-primary pb-1 hover:opacity-80 transition-opacity"
+            >
+              Learn more
+            </Link>
           </AnimatedSection>
         </div>
       </div>
