@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
-import companyImage from "@/assets/company-large.jpg";
+import marbleTexture from "@/assets/marble-texture.webp";
 
 const CompanyInfoSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,8 +20,8 @@ const CompanyInfoSection = () => {
           <AnimatedSection direction="left" className="order-2 lg:order-1 h-full">
             <div className="relative rounded-lg overflow-hidden h-full min-h-[300px]">
               <motion.img
-                src={companyImage}
-                alt="King Armour boardroom"
+                src={marbleTexture}
+                alt="Marble texture"
                 className="w-full h-full object-cover"
                 style={{ scale }}
               />
