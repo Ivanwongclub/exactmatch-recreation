@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
-import portrait1 from "@/assets/portrait-1.jpg";
+import historicBuilding from "@/assets/historic-building.webp";
 import portrait2 from "@/assets/portrait-2.jpg";
 import aboutImage from "@/assets/about-image.jpg";
 import keyOnCurrency from "@/assets/key-on-currency.webp";
@@ -21,7 +21,7 @@ const FeatureCards = () => {
               variant="dark"
               className="flex-[1.2]"
             />
-            <ImageCard src={portrait1} alt="Historic building" className="flex-1" />
+            <ImageCard src={historicBuilding} alt="Historic building" className="flex-1" />
           </AnimatedSection>
 
           {/* Column 2 - Image + History */}
