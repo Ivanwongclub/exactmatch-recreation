@@ -55,8 +55,8 @@ const CompanyInfoSection = () => {
               className="group inline-block text-primary font-medium relative pb-1 transition-all duration-300 hover:text-ka-gold hover:translate-y-0.5"
             >
               Learn more
-              <span className="absolute left-0 bottom-0 h-0.5 w-full bg-primary transition-all duration-300 group-hover:bg-ka-gold" />
-              <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-ka-gold transition-all duration-500 ease-out group-hover:w-full" />
+              <span className="absolute left-0 bottom-0 h-px w-full bg-primary transition-all duration-300 group-hover:bg-ka-gold" />
+              <span className="absolute left-0 bottom-0 h-px w-0 bg-ka-gold transition-all duration-500 ease-out group-hover:w-full" />
             </Link>
           </AnimatedSection>
         </div>
