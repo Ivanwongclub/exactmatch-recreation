@@ -179,43 +179,36 @@
     pointer-events: none;
   }
 
-  /* Aurora borealis background effect */
+  /* Aurora light cloud effect - black with varying opacities */
   .aurora-wave {
     position: absolute;
-    inset: -50%;
-    opacity: 0.4;
-    filter: blur(60px);
     pointer-events: none;
-    border-radius: 50%;
   }
 
   .aurora-wave-1 {
-    background: radial-gradient(
-      ellipse 80% 50% at 50% 50%,
-      hsl(270 30% 40% / 0.6) 0%,
-      hsl(280 25% 30% / 0.3) 40%,
-      transparent 70%
-    );
+    inset: -30% -50%;
+    background: 
+      radial-gradient(ellipse 120% 25% at 20% 80%, hsl(0 0% 0% / 0.5) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 20% at 70% 60%, hsl(0 0% 0% / 0.35) 0%, transparent 55%);
+    filter: blur(40px);
     animation: aurora-shift-1 8s ease-in-out infinite;
   }
 
   .aurora-wave-2 {
-    background: radial-gradient(
-      ellipse 70% 60% at 60% 40%,
-      hsl(42 35% 50% / 0.35) 0%,
-      hsl(265 25% 25% / 0.25) 50%,
-      transparent 70%
-    );
+    inset: -40% -30%;
+    background: 
+      radial-gradient(ellipse 100% 15% at 50% 70%, hsl(0 0% 0% / 0.45) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 30% at 80% 40%, hsl(0 0% 0% / 0.3) 0%, transparent 60%);
+    filter: blur(50px);
     animation: aurora-shift-2 10s ease-in-out infinite;
   }
 
   .aurora-wave-3 {
-    background: radial-gradient(
-      ellipse 60% 70% at 40% 60%,
-      hsl(280 25% 45% / 0.5) 0%,
-      hsl(270 25% 30% / 0.3) 45%,
-      transparent 70%
-    );
+    inset: -20% -40%;
+    background: 
+      radial-gradient(ellipse 90% 20% at 30% 50%, hsl(0 0% 0% / 0.4) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 25% at 60% 75%, hsl(0 0% 0% / 0.5) 0%, transparent 50%);
+    filter: blur(35px);
     animation: aurora-shift-3 7s ease-in-out infinite;
   }
 }
