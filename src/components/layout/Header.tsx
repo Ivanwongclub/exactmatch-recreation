@@ -74,7 +74,7 @@ const Header = () => {
                 <Link
                   to={item.href}
                   className={cn(
-                    "flex items-center gap-1 text-primary-foreground/90 hover:text-accent font-sans text-sm font-medium tracking-wider transition-colors",
+                    "flex items-center gap-1 text-primary-foreground/90 hover:text-accent font-sans text-sm font-semibold tracking-wider transition-colors",
                     location.pathname === item.href && "text-accent"
                   )}
                 >
