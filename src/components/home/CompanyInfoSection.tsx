@@ -52,11 +52,12 @@ const CompanyInfoSection = () => {
             </p>
             <Link 
               to="/services" 
-              className="group inline-block text-primary font-medium relative pb-1 transition-all duration-300 hover:text-ka-gold hover:translate-y-0.5"
+              className="group inline-flex items-center gap-1 text-primary font-medium transition-all duration-300 hover:text-ka-gold hover:translate-y-0.5"
             >
-              Learn more
-              <span className="absolute left-0 bottom-0 h-px w-full bg-primary transition-all duration-300 group-hover:bg-ka-gold" />
-              <span className="absolute left-0 bottom-0 h-px w-0 bg-ka-gold transition-all duration-500 ease-out group-hover:w-full" />
+              <span className="relative">
+                Learn more
+                <span className="absolute left-0 -bottom-1 h-px w-0 bg-ka-gold transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full" />
+              </span>
             </Link>
           </AnimatedSection>
         </div>
