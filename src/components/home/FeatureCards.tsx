@@ -10,47 +10,47 @@ const FeatureCards = () => {
   return (
     <section className="bg-background py-16 lg:py-24 border-t border-accent/20">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 auto-rows-fr">
           {/* Column 1 - About Us + Image */}
-          <AnimatedSection delay={0} className="flex flex-col gap-4 lg:gap-5">
+          <AnimatedSection delay={0} className="flex flex-col gap-4 lg:gap-5 h-full">
             <TextCard
               title="ABOUT US"
               subtitle="Your Family's Strategic Ally"
               link="/"
               variant="dark"
-              className="min-h-[320px] lg:min-h-[380px]"
+              className="flex-[1.2]"
             />
-            <ImageCard src={portrait1} alt="Historic building" className="h-[280px] lg:h-[320px]" />
+            <ImageCard src={portrait1} alt="Historic building" className="flex-1" />
           </AnimatedSection>
 
           {/* Column 2 - Image + History */}
-          <AnimatedSection delay={0.1} className="flex flex-col gap-4 lg:gap-5">
-            <ImageCard src={aboutImage} alt="Key on currency" className="h-[280px] lg:h-[340px]" />
+          <AnimatedSection delay={0.1} className="flex flex-col gap-4 lg:gap-5 h-full">
+            <ImageCard src={aboutImage} alt="Key on currency" className="flex-1" />
             <TextCard
               title="HISTORY"
               subtitle="From 1957 to the Future"
               link="/history"
               variant="gold"
-              className="min-h-[280px] lg:min-h-[360px]"
+              className="flex-[1.2]"
             />
           </AnimatedSection>
 
           {/* Column 3 - Services + Network Image + Kings Network */}
-          <AnimatedSection delay={0.2} className="flex flex-col gap-4 lg:gap-5">
+          <AnimatedSection delay={0.2} className="flex flex-col gap-4 lg:gap-5 h-full">
             <TextCard
               title="OUR SERVICES"
               subtitle="Fortify, Grow, Succeed"
               link="/services"
               variant="gold"
-              className="min-h-[200px] lg:min-h-[240px]"
+              className="flex-1"
             />
-            <ImageCard src={heroNetwork} alt="Network connections" className="h-[180px] lg:h-[200px]" />
+            <ImageCard src={heroNetwork} alt="Network connections" className="flex-[0.7]" />
             <TextCard
               title="KINGS NETWORK"
               subtitle="Elite Connections, Exclusive Access"
               link="/kings-network"
               variant="dark"
-              className="min-h-[200px] lg:min-h-[240px]"
+              className="flex-1"
             />
           </AnimatedSection>
         </div>
@@ -74,7 +74,7 @@ const TextCard = ({ title, subtitle, link, variant, className = "" }: TextCardPr
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-2xl p-8 lg:p-10 flex flex-col justify-between ${
+      className={`rounded-2xl p-8 lg:p-10 flex flex-col justify-between min-h-[200px] ${
         isDark ? "bg-[#1a1a1a]" : "bg-[#d4b896]"
       } ${className}`}
     >
