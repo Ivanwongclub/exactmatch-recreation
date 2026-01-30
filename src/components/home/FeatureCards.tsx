@@ -78,23 +78,23 @@ const TextCard = ({ title, subtitle, link, variant, className = "" }: TextCardPr
         isDark ? "bg-[#1a1a1a]" : "bg-[#d4b896]"
       } ${className}`}
     >
-      <div className="flex-1 flex items-center">
+      <div className="flex-1 flex flex-col justify-center">
         <h3
-          className={`font-sans text-4xl lg:text-5xl font-semibold tracking-tight ${
+          className={`font-sans text-3xl lg:text-4xl font-semibold tracking-tight mb-4 ${
             isDark ? "text-white" : "text-[#4a3f6b]"
           }`}
         >
           {title}
         </h3>
-      </div>
-      <div className="mt-auto">
         <p
-          className={`font-serif text-lg lg:text-xl italic mb-6 ${
+          className={`font-sans text-base lg:text-lg font-light ${
             isDark ? "text-[#d4b896]" : "text-[#5a4a3a]"
           }`}
         >
           {subtitle}
         </p>
+      </div>
+      <div className="mt-6">
         <Link
           to={link}
           className={`inline-block font-sans text-sm font-medium border-b ${
