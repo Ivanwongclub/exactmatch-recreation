@@ -11,7 +11,7 @@ const WelcomeSection = () => {
         </AnimatedSection>
 
         <AnimatedSection delay={0.2} className="max-w-6xl mx-auto">
-          <p className="text-black font-sans text-lg md:text-xl leading-relaxed mb-6">
+          <p className="text-black font-sans text-lg md:text-xl leading-relaxed mb-6 font-light text-justify">
             Welcome to King Armour Family Office, a prestigious affiliate of Sunwah Kingsway
             Capital Holdings Limited, established in 1957. Headquartered in the vibrant
             financial hub of Hong Kong, with a robust global network spanning Beijing,
@@ -20,7 +20,7 @@ const WelcomeSection = () => {
             growth, expertly manage risks, and ensure the seamless continuity of their
             legacies.
           </p>
-          <p className="text-black font-sans text-lg md:text-xl leading-relaxed">
+          <p className="text-black font-sans text-lg md:text-xl leading-relaxed font-light text-justify">
             Our guiding pillars—Thrust Forward for unlocking unlimited potential and growth,
             Stand Guard for deploying sophisticated risk management strategies, and Pass the
             Torch for fostering enduring generational bonds—shape our highly personalized
