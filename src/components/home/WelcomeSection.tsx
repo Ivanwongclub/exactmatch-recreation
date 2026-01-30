@@ -4,7 +4,7 @@ const WelcomeSection = () => {
   return (
     <section className="bg-background py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-6">
-        <AnimatedSection className="max-w-7xl mx-auto">
+        <AnimatedSection className="max-w-6xl mx-auto">
           <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl mb-8 leading-tight italic font-medium" style={{ color: '#402c5d' }}>
             Fortify Your Growth, Armour Your Assets, Unite Generations
           </h2>
