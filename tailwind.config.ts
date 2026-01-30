@@ -90,6 +90,18 @@ export default {
           "0%": { opacity: "0", transform: "scale(0.95)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        "aurora-shift-1": {
+          "0%, 100%": { transform: "translateX(-25%) translateY(0%)" },
+          "50%": { transform: "translateX(25%) translateY(-10%)" },
+        },
+        "aurora-shift-2": {
+          "0%, 100%": { transform: "translateX(25%) translateY(-5%)" },
+          "50%": { transform: "translateX(-25%) translateY(5%)" },
+        },
+        "aurora-shift-3": {
+          "0%, 100%": { transform: "translateX(0%) translateY(5%)" },
+          "50%": { transform: "translateX(-15%) translateY(-5%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -97,6 +109,9 @@ export default {
         "fade-in-up": "fade-in-up 0.6s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "scale-in": "scale-in 0.4s ease-out",
+        "aurora-1": "aurora-shift-1 20s ease-in-out infinite",
+        "aurora-2": "aurora-shift-2 25s ease-in-out infinite",
+        "aurora-3": "aurora-shift-3 18s ease-in-out infinite",
       },
       spacing: {
         "18": "4.5rem",

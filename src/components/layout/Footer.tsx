@@ -13,8 +13,13 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-20">
+    <footer className="bg-primary text-primary-foreground relative overflow-hidden">
+      {/* Aurora borealis animation layers */}
+      <div className="aurora-wave aurora-wave-1" aria-hidden="true" />
+      <div className="aurora-wave aurora-wave-2" aria-hidden="true" />
+      <div className="aurora-wave aurora-wave-3" aria-hidden="true" />
+      
+      <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left side - Navigation Links */}
           <div className="flex flex-col gap-6">
