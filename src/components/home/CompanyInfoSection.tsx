@@ -15,10 +15,10 @@ const CompanyInfoSection = () => {
   return (
     <section ref={containerRef} className="bg-background py-16 lg:py-24">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           {/* Image with Parallax Zoom */}
-          <AnimatedSection direction="left" className="order-2 lg:order-1">
-            <div className="relative rounded-lg overflow-hidden aspect-square">
+          <AnimatedSection direction="left" className="order-2 lg:order-1 h-full">
+            <div className="relative rounded-lg overflow-hidden h-full min-h-[300px]">
               <motion.img
                 src={companyImage}
                 alt="King Armour boardroom"
