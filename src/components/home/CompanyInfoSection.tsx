@@ -19,11 +19,11 @@ const CompanyInfoSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           {/* Image with Parallax Zoom */}
           <AnimatedSection direction="left" className="order-2 lg:order-1 h-full">
-            <div className="relative h-full min-h-[300px] flex items-center justify-center">
+            <div className="relative rounded-lg overflow-hidden h-full min-h-[300px]">
               <motion.img
                 src={marbleTexture}
                 alt="Marble texture"
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-cover"
                 style={{ scale }}
               />
             </div>
