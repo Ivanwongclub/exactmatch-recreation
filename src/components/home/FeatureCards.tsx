@@ -74,20 +74,20 @@ const TextCard = ({ title, subtitle, link, variant, className = "" }: TextCardPr
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-2xl p-8 lg:p-10 flex flex-col justify-between min-h-[200px] ${
+      className={`rounded-2xl p-8 lg:p-10 flex flex-col min-h-[200px] ${
         isDark ? "bg-[#1a1a1a]" : "bg-[#d4b896]"
       } ${className}`}
     >
-      <div>
+      <div className="flex-1 flex items-center">
         <h3
-          className={`font-serif text-3xl lg:text-4xl font-bold mb-6 ${
+          className={`font-sans text-4xl lg:text-5xl font-semibold tracking-tight ${
             isDark ? "text-white" : "text-[#4a3f6b]"
           }`}
         >
           {title}
         </h3>
       </div>
-      <div>
+      <div className="mt-auto">
         <p
           className={`font-serif text-lg lg:text-xl italic mb-6 ${
             isDark ? "text-[#d4b896]" : "text-[#5a4a3a]"
