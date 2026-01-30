@@ -98,13 +98,20 @@ const TextCard = ({ title, subtitle, link, variant, className = "" }: TextCardPr
       <div className="mt-6">
         <Link
           to={link}
-          className={`inline-block font-sans text-sm font-medium border-b ${
+          className={`group inline-flex items-center font-sans text-sm font-medium transition-all duration-300 hover:translate-y-0.5 ${
             isDark 
-              ? "text-white border-white/60 hover:border-white" 
-              : "text-[#4a3f6b] border-[#4a3f6b]/60 hover:border-[#4a3f6b]"
-          } transition-colors`}
+              ? "text-white hover:text-ka-gold" 
+              : "text-[#4a3f6b] hover:text-primary"
+          }`}
         >
-          Learn more
+          <span className="relative">
+            Learn more
+            <span 
+              className={`absolute left-0 -bottom-1 h-px w-0 transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full ${
+                isDark ? "bg-ka-gold" : "bg-primary"
+              }`} 
+            />
+          </span>
         </Link>
       </div>
     </motion.div>
