@@ -196,7 +196,7 @@
       hsl(280 25% 30% / 0.3) 40%,
       transparent 70%
     );
-    animation: aurora-shift-1 20s ease-in-out infinite;
+    animation: aurora-shift-1 8s ease-in-out infinite;
   }
 
   .aurora-wave-2 {
@@ -206,7 +206,7 @@
       hsl(265 25% 25% / 0.25) 50%,
       transparent 70%
     );
-    animation: aurora-shift-2 25s ease-in-out infinite;
+    animation: aurora-shift-2 10s ease-in-out infinite;
   }
 
   .aurora-wave-3 {
@@ -216,7 +216,7 @@
       hsl(270 25% 30% / 0.3) 45%,
       transparent 70%
     );
-    animation: aurora-shift-3 18s ease-in-out infinite;
+    animation: aurora-shift-3 7s ease-in-out infinite;
   }
 }
 
