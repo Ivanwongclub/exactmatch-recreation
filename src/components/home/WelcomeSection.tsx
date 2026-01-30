@@ -4,13 +4,13 @@ const WelcomeSection = () => {
   return (
     <section className="bg-background py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-6">
-        <AnimatedSection className="max-w-4xl mx-auto text-center">
+        <AnimatedSection className="max-w-6xl mx-auto text-center">
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-8 leading-tight">
             Fortify Your Growth, Armour Your Assets, Unite Generations
           </h2>
         </AnimatedSection>
 
-        <AnimatedSection delay={0.2} className="max-w-3xl mx-auto">
+        <AnimatedSection delay={0.2} className="max-w-5xl mx-auto">
           <p className="text-muted-foreground font-sans text-lg md:text-xl leading-relaxed mb-6">
             Welcome to King Armour Family Office, a prestigious affiliate of Sunwah Kingsway
             Capital Holdings Limited, established in 1957. Headquartered in the vibrant
