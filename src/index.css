@@ -192,8 +192,8 @@
   .aurora-wave-1 {
     background: radial-gradient(
       ellipse 80% 50% at 50% 50%,
-      hsl(270 50% 55% / 0.8) 0%,
-      hsl(280 45% 45% / 0.5) 40%,
+      hsl(270 30% 40% / 0.6) 0%,
+      hsl(280 25% 30% / 0.3) 40%,
       transparent 70%
     );
     animation: aurora-shift-1 20s ease-in-out infinite;
@@ -202,8 +202,8 @@
   .aurora-wave-2 {
     background: radial-gradient(
       ellipse 70% 60% at 60% 40%,
-      hsl(42 60% 55% / 0.5) 0%,
-      hsl(265 40% 35% / 0.4) 50%,
+      hsl(42 35% 50% / 0.35) 0%,
+      hsl(265 25% 25% / 0.25) 50%,
       transparent 70%
     );
     animation: aurora-shift-2 25s ease-in-out infinite;
@@ -212,8 +212,8 @@
   .aurora-wave-3 {
     background: radial-gradient(
       ellipse 60% 70% at 40% 60%,
-      hsl(280 45% 60% / 0.6) 0%,
-      hsl(270 40% 40% / 0.4) 45%,
+      hsl(280 25% 45% / 0.5) 0%,
+      hsl(270 25% 30% / 0.3) 45%,
       transparent 70%
     );
     animation: aurora-shift-3 18s ease-in-out infinite;
