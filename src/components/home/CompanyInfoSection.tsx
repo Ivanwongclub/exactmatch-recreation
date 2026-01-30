@@ -25,8 +25,6 @@ const CompanyInfoSection = () => {
                 className="w-full h-full object-cover"
                 style={{ scale }}
               />
-              {/* Dark overlay */}
-              <div className="absolute inset-0 bg-primary/40" />
             </div>
           </AnimatedSection>
 
