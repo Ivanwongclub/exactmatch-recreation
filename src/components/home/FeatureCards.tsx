@@ -5,7 +5,7 @@ import historicBuilding from "@/assets/historic-building.webp";
 import portrait2 from "@/assets/portrait-2.jpg";
 import aboutImage from "@/assets/about-image.jpg";
 import keyOnCurrency from "@/assets/key-on-currency.webp";
-import heroNetwork from "@/assets/hero-network.jpg";
+import networkPattern from "@/assets/network-pattern.webp";
 
 const FeatureCards = () => {
   return (
@@ -45,7 +45,7 @@ const FeatureCards = () => {
               variant="gold"
               className="flex-1"
             />
-            <ImageCard src={heroNetwork} alt="Network connections" className="flex-[0.7]" />
+            <ImageCard src={networkPattern} alt="Network connections" className="flex-[0.7]" />
             <TextCard
               title="KINGS NETWORK"
               subtitle="Elite Connections, Exclusive Access"
