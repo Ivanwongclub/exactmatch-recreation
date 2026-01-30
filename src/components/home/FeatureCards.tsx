@@ -75,7 +75,7 @@ const TextCard = ({ title, subtitle, link, variant, className = "" }: TextCardPr
       whileHover={{ y: -4 }}
       transition={{ duration: 0.3 }}
       className={`rounded-2xl p-8 lg:p-10 flex flex-col min-h-[200px] ${
-        isDark ? "bg-[#1a1a1a]" : "bg-[#DEBA82]"
+        isDark ? "bg-[#2B2338]" : "bg-[#DEBA82]"
       } ${className}`}
     >
       <div className="flex-1 flex flex-col justify-center">
