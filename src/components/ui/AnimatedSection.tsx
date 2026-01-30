@@ -54,6 +54,8 @@ const AnimatedSection = ({
     }
   };
 
+  const hasHeightClass = className.includes("h-full") || className.includes("h-[");
+  
   return (
     <motion.div
       ref={ref}
@@ -66,6 +68,7 @@ const AnimatedSection = ({
         ease: [0.25, 0.1, 0.25, 1],
       }}
       className={className}
+      style={hasHeightClass ? { height: "100%" } : undefined}
     >
       {children}
     </motion.div>
