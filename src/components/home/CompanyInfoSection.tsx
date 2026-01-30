@@ -32,21 +32,21 @@ const CompanyInfoSection = () => {
 
           {/* Text Content */}
           <AnimatedSection direction="right" className="order-1 lg:order-2">
-            <p className="text-muted-foreground font-sans text-lg leading-relaxed mb-6">
+            <p className="text-foreground font-sans text-lg leading-relaxed mb-6">
               At King Armour, we understand that true wealth extends beyond financial assets.
               It encompasses the values, traditions, and aspirations that define your family's
               unique legacy. Our team of seasoned professionals works closely with you to
               understand your vision and craft bespoke solutions that protect and grow your
               family's interests across generations.
             </p>
-            <p className="text-muted-foreground font-sans text-lg leading-relaxed mb-6">
+            <p className="text-foreground font-sans text-lg leading-relaxed mb-6">
               Whether you're seeking to diversify your investment portfolio, establish
               philanthropic initiatives, or navigate complex succession planning, King Armour
               provides the expertise and discretion you deserve. We combine global insights
               with local knowledge, leveraging our extensive network to unlock exclusive
               opportunities for our clients.
             </p>
-            <p className="text-muted-foreground font-sans text-lg leading-relaxed">
+            <p className="text-foreground font-sans text-lg leading-relaxed">
               Join the ranks of distinguished families who have entrusted their legacies to
               King Armour. Together, we'll build a future that honors your past while
               embracing the possibilities of tomorrow.
