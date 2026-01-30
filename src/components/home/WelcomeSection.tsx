@@ -2,25 +2,11 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 
 const WelcomeSection = () => {
   return (
-    <section className="relative py-24 lg:py-40 overflow-hidden">
-      {/* Subtle gradient background */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `linear-gradient(180deg, 
-            hsl(var(--ka-cream)) 0%, 
-            hsl(30 30% 97%) 50%, 
-            hsl(var(--ka-cream)) 100%)`
-        }}
-      />
-      
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <AnimatedSection className="max-w-5xl mx-auto text-center mb-16 lg:mb-24">
-          {/* Oversized display typography */}
-          <h2 className="font-sans font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-foreground leading-[1.1] tracking-tight">
-            <span className="block mb-2">Fortify Your Growth,</span>
-            <span className="block mb-2">Armour Your Assets,</span>
-            <span className="block">Unite Generations</span>
+    <section className="bg-background py-20 lg:py-32">
+      <div className="container mx-auto px-6 lg:px-12">
+        <AnimatedSection className="max-w-4xl mx-auto text-center">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-8 leading-tight">
+            Fortify Your Growth, Armour Your Assets, Unite Generations
           </h2>
         </AnimatedSection>
 
