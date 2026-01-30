@@ -4,6 +4,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import portrait1 from "@/assets/portrait-1.jpg";
 import portrait2 from "@/assets/portrait-2.jpg";
 import aboutImage from "@/assets/about-image.jpg";
+import keyOnCurrency from "@/assets/key-on-currency.webp";
 import heroNetwork from "@/assets/hero-network.jpg";
 
 const FeatureCards = () => {
@@ -25,7 +26,7 @@ const FeatureCards = () => {
 
           {/* Column 2 - Image + History */}
           <AnimatedSection delay={0.1} className="flex flex-col gap-4 lg:gap-5 h-full">
-            <ImageCard src={aboutImage} alt="Key on currency" className="flex-1" />
+            <ImageCard src={keyOnCurrency} alt="Key on currency" className="flex-1" />
             <TextCard
               title="HISTORY"
               subtitle="From 1957 to the Future"
