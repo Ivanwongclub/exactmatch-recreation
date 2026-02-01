@@ -47,11 +47,19 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 overflow-hidden",
         isScrolled ? "bg-primary/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
       )}
     >
-      <div className="container mx-auto px-6 lg:px-12">
+      {/* Aurora light cloud animation - only visible when scrolled */}
+      {isScrolled && (
+        <>
+          <div className="aurora-wave aurora-wave-1" aria-hidden="true" />
+          <div className="aurora-wave aurora-wave-2" aria-hidden="true" />
+          <div className="aurora-wave aurora-wave-3" aria-hidden="true" />
+        </>
+      )}
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
           <Link to="/" className="flex items-center">
