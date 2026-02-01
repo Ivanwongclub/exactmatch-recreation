@@ -18,6 +18,8 @@ const Footer = () => {
       <div className="aurora-wave aurora-wave-1" aria-hidden="true" />
       <div className="aurora-wave aurora-wave-2" aria-hidden="true" />
       <div className="aurora-wave aurora-wave-3" aria-hidden="true" />
+      <div className="aurora-wave aurora-wave-4" aria-hidden="true" />
+      <div className="aurora-wave aurora-wave-5" aria-hidden="true" />
       
       <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
