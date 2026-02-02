@@ -47,22 +47,11 @@ const Header = () => {
   return (
     <header
       className={cn(
-        // relative: ensure aurora layers (position:absolute) are anchored to the header box
-        // isolate: keep blend effects contained within the header
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 overflow-hidden relative isolate",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "bg-primary/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
       )}
     >
-      {/* Aurora light cloud animation - only visible when scrolled */}
-      {isScrolled && (
-        <>
-          {/* Slightly higher visibility in Header (footer remains unchanged) */}
-          <div className="aurora-wave aurora-wave-1 opacity-40 mix-blend-soft-light" aria-hidden="true" />
-          <div className="aurora-wave aurora-wave-2 opacity-35 mix-blend-soft-light" aria-hidden="true" />
-          <div className="aurora-wave aurora-wave-3 opacity-40 mix-blend-soft-light" aria-hidden="true" />
-        </>
-      )}
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+      <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
           <Link to="/" className="flex items-center">
