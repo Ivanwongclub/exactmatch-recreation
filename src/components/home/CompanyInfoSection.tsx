@@ -16,9 +16,9 @@ const CompanyInfoSection = () => {
   return (
     <section ref={containerRef} className="bg-background py-16 lg:py-24">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-stretch">
           {/* Image with Parallax Zoom */}
-          <AnimatedSection direction="left" className="order-2 lg:order-1 h-full">
+          <AnimatedSection direction="left" className="order-2 lg:order-1 h-full lg:col-span-2">
             <div className="relative h-full min-h-[300px] rounded-lg bg-background overflow-hidden">
               <motion.div
                 className="w-full h-full"
@@ -34,7 +34,7 @@ const CompanyInfoSection = () => {
           </AnimatedSection>
 
           {/* Text Content */}
-          <AnimatedSection direction="right" className="order-1 lg:order-2">
+          <AnimatedSection direction="right" className="order-1 lg:order-2 lg:col-span-3">
             <p className="text-foreground font-sans text-lg leading-relaxed mb-6">
               At King Armour, we understand that true wealth extends beyond financial assets.
               It encompasses the values, traditions, and aspirations that define your family's
