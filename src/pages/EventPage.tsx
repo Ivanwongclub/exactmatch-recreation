@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -35,6 +36,10 @@ const eventData: EventDetail = {
 const EventPage = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Event"
+        description="Upcoming Kings Network event — exclusive gatherings and experiences for members and invited guests."
+      />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

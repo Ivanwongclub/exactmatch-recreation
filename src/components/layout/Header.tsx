@@ -71,7 +71,7 @@ const Header = () => {
             />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
             {navItems.map((item) => (
               <div
                 key={item.label}

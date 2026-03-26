@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -127,6 +128,10 @@ const MembersOnlyEvents = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Members-Only Events"
+        description="Curated quarterly gatherings for Kings Network members — exclusive dinners, delegation trips, art auctions, and innovation summits."
+      />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

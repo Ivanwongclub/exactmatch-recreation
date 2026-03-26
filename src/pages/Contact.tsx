@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { z } from "zod";
@@ -127,6 +128,10 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Contact Us"
+        description="Begin a confidential conversation with King Armour Family Office. Reach us by email, phone, or through our enquiry form."
+      />
       {/* Hero */}
       <section className="bg-primary text-primary-foreground py-32 lg:py-40">
         <div className="container mx-auto px-6 lg:px-12">

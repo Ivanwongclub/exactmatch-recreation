@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -32,6 +33,10 @@ const boardMembers: BoardMember[] = [
 const BoardOfDirectors = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Board of Directors"
+        description="King Armour's Board of Directors provides independent oversight, strategic counsel, and the highest fiduciary standards for the families we serve."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

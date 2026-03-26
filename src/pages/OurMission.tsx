@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -40,6 +41,10 @@ const principles = [
 const OurMission = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Our Mission"
+        description="Purpose-driven stewardship for families of substance. King Armour's guiding principles and long-term philosophy for generational wealth preservation."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

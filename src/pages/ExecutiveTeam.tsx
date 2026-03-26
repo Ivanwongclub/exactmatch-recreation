@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -66,6 +67,10 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => (
 const ExecutiveTeam = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Executive Team"
+        description="Meet King Armour's leadership team — decades of experience in global finance, family governance, and cross-border enterprise."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

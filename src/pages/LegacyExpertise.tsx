@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -31,6 +32,10 @@ const expertiseAreas = [
 const LegacyExpertise = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Legacy & Business Expertise"
+        description="Built on six decades of enterprise — King Armour's heritage in succession architecture, cross-border strategy, and family business advisory."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

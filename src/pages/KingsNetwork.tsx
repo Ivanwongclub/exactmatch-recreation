@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
@@ -87,6 +88,10 @@ const programPillars = [
 const KingsNetwork = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Kings Network"
+        description="An invitation-only community for distinguished families. Curated events, a flagship summer programme, and a vetted global peer network."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

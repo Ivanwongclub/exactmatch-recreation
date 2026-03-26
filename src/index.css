@@ -99,6 +99,17 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans;
   }
+
+  /* Visible focus ring for keyboard navigation (AA) */
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+  }
+
+  /* Remove default outline for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 @layer utilities {
