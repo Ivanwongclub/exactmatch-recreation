@@ -38,7 +38,7 @@ const App = () => (
           <Route path="/members-only-events" element={<MembersOnlyEvents />} />
           <Route path="/summer-program" element={<SummerProgram />} />
           <Route path="/event" element={<EventPage />} />
-          <Route path="/contact" element={<PlaceholderPage title="Contact Us" subtitle="Begin a conversation about what matters most" />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" subtitle="How we protect your information" />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
