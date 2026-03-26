@@ -63,12 +63,9 @@ const Header = () => {
     >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
-          <Link to="/" className="flex items-center">
-            <img
-              src="/logo.png"
-              alt="King Armour Logo"
-              className="h-14 lg:h-[72px] w-auto"
-            />
+          <Link to="/" className="ka-wordmark" aria-label="King Armour Home">
+            <span className="ka-wordmark-kicker">KING</span>
+            <span className="ka-wordmark-main">ARMOUR</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
