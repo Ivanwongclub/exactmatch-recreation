@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LegacyRedirects from "./components/shared/LegacyRedirects";
 import Index from "./pages/Index";
 import History from "./pages/History";
 import Services from "./pages/Services";
@@ -26,6 +27,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <LegacyRedirects />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/history" element={<History />} />
