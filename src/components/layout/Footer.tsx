@@ -19,7 +19,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-primary text-primary-foreground relative overflow-hidden">
+    <footer className="bg-primary text-primary-foreground relative overflow-hidden" role="contentinfo">
       <div className="aurora-wave aurora-wave-1" aria-hidden="true" />
       <div className="aurora-wave aurora-wave-2" aria-hidden="true" />
       <div className="aurora-wave aurora-wave-3" aria-hidden="true" />
