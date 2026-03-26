@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Layout from "@/components/layout/Layout";
+import SEOHead from "@/components/shared/SEOHead";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
 const recoveryLinks = [
