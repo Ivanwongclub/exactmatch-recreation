@@ -131,6 +131,7 @@ const MembersOnlyEvents = () => {
       <SEOHead
         title="Members-Only Events"
         description="Curated quarterly gatherings for Kings Network members — exclusive dinners, delegation trips, art auctions, and innovation summits."
+        preloadImage={heroImage}
       />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">

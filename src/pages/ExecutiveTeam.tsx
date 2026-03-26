@@ -40,7 +40,7 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => (
     className="bg-primary rounded-lg overflow-hidden card-hover"
   >
     {member.image ? (
-      <img
+      <img loading="lazy" decoding="async"
         src={member.image}
         alt={member.name}
         className="w-full h-56 object-cover"
@@ -70,6 +70,7 @@ const ExecutiveTeam = () => {
       <SEOHead
         title="Executive Team"
         description="Meet King Armour's leadership team — decades of experience in global finance, family governance, and cross-border enterprise."
+        preloadImage={heroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">

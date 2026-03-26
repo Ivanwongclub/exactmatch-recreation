@@ -11,6 +11,7 @@ interface SEOHeadProps {
   canonical?: string;
   ogType?: string;
   ogImage?: string;
+  preloadImage?: string;
   noindex?: boolean;
 }
 
@@ -20,6 +21,7 @@ const SEOHead = ({
   canonical,
   ogType = "website",
   ogImage = DEFAULT_OG_IMAGE,
+  preloadImage,
   noindex = false,
 }: SEOHeadProps) => {
   const location = useLocation();
@@ -53,6 +55,22 @@ const SEOHead = ({
     setMeta("name", "description", description);
     setLink("canonical", fullCanonical);
 
+    // Optional image preload for LCP-heavy hero backgrounds.
+    const existingPreload = document.querySelector(
+      'link[data-seo-preload-image="true"]'
+    ) as HTMLLinkElement | null;
+    if (existingPreload) {
+      existingPreload.remove();
+    }
+    if (preloadImage) {
+      const preloadEl = document.createElement("link");
+      preloadEl.setAttribute("rel", "preload");
+      preloadEl.setAttribute("as", "image");
+      preloadEl.setAttribute("href", preloadImage);
+      preloadEl.setAttribute("data-seo-preload-image", "true");
+      document.head.appendChild(preloadEl);
+    }
+
     if (noindex) {
       setMeta("name", "robots", "noindex, nofollow");
     } else {
@@ -73,7 +91,7 @@ const SEOHead = ({
     setMeta("name", "twitter:title", fullTitle);
     setMeta("name", "twitter:description", description);
     setMeta("name", "twitter:image", fullOgImage);
-  }, [fullTitle, description, fullCanonical, ogType, fullOgImage, noindex]);
+  }, [fullTitle, description, fullCanonical, ogType, fullOgImage, noindex, preloadImage]);
 
   return null;
 };

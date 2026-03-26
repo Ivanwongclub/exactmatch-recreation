@@ -24,7 +24,7 @@ const CompanyInfoSection = () => {
                 className="w-full h-full"
                 style={{ scale }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={marbleTexture}
                   alt="Marble texture"
                   className="w-full h-full object-cover"

@@ -5,9 +5,14 @@ import heroImage from "@/assets/hero-home.jpg";
 const HeroSection = () => {
   return (
     <section className="relative h-screen min-h-[700px] flex items-center">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
+      <img
+        src={heroImage}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        loading="eager"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
       />
 
       <div

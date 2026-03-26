@@ -21,6 +21,7 @@ const History = () => {
       <SEOHead
         title="History"
         description="From 1957 to the future — the story of King Armour and the Sunwah Group legacy spanning six decades of global enterprise."
+        preloadImage={heroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
@@ -74,7 +75,7 @@ const History = () => {
 
             <AnimatedSection delay={0.2}>
               <div className="rounded-lg overflow-hidden">
-                <img
+                <img loading="lazy" decoding="async"
                   src={portrait1}
                   alt="Dr. Jonathan Choi"
                   className="w-full h-auto object-cover"
@@ -131,6 +132,8 @@ const History = () => {
           <AnimatedSection>
             <div className="rounded-lg overflow-hidden">
               <motion.img
+                loading="lazy"
+                decoding="async"
                 src={companyImage}
                 alt="King Armour office"
                 className="w-full h-[400px] lg:h-[500px] object-cover"

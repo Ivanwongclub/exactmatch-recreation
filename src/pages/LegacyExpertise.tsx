@@ -35,6 +35,7 @@ const LegacyExpertise = () => {
       <SEOHead
         title="Legacy & Business Expertise"
         description="Built on six decades of enterprise — King Armour's heritage in succession architecture, cross-border strategy, and family business advisory."
+        preloadImage={heroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
@@ -85,7 +86,7 @@ const LegacyExpertise = () => {
 
             <AnimatedSection delay={0.2}>
               <div className="rounded-lg overflow-hidden">
-                <img
+                <img loading="lazy" decoding="async"
                   src={companyImage}
                   alt="King Armour heritage"
                   className="w-full h-auto object-cover"

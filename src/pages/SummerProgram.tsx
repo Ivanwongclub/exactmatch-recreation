@@ -60,6 +60,7 @@ const SummerProgram = () => {
       <SEOHead
         title="Summer Program"
         description="The Global Elite Summer Program — cultivating leadership, global perspective, and lifelong connections for the next generation of distinguished families."
+      preloadImage={heroImage}
       />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">

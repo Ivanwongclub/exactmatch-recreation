@@ -91,6 +91,7 @@ const KingsNetwork = () => {
       <SEOHead
         title="Kings Network"
         description="An invitation-only community for distinguished families. Curated events, a flagship summer programme, and a vetted global peer network."
+        preloadImage={heroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">

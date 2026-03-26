@@ -131,7 +131,7 @@ const ImageCard = ({ src, alt, className = "" }: ImageCardProps) => {
       transition={{ duration: 0.3 }}
       className={`rounded-2xl overflow-hidden ${className}`}
     >
-      <img src={src} alt={alt} className="w-full h-full object-cover" />
+      <img loading="lazy" decoding="async" src={src} alt={alt} className="w-full h-full object-cover" />
     </motion.div>
   );
 };

@@ -58,6 +58,7 @@ const Services = () => {
       <SEOHead
         title="Our Services"
         description="Comprehensive family office services — from wealth planning and governance to alternative investments and trust administration. Fortify, grow, succeed."
+        preloadImage={heroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">

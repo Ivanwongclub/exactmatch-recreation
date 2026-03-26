@@ -39,6 +39,7 @@ const EventPage = () => {
       <SEOHead
         title="Event"
         description="Upcoming Kings Network event — exclusive gatherings and experiences for members and invited guests."
+      preloadImage={heroImage}
       />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">

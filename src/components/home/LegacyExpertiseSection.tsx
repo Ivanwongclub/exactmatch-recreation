@@ -38,7 +38,7 @@ const LegacyExpertiseSection = () => {
 
           <AnimatedSection direction="right">
             <div className="rounded-2xl overflow-hidden">
-              <img
+              <img loading="lazy" decoding="async"
                 src={marbleTexture}
                 alt="Legacy expertise"
                 className="w-full h-[340px] lg:h-[420px] object-cover"

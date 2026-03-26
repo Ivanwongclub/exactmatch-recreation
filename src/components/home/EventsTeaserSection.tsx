@@ -9,7 +9,7 @@ const EventsTeaserSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <AnimatedSection direction="left">
             <div className="rounded-2xl overflow-hidden">
-              <img
+              <img loading="lazy" decoding="async"
                 src={historicBuilding}
                 alt="Members-only events venue"
                 className="w-full h-[340px] lg:h-[420px] object-cover"

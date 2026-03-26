@@ -9,6 +9,7 @@ import LeadershipTrustSection from "@/components/home/LeadershipTrustSection";
 import EventsTeaserSection from "@/components/home/EventsTeaserSection";
 import HistoryTeaserSection from "@/components/home/HistoryTeaserSection";
 import FinalCTASection from "@/components/home/FinalCTASection";
+import heroImage from "@/assets/hero-home.jpg";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <SEOHead
         title="King Armour Family Office — Stewardship That Endures"
         description="King Armour Family Office partners with distinguished families to preserve wealth, strengthen governance, and build enduring legacies. Trusted since 1957."
+        preloadImage={heroImage}
       />
       <HeroSection />
       <WhoWeServeSection />

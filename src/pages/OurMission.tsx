@@ -44,6 +44,7 @@ const OurMission = () => {
       <SEOHead
         title="Our Mission"
         description="Purpose-driven stewardship for families of substance. King Armour's guiding principles and long-term philosophy for generational wealth preservation."
+        preloadImage={heroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
