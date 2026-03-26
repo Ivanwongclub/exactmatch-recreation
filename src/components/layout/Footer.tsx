@@ -50,6 +50,10 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col justify-between">
+            <div className="ka-wordmark mb-6" aria-hidden="true" style={{ opacity: 0.7 }}>
+              <span className="ka-wordmark-kicker">KING</span>
+              <span className="ka-wordmark-main">ARMOUR</span>
+            </div>
             <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-normal leading-tight text-primary-foreground">
               Fortify Your Growth, Armour Your Assets, Unite Generations
             </h2>
