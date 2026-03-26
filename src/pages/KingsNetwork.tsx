@@ -88,6 +88,10 @@ const programPillars = [
 const KingsNetwork = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Kings Network"
+        description="An invitation-only community for distinguished families. Curated events, a flagship summer programme, and a vetted global peer network."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

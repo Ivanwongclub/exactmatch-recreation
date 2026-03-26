@@ -24,6 +24,7 @@ const NotFound = () => {
 
   return (
     <Layout>
+      <SEOHead title="Page Not Found" description="The page you're looking for doesn't exist or has been moved." noindex />
       <section className="bg-primary text-primary-foreground py-32 lg:py-40">
         <div className="container mx-auto px-6 lg:px-12">
           <AnimatedSection>

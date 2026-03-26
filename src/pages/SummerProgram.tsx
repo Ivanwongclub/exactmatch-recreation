@@ -57,6 +57,10 @@ const statusLabels: Record<ProgramStatus, { label: string; color: string }> = {
 const SummerProgram = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Summer Program"
+        description="The Global Elite Summer Program — cultivating leadership, global perspective, and lifelong connections for the next generation of distinguished families."
+      />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div

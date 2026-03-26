@@ -18,6 +18,10 @@ const milestones = [
 const History = () => {
   return (
     <Layout>
+      <SEOHead
+        title="History"
+        description="From 1957 to the future — the story of King Armour and the Sunwah Group legacy spanning six decades of global enterprise."
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
