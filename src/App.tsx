@@ -11,6 +11,9 @@ import OurMission from "./pages/OurMission";
 import ExecutiveTeam from "./pages/ExecutiveTeam";
 import BoardOfDirectors from "./pages/BoardOfDirectors";
 import LegacyExpertise from "./pages/LegacyExpertise";
+import MembersOnlyEvents from "./pages/MembersOnlyEvents";
+import SummerProgram from "./pages/SummerProgram";
+import EventPage from "./pages/EventPage";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
@@ -31,9 +34,9 @@ const App = () => (
           <Route path="/executive-team" element={<ExecutiveTeam />} />
           <Route path="/board-of-directors" element={<BoardOfDirectors />} />
           <Route path="/legacy-and-business-expertise" element={<LegacyExpertise />} />
-          <Route path="/members-only-events" element={<PlaceholderPage title="Members-Only Events" subtitle="Where ideas meet opportunity" />} />
-          <Route path="/summer-program" element={<PlaceholderPage title="Summer Program" subtitle="Cultivating the next generation of leaders" />} />
-          <Route path="/event" element={<PlaceholderPage title="Event" subtitle="Upcoming gatherings and experiences" />} />
+          <Route path="/members-only-events" element={<MembersOnlyEvents />} />
+          <Route path="/summer-program" element={<SummerProgram />} />
+          <Route path="/event" element={<EventPage />} />
           <Route path="/contact" element={<PlaceholderPage title="Contact Us" subtitle="Begin a conversation about what matters most" />} />
           <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" subtitle="How we protect your information" />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
