@@ -17,10 +17,8 @@ yellow(){ printf "\033[33m⚠ WARN\033[0m %s\n" "$1"; WARN=$((WARN+1)); }
 check_redirect() {
   local url="$1" expected_target="$2" label="$3"
   local status location
-  local headers
-  headers=$(curl -sI --max-time 10 "$url" 2>/dev/null || echo "")
-  status=$(echo "$headers" | head -1 | awk '{print $2}')
-  location=$(echo "$headers" | grep -i '^location:' | tr -d '\r' | awk '{print $2}')
+  status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$url" 2>/dev/null || echo "000")
+  location=$(curl -s -o /dev/null -w "%{redirect_url}" --max-time 10 "$url" 2>/dev/null)
 
   if [ "$status" = "301" ]; then
     # Check destination contains expected path
