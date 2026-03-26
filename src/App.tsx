@@ -14,6 +14,7 @@ import LegacyExpertise from "./pages/LegacyExpertise";
 import MembersOnlyEvents from "./pages/MembersOnlyEvents";
 import SummerProgram from "./pages/SummerProgram";
 import EventPage from "./pages/EventPage";
+import Contact from "./pages/Contact";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
