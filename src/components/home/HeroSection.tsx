@@ -1,36 +1,34 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-home.jpg";
 
 const HeroSection = () => {
   return (
     <section className="relative h-screen min-h-[700px] flex items-center">
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroImage})` }}
       />
 
-      {/* Purple/Magenta Gradient Overlay - matching original site colors */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(135deg, rgba(120, 60, 130, 0.75) 0%, rgba(80, 50, 100, 0.7) 50%, rgba(40, 30, 60, 0.8) 100%)',
-          mixBlendMode: 'multiply'
-        }}
-      />
-      
-      {/* Additional purple tint overlay */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(to bottom, rgba(100, 50, 120, 0.3) 0%, transparent 50%, rgba(40, 20, 60, 0.4) 100%)'
+          background:
+            "linear-gradient(135deg, rgba(120, 60, 130, 0.75) 0%, rgba(80, 50, 100, 0.7) 50%, rgba(40, 30, 60, 0.8) 100%)",
+          mixBlendMode: "multiply",
         }}
       />
 
-      {/* Noise Texture */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(100, 50, 120, 0.3) 0%, transparent 50%, rgba(40, 20, 60, 0.4) 100%)",
+        }}
+      />
+
       <div className="absolute inset-0 noise-bg opacity-20" />
 
-      {/* Content - positioned like original: left side, vertically centered */}
       <div className="relative z-10 container mx-auto px-8 lg:px-16 xl:px-24">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -38,19 +36,33 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="max-w-2xl"
         >
-          {/* Gold left border accent */}
           <div className="border-l-4 border-accent pl-6 lg:pl-8">
-            <h1 className="text-white font-serif text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 lg:mb-6">
-              King Armour
+            <h1 className="text-white font-sans text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 lg:mb-6 leading-[1.1]">
+              Stewardship That Endures
             </h1>
-            <h2 className="text-accent font-serif text-lg md:text-xl lg:text-2xl xl:text-3xl font-normal tracking-wide italic">
-              Your Family's Strategic Ally
-            </h2>
+            <p className="text-white/80 font-sans text-lg md:text-xl lg:text-2xl font-light leading-relaxed mb-8">
+              Trusted relationships. Long-term value.
+              <br />
+              Your family's strategic ally since 1957.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center px-7 py-3 bg-accent text-accent-foreground font-sans text-sm font-semibold tracking-wider rounded hover:bg-accent/90 transition-colors"
+              >
+                CONTACT US
+              </Link>
+              <Link
+                to="/services"
+                className="inline-flex items-center px-7 py-3 border border-white/40 text-white font-sans text-sm font-semibold tracking-wider rounded hover:border-accent hover:text-accent transition-colors"
+              >
+                EXPLORE SERVICES
+              </Link>
+            </div>
           </div>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

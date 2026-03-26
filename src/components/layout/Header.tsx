@@ -10,19 +10,28 @@ const navItems = [
     href: "/",
     dropdown: [
       { label: "Home", href: "/" },
+      { label: "Our Mission", href: "/our-mission" },
       { label: "History", href: "/history" },
+      { label: "Executive Team", href: "/executive-team" },
+      { label: "Board of Directors", href: "/board-of-directors" },
     ],
   },
-  { label: "HISTORY", href: "/history" },
   { label: "SERVICES", href: "/services" },
   {
     label: "KINGS NETWORK",
     href: "/kings-network",
     dropdown: [
       { label: "Overview", href: "/kings-network" },
-      { label: "Events", href: "/kings-network#events" },
+      { label: "Members-Only Events", href: "/members-only-events" },
+      { label: "Summer Program", href: "/summer-program" },
+      { label: "Event", href: "/event" },
     ],
   },
+  {
+    label: "EXPERTISE",
+    href: "/legacy-and-business-expertise",
+  },
+  { label: "CONTACT", href: "/contact" },
 ];
 
 const Header = () => {
@@ -35,7 +44,6 @@ const Header = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -48,27 +56,29 @@ const Header = () => {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-primary/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
+        isScrolled
+          ? "bg-primary/95 backdrop-blur-sm shadow-lg"
+          : "bg-transparent"
       )}
     >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
-          {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img 
-              src="/logo.png" 
-              alt="King Armour Logo" 
+            <img
+              src="/logo.png"
+              alt="King Armour Logo"
               className="h-14 lg:h-[72px] w-auto"
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() => item.dropdown && setActiveDropdown(item.label)}
+                onMouseEnter={() =>
+                  item.dropdown && setActiveDropdown(item.label)
+                }
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link
@@ -82,7 +92,6 @@ const Header = () => {
                   {item.dropdown && <ChevronDown className="w-4 h-4" />}
                 </Link>
 
-                {/* Dropdown */}
                 <AnimatePresence>
                   {item.dropdown && activeDropdown === item.label && (
                     <motion.div
@@ -90,7 +99,7 @@ const Header = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 min-w-[180px] bg-primary/95 backdrop-blur-sm rounded-lg shadow-xl py-2"
+                      className="absolute top-full left-0 mt-2 min-w-[200px] bg-primary/95 backdrop-blur-sm rounded-lg shadow-xl py-2"
                     >
                       {item.dropdown.map((subItem) => (
                         <Link
@@ -108,18 +117,20 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             className="lg:hidden text-primary-foreground p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -129,7 +140,7 @@ const Header = () => {
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed inset-y-0 right-0 w-full max-w-sm bg-primary shadow-2xl lg:hidden z-50"
           >
-            <div className="flex flex-col h-full pt-24 px-6">
+            <div className="flex flex-col h-full pt-24 px-6 overflow-y-auto">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.label}
