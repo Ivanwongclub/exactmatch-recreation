@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /ka-home/
 
-Sitemap: https://exactmatch-recreation.lovable.app/sitemap.xml
+Sitemap: https://ka.adaptive-app.com/sitemap.xml
