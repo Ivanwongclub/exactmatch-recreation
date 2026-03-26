@@ -130,3 +130,34 @@ The client-side `LegacyRedirects` component does handle user-facing navigation c
 ### **NO-GO**
 
 The current Lovable hosting platform does not support the server-level features required for production SEO compliance. All redirect rules, robots.txt, and sitemap.xml are correctly authored in the codebase but are not honored at the hosting layer. Migration to a self-hosted platform is required before declaring production-ready.
+
+---
+
+## Latest Automated Run
+
+| Field | Value |
+|-------|-------|
+| **Timestamp** | 2026-03-26T11:05:57Z |
+| **Verified repo HEAD** | `7e305184f4d34609d3a96922742103ccb50f3f34` |
+| **Command** | `bash scripts/verify-production-seo.sh https://ka.adaptive-app.com` |
+| **Exit code** | `1` |
+
+### Automated Result Summary
+
+| Metric | Value |
+|--------|-------|
+| PASS | 0 |
+| FAIL | 27 |
+| WARN | 3 |
+
+### Automated Check Outcome
+
+- Legacy redirects: all `/ka-home/*` checks failed (`HTTP 200`, expected `301`)
+- Trailing slash normalization: all checks failed (`HTTP 200`, expected `301`)
+- `robots.txt`: failed expected sitemap/disallow checks
+- `sitemap.xml`: failed (`HTTP 404`, wrong/empty content)
+- Homepage metadata checks: warnings for server HTML canonical/og:url (likely JS hydration only)
+
+### Current Decision (unchanged)
+
+**NO-GO** until hosting is migrated to a platform that honors server-side redirects and static SEO files.
