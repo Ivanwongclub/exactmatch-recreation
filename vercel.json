@@ -1,0 +1,59 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "redirects": [
+    { "source": "/ka-home", "destination": "/", "statusCode": 301 },
+    { "source": "/ka-home/", "destination": "/", "statusCode": 301 },
+    { "source": "/ka-home/our-mission", "destination": "/our-mission", "statusCode": 301 },
+    { "source": "/ka-home/our-mission/", "destination": "/our-mission", "statusCode": 301 },
+    { "source": "/ka-home/executive-team", "destination": "/executive-team", "statusCode": 301 },
+    { "source": "/ka-home/executive-team/", "destination": "/executive-team", "statusCode": 301 },
+    { "source": "/ka-home/board-of-directors", "destination": "/board-of-directors", "statusCode": 301 },
+    { "source": "/ka-home/board-of-directors/", "destination": "/board-of-directors", "statusCode": 301 },
+    { "source": "/ka-home/legacy-and-business-expertise", "destination": "/legacy-and-business-expertise", "statusCode": 301 },
+    { "source": "/ka-home/legacy-and-business-expertise/", "destination": "/legacy-and-business-expertise", "statusCode": 301 },
+    { "source": "/ka-home/history", "destination": "/history", "statusCode": 301 },
+    { "source": "/ka-home/history/", "destination": "/history", "statusCode": 301 },
+    { "source": "/ka-home/services", "destination": "/services", "statusCode": 301 },
+    { "source": "/ka-home/services/", "destination": "/services", "statusCode": 301 },
+    { "source": "/ka-home/kings-network", "destination": "/kings-network", "statusCode": 301 },
+    { "source": "/ka-home/kings-network/", "destination": "/kings-network", "statusCode": 301 },
+    { "source": "/ka-home/members-only-events", "destination": "/members-only-events", "statusCode": 301 },
+    { "source": "/ka-home/members-only-events/", "destination": "/members-only-events", "statusCode": 301 },
+    { "source": "/ka-home/summer-program", "destination": "/summer-program", "statusCode": 301 },
+    { "source": "/ka-home/summer-program/", "destination": "/summer-program", "statusCode": 301 },
+    { "source": "/ka-home/event", "destination": "/event", "statusCode": 301 },
+    { "source": "/ka-home/event/", "destination": "/event", "statusCode": 301 },
+    { "source": "/ka-home/contact", "destination": "/contact", "statusCode": 301 },
+    { "source": "/ka-home/contact/", "destination": "/contact", "statusCode": 301 },
+    { "source": "/our-mission/", "destination": "/our-mission", "statusCode": 301 },
+    { "source": "/executive-team/", "destination": "/executive-team", "statusCode": 301 },
+    { "source": "/board-of-directors/", "destination": "/board-of-directors", "statusCode": 301 },
+    { "source": "/legacy-and-business-expertise/", "destination": "/legacy-and-business-expertise", "statusCode": 301 },
+    { "source": "/history/", "destination": "/history", "statusCode": 301 },
+    { "source": "/services/", "destination": "/services", "statusCode": 301 },
+    { "source": "/kings-network/", "destination": "/kings-network", "statusCode": 301 },
+    { "source": "/members-only-events/", "destination": "/members-only-events", "statusCode": 301 },
+    { "source": "/summer-program/", "destination": "/summer-program", "statusCode": 301 },
+    { "source": "/event/", "destination": "/event", "statusCode": 301 },
+    { "source": "/contact/", "destination": "/contact", "statusCode": 301 },
+    { "source": "/privacy/", "destination": "/privacy", "statusCode": 301 }
+  ],
+  "rewrites": [
+    { "source": "/((?!assets|sitemap\\.xml|robots\\.txt|favicon\\.ico|logo\\.png|placeholder\\.svg).*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    }
+  ]
+}
