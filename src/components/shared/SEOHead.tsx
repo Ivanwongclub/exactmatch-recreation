@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const SITE_URL = "https://exactmatch-recreation.lovable.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://ka.adaptive-app.com";
 const SITE_NAME = "King Armour Family Office";
 const DEFAULT_OG_IMAGE = "/logo.png";
 

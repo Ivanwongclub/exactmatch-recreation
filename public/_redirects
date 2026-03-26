@@ -1,0 +1,42 @@
+# Legacy /ka-home/ redirects (301)
+/ka-home          /           301
+/ka-home/         /           301
+/ka-home/our-mission          /our-mission          301
+/ka-home/our-mission/         /our-mission          301
+/ka-home/executive-team       /executive-team       301
+/ka-home/executive-team/      /executive-team       301
+/ka-home/board-of-directors   /board-of-directors   301
+/ka-home/board-of-directors/  /board-of-directors   301
+/ka-home/legacy-and-business-expertise   /legacy-and-business-expertise   301
+/ka-home/legacy-and-business-expertise/  /legacy-and-business-expertise   301
+/ka-home/history              /history              301
+/ka-home/history/             /history              301
+/ka-home/services             /services             301
+/ka-home/services/            /services             301
+/ka-home/kings-network        /kings-network        301
+/ka-home/kings-network/       /kings-network        301
+/ka-home/members-only-events  /members-only-events  301
+/ka-home/members-only-events/ /members-only-events  301
+/ka-home/summer-program       /summer-program       301
+/ka-home/summer-program/      /summer-program       301
+/ka-home/event                /event                301
+/ka-home/event/               /event                301
+/ka-home/contact              /contact              301
+/ka-home/contact/             /contact              301
+
+# Trailing-slash normalization (canonical routes)
+/our-mission/                 /our-mission          301
+/executive-team/              /executive-team       301
+/board-of-directors/          /board-of-directors   301
+/legacy-and-business-expertise/ /legacy-and-business-expertise 301
+/history/                     /history              301
+/services/                    /services             301
+/kings-network/               /kings-network        301
+/members-only-events/         /members-only-events  301
+/summer-program/              /summer-program       301
+/event/                       /event                301
+/contact/                     /contact              301
+/privacy/                     /privacy              301
+
+# SPA fallback — must be last
+/*    /index.html   200
