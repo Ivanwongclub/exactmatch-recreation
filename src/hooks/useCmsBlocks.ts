@@ -4,11 +4,13 @@ import {
   fetchCmsAdminAccess,
   fetchCmsBlockRevisions,
   fetchCmsBlocksByPage,
+  fetchCmsMediaAssets,
   requestCmsSignIn,
   signOutCms,
   upsertCmsBlock,
+  upsertCmsMediaAsset,
 } from "@/lib/cms/services";
-import type { CmsBlockInput } from "@/lib/cms/types";
+import type { CmsBlockInput, CmsMediaAssetInput } from "@/lib/cms/types";
 
 export function useCmsBlocksByPage(pageSlug: string) {
   return useQuery({
@@ -74,5 +76,25 @@ export function useCmsBlockRevisions(pageSlug: string, blockKey: string) {
     staleTime: 1000 * 20,
     retry: 1,
     enabled: Boolean(pageSlug.trim() && blockKey.trim()),
+  });
+}
+
+export function useCmsMediaAssets() {
+  return useQuery({
+    queryKey: ["cms", "media"],
+    queryFn: fetchCmsMediaAssets,
+    staleTime: 1000 * 20,
+    retry: 1,
+  });
+}
+
+export function useUpsertCmsMediaAsset() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: CmsMediaAssetInput) => upsertCmsMediaAsset(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cms", "media"] });
+    },
   });
 }

@@ -6,13 +6,16 @@ import {
   useCmsAdminAccess,
   useCmsAllBlocks,
   useCmsBlockRevisions,
+  useCmsMediaAssets,
   useCmsSignIn,
   useCmsSignOut,
   useUpsertCmsBlock,
+  useUpsertCmsMediaAsset,
 } from "@/hooks/useCmsBlocks";
 import { hasSupabaseEnv } from "@/lib/supabase";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import type { CmsMediaKind } from "@/lib/cms/types";
 
 const starterExamples: Record<string, unknown> = {
   global_header_nav: [
@@ -43,6 +46,8 @@ const CmsAdmin = () => {
   const { data: adminAccess, isLoading: isAccessLoading, refetch: refetchAdminAccess } =
     useCmsAdminAccess();
   const saveBlock = useUpsertCmsBlock();
+  const { data: mediaAssets, isLoading: isMediaLoading } = useCmsMediaAssets();
+  const saveMedia = useUpsertCmsMediaAsset();
   const signIn = useCmsSignIn();
   const signOut = useCmsSignOut();
 
@@ -52,6 +57,11 @@ const CmsAdmin = () => {
   const [contentText, setContentText] = useState(
     JSON.stringify(starterExamples.global_header_nav, null, 2)
   );
+  const [mediaSlug, setMediaSlug] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [mediaAltText, setMediaAltText] = useState("");
+  const [mediaKind, setMediaKind] = useState<CmsMediaKind>("image");
+  const [mediaTags, setMediaTags] = useState("");
   const [email, setEmail] = useState("");
 
   const { data: revisions, isLoading: isRevisionsLoading } = useCmsBlockRevisions(pageSlug, blockKey);
@@ -135,6 +145,47 @@ const CmsAdmin = () => {
       refetchAdminAccess();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Sign out failed");
+    }
+  };
+
+  const handleLoadMedia = (slug: string) => {
+    const selected = (mediaAssets ?? []).find((asset) => asset.slug === slug);
+    if (!selected) {
+      return;
+    }
+
+    setMediaSlug(selected.slug);
+    setMediaUrl(selected.url);
+    setMediaAltText(selected.alt_text ?? "");
+    setMediaKind(selected.kind);
+    setMediaTags((selected.tags ?? []).join(", "));
+  };
+
+  const handleSaveMedia = async () => {
+    if (!canEdit) {
+      toast.error("You do not have CMS edit permission.");
+      return;
+    }
+
+    if (!mediaSlug.trim() || !mediaUrl.trim()) {
+      toast.error("Media slug and URL are required.");
+      return;
+    }
+
+    try {
+      await saveMedia.mutateAsync({
+        slug: mediaSlug,
+        url: mediaUrl,
+        alt_text: mediaAltText || null,
+        kind: mediaKind,
+        tags: mediaTags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      });
+      toast.success(`Saved media asset: ${mediaSlug}`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Media save failed");
     }
   };
 
@@ -401,6 +452,106 @@ const CmsAdmin = () => {
                     ))}
                   </div>
                 )}
+              </div>
+
+              <div className="rounded-lg border border-border bg-card p-6 mt-6">
+                <h2 className="font-sans text-lg font-semibold text-foreground mb-2">Media Library</h2>
+                <p className="text-sm font-sans text-muted-foreground mb-4">
+                  Store reusable asset URLs for hero images and OG images.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-sans font-medium text-foreground mb-1.5">Slug</label>
+                    <input
+                      value={mediaSlug}
+                      onChange={(e) => setMediaSlug(e.target.value)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="e.g. hero-home"
+                      disabled={!canEdit}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-sans font-medium text-foreground mb-1.5">Kind</label>
+                    <select
+                      value={mediaKind}
+                      onChange={(e) => setMediaKind(e.target.value as CmsMediaKind)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      disabled={!canEdit}
+                    >
+                      <option value="image">image</option>
+                      <option value="video">video</option>
+                      <option value="file">file</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-sm font-sans font-medium text-foreground mb-1.5">URL</label>
+                  <input
+                    value={mediaUrl}
+                    onChange={(e) => setMediaUrl(e.target.value)}
+                    className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                    placeholder="https://..."
+                    disabled={!canEdit}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-sans font-medium text-foreground mb-1.5">Alt Text</label>
+                    <input
+                      value={mediaAltText}
+                      onChange={(e) => setMediaAltText(e.target.value)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Meaningful description"
+                      disabled={!canEdit}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-sans font-medium text-foreground mb-1.5">Tags (comma separated)</label>
+                    <input
+                      value={mediaTags}
+                      onChange={(e) => setMediaTags(e.target.value)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="homepage, hero"
+                      disabled={!canEdit}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end mb-4">
+                  <button
+                    type="button"
+                    onClick={handleSaveMedia}
+                    disabled={!canEdit || saveMedia.isPending}
+                    className="inline-flex items-center gap-2 rounded bg-primary px-5 py-2.5 text-sm font-sans font-semibold tracking-wide text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                  >
+                    {saveMedia.isPending ? "Saving..." : "Save Media"}
+                  </button>
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  <p className="font-sans text-sm text-muted-foreground mb-2">Existing assets</p>
+                  {isMediaLoading ? (
+                    <p className="text-muted-foreground font-sans text-sm">Loading media assets...</p>
+                  ) : !mediaAssets || mediaAssets.length === 0 ? (
+                    <p className="text-muted-foreground font-sans text-sm">No media assets yet.</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {mediaAssets.map((asset) => (
+                        <button
+                          key={asset.id}
+                          type="button"
+                          onClick={() => handleLoadMedia(asset.slug)}
+                          className="rounded border border-border px-2.5 py-1 text-xs font-sans text-foreground hover:border-accent hover:text-accent transition-colors"
+                        >
+                          {asset.slug}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </AnimatedSection>
           </div>

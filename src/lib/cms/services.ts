@@ -4,11 +4,14 @@ import type {
   CmsBlockInput,
   CmsContentBlock,
   CmsContentRevision,
+  CmsMediaAsset,
+  CmsMediaAssetInput,
   CmsPageSettings,
   CmsServiceItem,
   ServicesPageCmsData,
 } from "./types";
 import { canEditCms, normalizeCmsRole, sortRevisionsByNewest } from "./adminUtils";
+import { normalizeMediaKind, sortMediaByNewest } from "./mediaUtils";
 
 export async function fetchServicesPageCmsData(): Promise<ServicesPageCmsData | null> {
   if (!hasSupabaseEnv) {
@@ -182,4 +185,54 @@ export async function fetchCmsBlockRevisions(
   }
 
   return sortRevisionsByNewest(data ?? []);
+}
+
+export async function fetchCmsMediaAssets(): Promise<CmsMediaAsset[] | null> {
+  if (!hasSupabaseEnv) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("cms_media_assets")
+    .select("*")
+    .limit(200)
+    .returns<Array<Omit<CmsMediaAsset, "kind"> & { kind: string }>>();
+
+  if (error) {
+    throw new Error(`CMS media fetch failed: ${error.message}`);
+  }
+
+  const normalized = (data ?? []).map((asset) => ({
+    ...asset,
+    kind: normalizeMediaKind(asset.kind),
+  }));
+
+  return sortMediaByNewest(normalized);
+}
+
+export async function upsertCmsMediaAsset(input: CmsMediaAssetInput): Promise<CmsMediaAsset> {
+  if (!hasSupabaseEnv) {
+    throw new Error("Supabase environment variables are missing.");
+  }
+
+  const payload = {
+    slug: input.slug.trim(),
+    url: input.url.trim(),
+    alt_text: input.alt_text ?? null,
+    kind: normalizeMediaKind(input.kind),
+    tags: input.tags ?? [],
+    updated_at: new Date().toISOString(),
+  };
+
+  const { data, error } = await supabase
+    .from("cms_media_assets")
+    .upsert(payload, { onConflict: "slug" })
+    .select("*")
+    .single<Omit<CmsMediaAsset, "kind"> & { kind: string }>();
+
+  if (error || !data) {
+    throw new Error(`CMS media save failed: ${error?.message ?? "Unknown error"}`);
+  }
+
+  return { ...data, kind: normalizeMediaKind(data.kind) };
 }

@@ -62,3 +62,23 @@ export interface CmsContentRevision {
   updated_at: string;
   changed_by: string | null;
 }
+
+export type CmsMediaKind = "image" | "video" | "file";
+
+export interface CmsMediaAsset {
+  id: string;
+  slug: string;
+  url: string;
+  alt_text: string | null;
+  kind: CmsMediaKind;
+  tags: string[] | null;
+  updated_at: string;
+}
+
+export interface CmsMediaAssetInput {
+  slug: string;
+  url: string;
+  alt_text?: string | null;
+  kind?: CmsMediaKind;
+  tags?: string[] | null;
+}
