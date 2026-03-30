@@ -43,3 +43,22 @@ export interface CmsBlockInput {
   content_json: unknown;
   is_published?: boolean;
 }
+
+export type CmsRole = "viewer" | "editor" | "super_admin";
+
+export interface CmsAdminAccess {
+  userId: string | null;
+  role: CmsRole;
+  canEdit: boolean;
+}
+
+export interface CmsContentRevision {
+  id: string;
+  block_id: string;
+  page_slug: string;
+  block_key: string;
+  content_json: unknown;
+  is_published: boolean;
+  updated_at: string;
+  changed_by: string | null;
+}

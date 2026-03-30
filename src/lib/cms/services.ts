@@ -1,11 +1,14 @@
 import { hasSupabaseEnv, supabase } from "@/lib/supabase";
 import type {
+  CmsAdminAccess,
   CmsBlockInput,
   CmsContentBlock,
+  CmsContentRevision,
   CmsPageSettings,
   CmsServiceItem,
   ServicesPageCmsData,
 } from "./types";
+import { canEditCms, normalizeCmsRole, sortRevisionsByNewest } from "./adminUtils";
 
 export async function fetchServicesPageCmsData(): Promise<ServicesPageCmsData | null> {
   if (!hasSupabaseEnv) {
@@ -103,4 +106,80 @@ export async function upsertCmsBlock(input: CmsBlockInput): Promise<CmsContentBl
   }
 
   return data;
+}
+
+export async function fetchCmsAdminAccess(): Promise<CmsAdminAccess> {
+  if (!hasSupabaseEnv) {
+    return { userId: null, role: "viewer", canEdit: false };
+  }
+
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError || !authData.user) {
+    return { userId: null, role: "viewer", canEdit: false };
+  }
+
+  const userId = authData.user.id;
+  const { data: roleRow, error: roleError } = await supabase
+    .from("cms_user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .maybeSingle<{ role: string }>();
+
+  if (roleError) {
+    throw new Error(`CMS admin access fetch failed: ${roleError.message}`);
+  }
+
+  const role = normalizeCmsRole(roleRow?.role);
+  return { userId, role, canEdit: canEditCms(role) };
+}
+
+export async function requestCmsSignIn(email: string): Promise<void> {
+  if (!hasSupabaseEnv) {
+    throw new Error("Supabase environment variables are missing.");
+  }
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: false,
+    },
+  });
+
+  if (error) {
+    throw new Error(`Failed to send sign-in link: ${error.message}`);
+  }
+}
+
+export async function signOutCms(): Promise<void> {
+  if (!hasSupabaseEnv) {
+    return;
+  }
+
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    throw new Error(`Sign out failed: ${error.message}`);
+  }
+}
+
+export async function fetchCmsBlockRevisions(
+  pageSlug: string,
+  blockKey: string
+): Promise<CmsContentRevision[] | null> {
+  if (!hasSupabaseEnv) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("cms_content_revisions")
+    .select("*")
+    .eq("page_slug", pageSlug)
+    .eq("block_key", blockKey)
+    .limit(30)
+    .returns<CmsContentRevision[]>();
+
+  if (error) {
+    throw new Error(`CMS revisions fetch failed: ${error.message}`);
+  }
+
+  return sortRevisionsByNewest(data ?? []);
 }

@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   fetchAllCmsBlocks,
+  fetchCmsAdminAccess,
+  fetchCmsBlockRevisions,
   fetchCmsBlocksByPage,
+  requestCmsSignIn,
+  signOutCms,
   upsertCmsBlock,
 } from "@/lib/cms/services";
 import type { CmsBlockInput } from "@/lib/cms/types";
@@ -33,5 +37,42 @@ export function useUpsertCmsBlock() {
       queryClient.invalidateQueries({ queryKey: ["cms", "blocks", "all"] });
       queryClient.invalidateQueries({ queryKey: ["cms", "blocks", savedBlock.page_slug] });
     },
+  });
+}
+
+export function useCmsAdminAccess() {
+  return useQuery({
+    queryKey: ["cms", "admin-access"],
+    queryFn: fetchCmsAdminAccess,
+    staleTime: 1000 * 20,
+    retry: 1,
+  });
+}
+
+export function useCmsSignIn() {
+  return useMutation({
+    mutationFn: (email: string) => requestCmsSignIn(email),
+  });
+}
+
+export function useCmsSignOut() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: signOutCms,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cms", "admin-access"] });
+      queryClient.invalidateQueries({ queryKey: ["cms", "blocks", "all"] });
+    },
+  });
+}
+
+export function useCmsBlockRevisions(pageSlug: string, blockKey: string) {
+  return useQuery({
+    queryKey: ["cms", "revisions", pageSlug, blockKey],
+    queryFn: () => fetchCmsBlockRevisions(pageSlug, blockKey),
+    staleTime: 1000 * 20,
+    retry: 1,
+    enabled: Boolean(pageSlug.trim() && blockKey.trim()),
   });
 }
