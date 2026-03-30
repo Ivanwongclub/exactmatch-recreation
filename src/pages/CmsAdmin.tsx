@@ -23,6 +23,7 @@ import {
   readValueAtJsonPath,
 } from "@/lib/cms/editorUtils";
 import { getBlockTemplate } from "@/lib/cms/blockTemplates";
+import { validateBlockContentForTemplate } from "@/lib/cms/blockValidation";
 
 const starterExamples: Record<string, unknown> = {
   global_header_nav: [
@@ -120,6 +121,18 @@ const CmsAdmin = () => {
       parsed = JSON.parse(contentText);
     } catch {
       toast.error("Invalid JSON. Please fix formatting before saving.");
+      return;
+    }
+
+    const validation = validateBlockContentForTemplate(pageSlug, blockKey, parsed);
+    if (!validation.valid) {
+      const firstError = validation.errors[0] ?? "Template validation failed.";
+      const extraCount = Math.max(validation.errors.length - 1, 0);
+      toast.error(
+        extraCount > 0
+          ? `${firstError} (+${extraCount} more issue${extraCount === 1 ? "" : "s"})`
+          : firstError
+      );
       return;
     }
 
