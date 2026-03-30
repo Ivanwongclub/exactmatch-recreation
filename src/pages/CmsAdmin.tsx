@@ -24,6 +24,7 @@ import {
 } from "@/lib/cms/editorUtils";
 import { getBlockTemplate } from "@/lib/cms/blockTemplates";
 import { validateBlockContentForTemplate } from "@/lib/cms/blockValidation";
+import { getCmsPublishGuardState } from "@/lib/cms/publishGuard";
 
 const starterExamples: Record<string, unknown> = {
   global_header_nav: [
@@ -90,6 +91,28 @@ const CmsAdmin = () => {
     }, {});
   }, [blocks]);
   const blockTemplate = useMemo(() => getBlockTemplate(pageSlug, blockKey), [pageSlug, blockKey]);
+  const templateValidationPreview = useMemo(() => {
+    try {
+      const parsed = JSON.parse(contentText);
+      const validation = validateBlockContentForTemplate(pageSlug, blockKey, parsed);
+      return { parseError: null as string | null, validation };
+    } catch {
+      return {
+        parseError: "Invalid JSON. Fix formatting before saving or publishing.",
+        validation: null,
+      };
+    }
+  }, [contentText, pageSlug, blockKey]);
+  const publishGuardState = useMemo(() => {
+    if (templateValidationPreview.parseError) {
+      return {
+        canSave: false,
+        level: "error" as const,
+        message: templateValidationPreview.parseError,
+      };
+    }
+    return getCmsPublishGuardState(isPublished, templateValidationPreview.validation);
+  }, [isPublished, templateValidationPreview]);
 
   const canEdit = adminAccess?.canEdit ?? false;
 
@@ -125,13 +148,14 @@ const CmsAdmin = () => {
     }
 
     const validation = validateBlockContentForTemplate(pageSlug, blockKey, parsed);
-    if (!validation.valid) {
+    const publishGuard = getCmsPublishGuardState(isPublished, validation);
+    if (!publishGuard.canSave) {
       const firstError = validation.errors[0] ?? "Template validation failed.";
       const extraCount = Math.max(validation.errors.length - 1, 0);
       toast.error(
         extraCount > 0
-          ? `${firstError} (+${extraCount} more issue${extraCount === 1 ? "" : "s"})`
-          : firstError
+          ? `${publishGuard.message} ${firstError} (+${extraCount} more issue${extraCount === 1 ? "" : "s"})`
+          : `${publishGuard.message} ${firstError}`
       );
       return;
     }
@@ -143,6 +167,11 @@ const CmsAdmin = () => {
         content_json: parsed,
         is_published: isPublished,
       });
+      if (!validation.valid && !isPublished) {
+        const firstError = validation.errors[0] ?? "Template validation failed.";
+        toast.warning(`${publishGuard.message} First issue: ${firstError}`);
+        return;
+      }
       toast.success(`Saved ${pageSlug}/${blockKey}`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Save failed");
@@ -606,6 +635,27 @@ const CmsAdmin = () => {
                   </div>
                 )}
 
+                {(blockTemplate || templateValidationPreview.parseError) && (
+                  <div
+                    className={`rounded-md border p-3 mb-3 ${
+                      publishGuardState.level === "success"
+                        ? "border-emerald-300 bg-emerald-50 text-emerald-900"
+                        : publishGuardState.level === "warning"
+                          ? "border-amber-300 bg-amber-50 text-amber-900"
+                          : "border-destructive/30 bg-destructive/10 text-destructive"
+                    }`}
+                  >
+                    <p className="font-sans text-xs font-medium">{publishGuardState.message}</p>
+                    {!templateValidationPreview.parseError &&
+                      templateValidationPreview.validation &&
+                      !templateValidationPreview.validation.valid && (
+                        <p className="font-sans text-xs mt-1 opacity-90">
+                          First issue: {templateValidationPreview.validation.errors[0]}
+                        </p>
+                      )}
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 mb-3">
                   <div className="space-y-2">
                     <select
@@ -651,7 +701,7 @@ const CmsAdmin = () => {
                   <button
                     type="button"
                     onClick={handleSave}
-                    disabled={!hasSupabaseEnv || !canEdit || saveBlock.isPending}
+                    disabled={!hasSupabaseEnv || !canEdit || saveBlock.isPending || !publishGuardState.canSave}
                     className="inline-flex items-center gap-2 rounded bg-primary px-5 py-2.5 text-sm font-sans font-semibold tracking-wide text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
                   >
                     {saveBlock.isPending ? "Saving..." : "Save Block"}
