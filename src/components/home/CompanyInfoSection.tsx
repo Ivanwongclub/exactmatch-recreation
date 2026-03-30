@@ -3,8 +3,12 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import marbleTexture from "@/assets/marble-texture.webp";
+import { useCmsMediaAssets } from "@/hooks/useCmsBlocks";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 const CompanyInfoSection = () => {
+  const { data: mediaAssets } = useCmsMediaAssets();
+  const companyInfoImage = resolveMediaUrl(mediaAssets, "home-company-info", marbleTexture);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -25,7 +29,7 @@ const CompanyInfoSection = () => {
                 style={{ scale }}
               >
                 <img loading="lazy" decoding="async"
-                  src={marbleTexture}
+                  src={companyInfoImage}
                   alt="Marble texture"
                   className="w-full h-full object-cover"
                 />

@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import historicBuilding from "@/assets/historic-building.webp";
+import { useCmsMediaAssets } from "@/hooks/useCmsBlocks";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 const EventsTeaserSection = () => {
+  const { data: mediaAssets } = useCmsMediaAssets();
+  const teaserImage = resolveMediaUrl(mediaAssets, "home-events-teaser", historicBuilding);
+
   return (
     <section className="bg-primary text-primary-foreground py-20 lg:py-28">
       <div className="container mx-auto px-6 lg:px-12">
@@ -10,7 +15,7 @@ const EventsTeaserSection = () => {
           <AnimatedSection direction="left">
             <div className="rounded-2xl overflow-hidden">
               <img loading="lazy" decoding="async"
-                src={historicBuilding}
+                src={teaserImage}
                 alt="Members-only events venue"
                 className="w-full h-[340px] lg:h-[420px] object-cover"
               />

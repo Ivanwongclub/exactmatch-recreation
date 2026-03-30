@@ -6,6 +6,7 @@ import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-network.jpg";
 import companyImage from "@/assets/company-large.jpg";
 import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 const expertiseAreas = [
   {
@@ -32,7 +33,13 @@ const expertiseAreas = [
 
 const LegacyExpertise = () => {
   const { data: heroMedia } = useCmsMediaAssetBySlug("hero-network");
+  const { data: legacyCompanyMedia } = useCmsMediaAssetBySlug("legacy-company-image");
   const resolvedHeroImage = heroMedia?.url ?? heroImage;
+  const resolvedCompanyImage = resolveMediaUrl(
+    legacyCompanyMedia ? [legacyCompanyMedia] : null,
+    "legacy-company-image",
+    companyImage
+  );
 
   return (
     <Layout>
@@ -92,7 +99,7 @@ const LegacyExpertise = () => {
             <AnimatedSection delay={0.2}>
               <div className="rounded-lg overflow-hidden">
                 <img loading="lazy" decoding="async"
-                  src={companyImage}
+                  src={resolvedCompanyImage}
                   alt="King Armour heritage"
                   className="w-full h-auto object-cover"
                 />

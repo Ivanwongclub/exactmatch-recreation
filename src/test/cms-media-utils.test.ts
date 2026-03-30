@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeMediaKind, sortMediaByNewest } from "@/lib/cms/mediaUtils";
+import { normalizeMediaKind, resolveMediaUrl, sortMediaByNewest } from "@/lib/cms/mediaUtils";
 
 describe("cms media utils", () => {
   it("normalizes media kind safely", () => {
@@ -17,5 +17,18 @@ describe("cms media utils", () => {
     ];
 
     expect(sortMediaByNewest(assets).map((x) => x.id)).toEqual(["2", "1", "3"]);
+  });
+
+  it("resolves media URL by slug with fallback", () => {
+    const assets = [
+      { slug: "hero-home", url: "https://cdn.example.com/hero-home.jpg" },
+      { slug: "history-portrait", url: "https://cdn.example.com/portrait.jpg" },
+    ];
+
+    expect(resolveMediaUrl(assets, "history-portrait", "/fallback.jpg")).toBe(
+      "https://cdn.example.com/portrait.jpg"
+    );
+    expect(resolveMediaUrl(assets, "missing", "/fallback.jpg")).toBe("/fallback.jpg");
+    expect(resolveMediaUrl(null, "hero-home", "/fallback.jpg")).toBe("/fallback.jpg");
   });
 });

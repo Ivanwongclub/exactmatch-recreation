@@ -62,6 +62,7 @@ const CmsAdmin = () => {
   const [mediaAltText, setMediaAltText] = useState("");
   const [mediaKind, setMediaKind] = useState<CmsMediaKind>("image");
   const [mediaTags, setMediaTags] = useState("");
+  const [selectedMediaSlugForEditor, setSelectedMediaSlugForEditor] = useState("");
   const [email, setEmail] = useState("");
 
   const { data: revisions, isLoading: isRevisionsLoading } = useCmsBlockRevisions(pageSlug, blockKey);
@@ -187,6 +188,18 @@ const CmsAdmin = () => {
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Media save failed");
     }
+  };
+
+  const handleInsertMediaUrlIntoBlock = () => {
+    const selected = (mediaAssets ?? []).find((asset) => asset.slug === selectedMediaSlugForEditor);
+    if (!selected) {
+      toast.error("Please select a media asset first.");
+      return;
+    }
+
+    const nextContent = `${contentText}\n${selected.url}`;
+    setContentText(nextContent.trim());
+    toast.success(`Inserted media URL from ${selected.slug}`);
   };
 
   const roleLabel = adminAccess?.role ?? "viewer";
@@ -388,6 +401,30 @@ const CmsAdmin = () => {
                     disabled={!canEdit}
                   >
                     Use Hero Template
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 mb-3">
+                  <select
+                    value={selectedMediaSlugForEditor}
+                    onChange={(e) => setSelectedMediaSlugForEditor(e.target.value)}
+                    className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                    disabled={!canEdit}
+                  >
+                    <option value="">Insert media URL into block JSON...</option>
+                    {(mediaAssets ?? []).map((asset) => (
+                      <option key={asset.id} value={asset.slug}>
+                        {asset.slug}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleInsertMediaUrlIntoBlock}
+                    disabled={!canEdit}
+                    className="rounded border border-border px-3 py-2 text-sm font-sans text-foreground hover:border-accent hover:text-accent transition-colors disabled:opacity-60"
+                  >
+                    Insert URL
                   </button>
                 </div>
 

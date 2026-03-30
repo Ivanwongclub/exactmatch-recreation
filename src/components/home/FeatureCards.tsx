@@ -2,12 +2,17 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import historicBuilding from "@/assets/historic-building.webp";
-import portrait2 from "@/assets/portrait-2.jpg";
-import aboutImage from "@/assets/about-image.jpg";
 import keyOnCurrency from "@/assets/key-on-currency.webp";
 import networkPattern from "@/assets/network-pattern.webp";
+import { useCmsMediaAssets } from "@/hooks/useCmsBlocks";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 const FeatureCards = () => {
+  const { data: mediaAssets } = useCmsMediaAssets();
+  const historicBuildingImage = resolveMediaUrl(mediaAssets, "home-historic-building", historicBuilding);
+  const keyOnCurrencyImage = resolveMediaUrl(mediaAssets, "home-key-on-currency", keyOnCurrency);
+  const networkPatternImage = resolveMediaUrl(mediaAssets, "home-network-pattern", networkPattern);
+
   return (
     <section className="bg-background py-16 lg:py-24 border-t border-accent/20">
       <div className="container mx-auto px-6 lg:px-12">
@@ -21,12 +26,12 @@ const FeatureCards = () => {
               variant="dark"
               className="flex-[1.2]"
             />
-            <ImageCard src={historicBuilding} alt="Historic building" className="flex-1" />
+            <ImageCard src={historicBuildingImage} alt="Historic building" className="flex-1" />
           </AnimatedSection>
 
           {/* Column 2 - Image + History */}
           <AnimatedSection delay={0.1} className="flex flex-col gap-4 lg:gap-5 h-full">
-            <ImageCard src={keyOnCurrency} alt="Key on currency" className="flex-1" />
+            <ImageCard src={keyOnCurrencyImage} alt="Key on currency" className="flex-1" />
             <TextCard
               title="HISTORY"
               subtitle="From 1957 to the Future"
@@ -45,7 +50,7 @@ const FeatureCards = () => {
               variant="gold"
               className="flex-1"
             />
-            <ImageCard src={networkPattern} alt="Network connections" className="flex-[0.7]" />
+            <ImageCard src={networkPatternImage} alt="Network connections" className="flex-[0.7]" />
             <TextCard
               title="KINGS NETWORK"
               subtitle="Elite Connections, Exclusive Access"

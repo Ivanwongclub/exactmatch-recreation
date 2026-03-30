@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import networkPattern from "@/assets/network-pattern.webp";
+import { useCmsMediaAssets } from "@/hooks/useCmsBlocks";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 const KingsNetworkSpotlight = () => {
+  const { data: mediaAssets } = useCmsMediaAssets();
+  const networkPatternImage = resolveMediaUrl(mediaAssets, "home-network-pattern", networkPattern);
+
   return (
     <section className="bg-background py-20 lg:py-28">
       <div className="container mx-auto px-6 lg:px-12">
@@ -10,7 +15,7 @@ const KingsNetworkSpotlight = () => {
           <AnimatedSection direction="left">
             <div className="rounded-2xl overflow-hidden">
               <img loading="lazy" decoding="async"
-                src={networkPattern}
+                src={networkPatternImage}
                 alt="Kings Network — curated connections"
                 className="w-full h-[340px] lg:h-[420px] object-cover"
               />

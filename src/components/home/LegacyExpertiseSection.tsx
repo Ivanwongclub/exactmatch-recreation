@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import marbleTexture from "@/assets/marble-texture.webp";
+import { useCmsMediaAssets } from "@/hooks/useCmsBlocks";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 const LegacyExpertiseSection = () => {
+  const { data: mediaAssets } = useCmsMediaAssets();
+  const expertiseImage = resolveMediaUrl(mediaAssets, "home-legacy-expertise", marbleTexture);
+
   return (
     <section className="bg-primary text-primary-foreground py-20 lg:py-28">
       <div className="container mx-auto px-6 lg:px-12">
@@ -39,7 +44,7 @@ const LegacyExpertiseSection = () => {
           <AnimatedSection direction="right">
             <div className="rounded-2xl overflow-hidden">
               <img loading="lazy" decoding="async"
-                src={marbleTexture}
+                src={expertiseImage}
                 alt="Legacy expertise"
                 className="w-full h-[340px] lg:h-[420px] object-cover"
               />

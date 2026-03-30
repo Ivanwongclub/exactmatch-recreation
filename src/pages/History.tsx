@@ -8,6 +8,7 @@ import portrait1 from "@/assets/portrait-1.jpg";
 import companyImage from "@/assets/company-large.jpg";
 import { useCmsBlocksByPage, useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 import { resolveCmsBlock } from "@/lib/cms/blockUtils";
+import { resolveMediaUrl } from "@/lib/cms/mediaUtils";
 
 interface MilestoneItem {
   year: string;
@@ -25,7 +26,19 @@ const fallbackMilestones: MilestoneItem[] = [
 const History = () => {
   const { data: cmsBlocks, isError } = useCmsBlocksByPage("history");
   const { data: heroMedia } = useCmsMediaAssetBySlug("hero-history");
+  const { data: historyPortraitMedia } = useCmsMediaAssetBySlug("history-portrait");
+  const { data: historyOfficeMedia } = useCmsMediaAssetBySlug("history-office");
   const resolvedHeroImage = heroMedia?.url ?? heroImage;
+  const resolvedPortraitImage = resolveMediaUrl(
+    historyPortraitMedia ? [historyPortraitMedia] : null,
+    "history-portrait",
+    portrait1
+  );
+  const resolvedOfficeImage = resolveMediaUrl(
+    historyOfficeMedia ? [historyOfficeMedia] : null,
+    "history-office",
+    companyImage
+  );
   const hero = resolveCmsBlock(cmsBlocks, "hero", {
     title: "History",
     subtitle: "From 1957 to the Future",
@@ -108,7 +121,7 @@ const History = () => {
             <AnimatedSection delay={0.2}>
               <div className="rounded-lg overflow-hidden">
                 <img loading="lazy" decoding="async"
-                  src={portrait1}
+                  src={resolvedPortraitImage}
                   alt="Dr. Jonathan Choi"
                   className="w-full h-auto object-cover"
                 />
@@ -162,7 +175,7 @@ const History = () => {
               <motion.img
                 loading="lazy"
                 decoding="async"
-                src={companyImage}
+                src={resolvedOfficeImage}
                 alt="King Armour office"
                 className="w-full h-[400px] lg:h-[500px] object-cover"
                 whileHover={{ scale: 1.02 }}
