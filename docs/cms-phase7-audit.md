@@ -3,9 +3,9 @@
 **Date:** 2026-03-30
 
 ## Scope
-- Schema-aware media URL insertion in block editor
-- Media upload pipeline hooks (Supabase Storage)
-- Storage policy docs for production setup
+- Schema-aware media URL insertion into structured JSON blocks
+- Supabase Storage upload pipeline integration in CMS admin
+- Supporting types/hooks/docs
 
 ## Verification Evidence
 - `npm test`: PASS (`4` files, `9` tests)
@@ -16,27 +16,28 @@
 
 | Area | Check | Status | Evidence |
 |---|---|---|---|
-| Editor utility | `applyValueAtJsonPath` implemented | PASS | `src/lib/cms/editorUtils.ts` |
-| Editor utility tests | Nested object + array index paths tested | PASS | `src/test/cms-editor-utils.test.ts` |
-| Media utility tests | `resolveMediaUrl` behavior covered | PASS | `src/test/cms-media-utils.test.ts` |
-| Hooks | `useUploadCmsMediaFile` mutation added | PASS | `src/hooks/useCmsBlocks.ts` |
-| Service | `uploadCmsMediaFile` uploads to bucket + returns public URL | PASS | `src/lib/cms/services.ts` |
-| Admin UX | Optional JSON path field added for URL insertion | PASS | `src/pages/CmsAdmin.tsx` |
-| Admin UX | Insert URL now supports schema-aware replacement | PASS | `handleInsertMediaUrlIntoBlock` |
-| Admin UX | Upload controls added (bucket + file + upload button) | PASS | `src/pages/CmsAdmin.tsx` |
-| Admin UX | Upload auto-fills media URL field | PASS | `handleUploadMediaFile` |
-| Docs | Storage SQL policy file added | PASS | `docs/cms-phase7-storage.sql` |
-| Docs | Runbook for path insert + upload flow added | PASS | `docs/cms-phase7-runbook.md` |
+| Editor utility | `applyValueAtJsonPath` added | PASS | `src/lib/cms/editorUtils.ts` |
+| Editor utility tests | Nested object and array index path updates | PASS | `src/test/cms-editor-utils.test.ts` |
+| Admin block editor | Optional JSON path input added | PASS | `src/pages/CmsAdmin.tsx` |
+| Admin block editor | Insert URL now supports path-based replace | PASS | `handleInsertMediaUrlIntoBlock` |
+| Upload service | `uploadCmsMediaFile` uploads to bucket and returns public URL | PASS | `src/lib/cms/services.ts` |
+| Upload hook | `useUploadCmsMediaFile` exposed | PASS | `src/hooks/useCmsBlocks.ts` |
+| Admin media UI | Bucket input + file picker + upload button added | PASS | `src/pages/CmsAdmin.tsx` |
+| Admin media UI | Upload auto-populates URL field | PASS | `handleUploadMediaFile` |
+| Types | Upload input/output types added | PASS | `src/lib/cms/types.ts` |
+| Ops docs | Storage policy SQL added | PASS | `docs/cms-phase7-storage.sql` |
+| Ops docs | Runbook added for JSON path + upload flow | PASS | `docs/cms-phase7-runbook.md` |
 
 ## Findings
 - No blocking defects found in Phase 7 scope.
-- Upload feature depends on Supabase Storage bucket/policies being applied.
+- Upload requires bucket/policies from `docs/cms-phase7-storage.sql` to be applied first.
 
 ## Assumptions
-- Supabase project permits public URL access for `cms-media` bucket.
-- Editors have `editor` or `super_admin` role in `cms_user_roles`.
+- Supabase Storage is enabled for the project.
+- `cms-media` bucket is public (or equivalent read path available for frontend use).
+- Editor roles are managed in `cms_user_roles`.
 
 ## Intentionally Not Changed
-- Full drag/drop upload manager with progress bars and retries
-- Signed private asset URL flow
-- Automatic JSON schema validation for each block key
+- Full upload progress bar with resumable uploads
+- Asset transformation pipeline (resize/compress)
+- Block-key specific JSON schema validation rules
