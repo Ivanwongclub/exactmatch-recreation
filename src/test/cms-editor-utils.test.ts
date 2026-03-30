@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyValueAtJsonPath } from "@/lib/cms/editorUtils";
+import { applyValueAtJsonPath, coerceTemplateFieldValue } from "@/lib/cms/editorUtils";
 
 describe("cms editor utils", () => {
   it("updates nested object value by dot path", () => {
@@ -21,5 +21,13 @@ describe("cms editor utils", () => {
 
     const output = applyValueAtJsonPath(input, "cards.1.image", "c.jpg");
     expect((output as { cards: Array<{ image: string }> }).cards[1].image).toBe("c.jpg");
+  });
+
+  it("coerces template values for number/boolean/list", () => {
+    expect(coerceTemplateFieldValue("12", "number")).toBe(12);
+    expect(coerceTemplateFieldValue("", "number")).toBe(0);
+    expect(coerceTemplateFieldValue(true, "boolean")).toBe(true);
+    expect(coerceTemplateFieldValue("false", "boolean")).toBe(false);
+    expect(coerceTemplateFieldValue("hk\nsg,uk", "list")).toEqual(["hk", "sg", "uk"]);
   });
 });

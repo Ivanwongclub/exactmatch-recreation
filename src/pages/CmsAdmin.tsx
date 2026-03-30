@@ -17,7 +17,11 @@ import { hasSupabaseEnv } from "@/lib/supabase";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import type { CmsMediaKind } from "@/lib/cms/types";
-import { applyValueAtJsonPath } from "@/lib/cms/editorUtils";
+import {
+  applyValueAtJsonPath,
+  coerceTemplateFieldValue,
+  readValueAtJsonPath,
+} from "@/lib/cms/editorUtils";
 import { getBlockTemplate } from "@/lib/cms/blockTemplates";
 
 const starterExamples: Record<string, unknown> = {
@@ -231,34 +235,42 @@ const CmsAdmin = () => {
     toast.success(`Applied template: ${blockTemplate.name}`);
   };
 
-  const handleTemplateFieldChange = (path: string, value: string) => {
+  const handleTemplateFieldChange = (
+    path: string,
+    fieldType: "text" | "textarea" | "number" | "boolean" | "list",
+    value: string | boolean
+  ) => {
     try {
       const parsed = JSON.parse(contentText);
-      const updated = applyValueAtJsonPath(parsed, path, value);
+      const updated = applyValueAtJsonPath(parsed, path, coerceTemplateFieldValue(value, fieldType));
       setContentText(JSON.stringify(updated, null, 2));
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Cannot update template field");
     }
   };
 
-  const getTemplateFieldValue = (path: string): string => {
+  const getTemplateFieldValue = (
+    path: string,
+    fieldType: "text" | "textarea" | "number" | "boolean" | "list"
+  ): string | number | boolean => {
     try {
-      const parsed = JSON.parse(contentText) as Record<string, unknown>;
-      const segments = path.split(".").filter(Boolean);
-      let cursor: unknown = parsed;
-      for (const segment of segments) {
-        if (Array.isArray(cursor)) {
-          const index = Number(segment);
-          cursor = Number.isInteger(index) ? cursor[index] : undefined;
-        } else if (cursor && typeof cursor === "object") {
-          cursor = (cursor as Record<string, unknown>)[segment];
-        } else {
-          cursor = undefined;
-        }
+      const parsed = JSON.parse(contentText);
+      const raw = readValueAtJsonPath(parsed, path);
+
+      if (fieldType === "boolean") {
+        return Boolean(raw);
       }
-      return typeof cursor === "string" ? cursor : "";
+      if (fieldType === "number") {
+        return typeof raw === "number" && Number.isFinite(raw) ? raw : 0;
+      }
+      if (fieldType === "list") {
+        return Array.isArray(raw)
+          ? raw.map((item) => String(item ?? "")).join("\n")
+          : "";
+      }
+      return typeof raw === "string" ? raw : "";
     } catch {
-      return "";
+      return fieldType === "boolean" ? false : fieldType === "number" ? 0 : "";
     }
   };
 
@@ -517,17 +529,59 @@ const CmsAdmin = () => {
                           </label>
                           {field.type === "textarea" ? (
                             <textarea
-                              value={getTemplateFieldValue(field.path)}
-                              onChange={(e) => handleTemplateFieldChange(field.path, e.target.value)}
+                              value={String(getTemplateFieldValue(field.path, field.type))}
+                              onChange={(e) =>
+                                handleTemplateFieldChange(field.path, field.type, e.target.value)
+                              }
                               rows={3}
                               className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
                               placeholder={field.placeholder}
                               disabled={!canEdit}
                             />
+                          ) : field.type === "boolean" ? (
+                            <label className="inline-flex items-center gap-2 rounded border border-input bg-background px-3 py-2 text-sm">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(getTemplateFieldValue(field.path, field.type))}
+                                onChange={(e) =>
+                                  handleTemplateFieldChange(
+                                    field.path,
+                                    field.type,
+                                    e.target.checked
+                                  )
+                                }
+                                disabled={!canEdit}
+                              />
+                              <span>{field.label}</span>
+                            </label>
+                          ) : field.type === "number" ? (
+                            <input
+                              type="number"
+                              value={Number(getTemplateFieldValue(field.path, field.type))}
+                              onChange={(e) =>
+                                handleTemplateFieldChange(field.path, field.type, e.target.value)
+                              }
+                              className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                              placeholder={field.placeholder}
+                              disabled={!canEdit}
+                            />
+                          ) : field.type === "list" ? (
+                            <textarea
+                              value={String(getTemplateFieldValue(field.path, field.type))}
+                              onChange={(e) =>
+                                handleTemplateFieldChange(field.path, field.type, e.target.value)
+                              }
+                              rows={4}
+                              className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                              placeholder={field.placeholder ?? "One item per line"}
+                              disabled={!canEdit}
+                            />
                           ) : (
                             <input
-                              value={getTemplateFieldValue(field.path)}
-                              onChange={(e) => handleTemplateFieldChange(field.path, e.target.value)}
+                              value={String(getTemplateFieldValue(field.path, field.type))}
+                              onChange={(e) =>
+                                handleTemplateFieldChange(field.path, field.type, e.target.value)
+                              }
                               className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
                               placeholder={field.placeholder}
                               disabled={!canEdit}

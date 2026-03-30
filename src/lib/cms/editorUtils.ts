@@ -62,3 +62,69 @@ export function applyValueAtJsonPath(input: unknown, path: string, value: unknow
 
   throw new Error(`Cannot set value at path: ${path}`);
 }
+
+export function readValueAtJsonPath(input: unknown, path: string): unknown {
+  if (!path.trim()) {
+    return input;
+  }
+
+  const segments = path
+    .split(".")
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+
+  let cursor: unknown = input;
+  for (const segment of segments) {
+    if (Array.isArray(cursor)) {
+      const index = Number(segment);
+      cursor = Number.isInteger(index) ? cursor[index] : undefined;
+      continue;
+    }
+    if (cursor && typeof cursor === "object") {
+      cursor = (cursor as Record<string, unknown>)[segment];
+      continue;
+    }
+    return undefined;
+  }
+
+  return cursor;
+}
+
+type TemplateFieldType = "text" | "textarea" | "number" | "boolean" | "list";
+
+export function coerceTemplateFieldValue(
+  rawValue: string | boolean,
+  fieldType: TemplateFieldType
+): unknown {
+  if (fieldType === "boolean") {
+    if (typeof rawValue === "boolean") {
+      return rawValue;
+    }
+    const normalized = rawValue.trim().toLowerCase();
+    return normalized === "true" || normalized === "1" || normalized === "yes";
+  }
+
+  if (fieldType === "number") {
+    if (typeof rawValue === "boolean") {
+      return rawValue ? 1 : 0;
+    }
+    const parsed = Number(rawValue);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  if (fieldType === "list") {
+    if (typeof rawValue === "boolean") {
+      return [];
+    }
+    return rawValue
+      .split(/[\n,]/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  if (typeof rawValue === "boolean") {
+    return rawValue ? "true" : "false";
+  }
+
+  return rawValue;
+}
