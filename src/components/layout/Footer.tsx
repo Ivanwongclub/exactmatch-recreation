@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
+import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
+
+interface FooterNavItem {
+  label: string;
+  path: string;
+}
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { data: cmsBlocks } = useCmsBlocksByPage("global");
 
-  const navLinks = [
+  const fallbackNavLinks: FooterNavItem[] = [
     { label: "ABOUT US", path: "/" },
     { label: "OUR MISSION", path: "/our-mission" },
     { label: "HISTORY", path: "/history" },
@@ -17,6 +25,14 @@ const Footer = () => {
     { label: "CONTACT US", path: "/contact" },
     { label: "PRIVACY POLICY", path: "/privacy" },
   ];
+
+  const navLinks = resolveCmsBlock(cmsBlocks, "footer_nav", fallbackNavLinks);
+  const email = resolveCmsBlock(cmsBlocks, "footer_email", "info@king-armour.com");
+  const tagline = resolveCmsBlock(
+    cmsBlocks,
+    "footer_tagline",
+    "Fortify Your Growth, Armour Your Assets, Unite Generations"
+  );
 
   return (
     <footer className="bg-primary text-primary-foreground relative overflow-hidden" role="contentinfo">
@@ -42,10 +58,10 @@ const Footer = () => {
             </nav>
 
             <a
-              href="mailto:info@king-armour.com"
+              href={`mailto:${email}`}
               className="text-accent font-sans text-sm tracking-wider hover:opacity-80 transition-opacity w-fit mt-4"
             >
-              info@king-armour.com
+              {email}
             </a>
           </div>
 
@@ -55,7 +71,7 @@ const Footer = () => {
               <span className="ka-wordmark-main">ARMOUR</span>
             </div>
             <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-normal leading-tight text-primary-foreground">
-              Fortify Your Growth, Armour Your Assets, Unite Generations
+              {tagline}
             </h2>
 
             <p className="text-primary-foreground/60 text-sm font-sans mt-8 lg:mt-0">

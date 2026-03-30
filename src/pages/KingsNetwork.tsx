@@ -6,10 +6,20 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-network.jpg";
 import { ArrowRight, Calendar, GraduationCap, Users } from "lucide-react";
+import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
-const highlights = [
+interface HighlightItem {
+  icon: "calendar" | "graduation" | "users";
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+}
+
+const fallbackHighlights: HighlightItem[] = [
   {
-    icon: Calendar,
+    icon: "calendar",
     title: "Members-Only Events",
     description:
       "Curated quarterly gatherings — from exclusive dinners to delegation trips — designed to foster meaningful connections among distinguished families.",
@@ -17,7 +27,7 @@ const highlights = [
     cta: "View Events",
   },
   {
-    icon: GraduationCap,
+    icon: "graduation",
     title: "Global Elite Summer Program",
     description:
       "Our flagship next-generation programme cultivating leadership, global perspective, and lifelong peer relationships for young adults from prominent families.",
@@ -25,7 +35,7 @@ const highlights = [
     cta: "Learn More",
   },
   {
-    icon: Users,
+    icon: "users",
     title: "Peer Network",
     description:
       "Access to a vetted community of like-minded families and individuals who share a commitment to legacy, enterprise, and mutual growth.",
@@ -34,7 +44,7 @@ const highlights = [
   },
 ];
 
-const events = [
+const fallbackEvents = [
   {
     title: "Car Racing Meetup",
     description: "Exclusive track days with fellow enthusiasts at world-class circuits.",
@@ -65,7 +75,7 @@ const events = [
   },
 ];
 
-const programPillars = [
+const fallbackProgramPillars = [
   {
     title: "Social",
     description:
@@ -86,11 +96,44 @@ const programPillars = [
 ];
 
 const KingsNetwork = () => {
+  const { data: cmsBlocks, isError } = useCmsBlocksByPage("kings-network");
+  const hero = resolveCmsBlock(cmsBlocks, "hero", {
+    title: "Kings Network",
+    subtitle: "Where Legacy Meets Opportunity",
+    seoTitle: "Kings Network",
+    seoDescription:
+      "An invitation-only community for distinguished families. Curated events, a flagship summer programme, and a vetted global peer network.",
+  });
+  const intro = resolveCmsBlock(cmsBlocks, "intro", {
+    lead: "The Kings Network is an invitation-only community for distinguished families and individuals who share a commitment to excellence, legacy, and mutual growth.",
+    paragraph:
+      "Through curated events, our flagship summer programme, and a vetted peer network, members gain access to relationships and opportunities that transcend business — fostering connections that span generations and continents.",
+  });
+  const highlights = resolveCmsBlock(cmsBlocks, "highlights", fallbackHighlights);
+  const events = resolveCmsBlock(cmsBlocks, "events", fallbackEvents);
+  const program = resolveCmsBlock(cmsBlocks, "program", {
+    title: "Global Elite Summer Program",
+    body: "Our flagship programme for the next generation — cultivating leadership, global perspective, and lifelong connections with peers from distinguished families worldwide.",
+    pillars: fallbackProgramPillars,
+  });
+  const cta = resolveCmsBlock(cmsBlocks, "cta", {
+    title: "Membership by Invitation",
+    body: "The Kings Network is an invitation-only community. If you believe your family would benefit from membership, we welcome a confidential conversation.",
+    buttonLabel: "REQUEST AN INTRODUCTION",
+    buttonHref: "/contact",
+  });
+  const iconMap = {
+    calendar: Calendar,
+    graduation: GraduationCap,
+    users: Users,
+  };
+  const resolveHighlightIcon = (icon: HighlightItem["icon"]) => iconMap[icon] ?? Users;
+
   return (
     <Layout>
       <SEOHead
-        title="Kings Network"
-        description="An invitation-only community for distinguished families. Curated events, a flagship summer programme, and a vetted global peer network."
+        title={hero.seoTitle}
+        description={hero.seoDescription}
         preloadImage={heroImage}
       />
       {/* Hero Section */}
@@ -110,10 +153,10 @@ const KingsNetwork = () => {
             className="title-accent"
           >
             <h1 className="text-white font-sans text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
-              Kings Network
+              {hero.title}
             </h1>
             <h2 className="text-accent font-sans text-lg md:text-xl lg:text-2xl font-normal tracking-wide">
-              Where Legacy Meets Opportunity
+              {hero.subtitle}
             </h2>
           </motion.div>
         </div>
@@ -122,42 +165,49 @@ const KingsNetwork = () => {
       {/* Introduction */}
       <section className="bg-background py-20 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
+          {isError && (
+            <AnimatedSection className="mb-10">
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+                <p className="text-destructive font-sans text-sm">
+                  CMS content is temporarily unavailable. Showing fallback content.
+                </p>
+              </div>
+            </AnimatedSection>
+          )}
           <AnimatedSection className="max-w-3xl mb-20">
             <p className="text-foreground font-sans text-xl leading-relaxed font-medium mb-6">
-              The Kings Network is an invitation-only community for distinguished
-              families and individuals who share a commitment to excellence, legacy,
-              and mutual growth.
+              {intro.lead}
             </p>
             <p className="text-muted-foreground font-sans text-lg leading-relaxed">
-              Through curated events, our flagship summer programme, and a vetted peer
-              network, members gain access to relationships and opportunities that
-              transcend business — fostering connections that span generations and
-              continents.
+              {intro.paragraph}
             </p>
           </AnimatedSection>
 
           {/* Hub Highlights — cross-links */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-            {highlights.map((item, index) => (
-              <AnimatedSection key={item.title} delay={index * 0.1}>
-                <div className="bg-primary rounded-lg p-8 h-full flex flex-col card-hover">
-                  <item.icon className="w-8 h-8 text-accent mb-4" />
-                  <h3 className="font-sans text-xl font-semibold text-primary-foreground mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="font-sans text-primary-foreground/70 text-sm leading-relaxed flex-1 mb-6">
-                    {item.description}
-                  </p>
-                  <Link
-                    to={item.href}
-                    className="group inline-flex items-center gap-2 text-accent font-sans text-sm font-medium tracking-wider transition-colors hover:text-accent/80"
-                  >
-                    {item.cta}
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </AnimatedSection>
-            ))}
+            {highlights.map((item, index) => {
+              const ItemIcon = resolveHighlightIcon(item.icon);
+              return (
+                <AnimatedSection key={item.title} delay={index * 0.1}>
+                  <div className="bg-primary rounded-lg p-8 h-full flex flex-col card-hover">
+                    <ItemIcon className="w-8 h-8 text-accent mb-4" />
+                    <h3 className="font-sans text-xl font-semibold text-primary-foreground mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="font-sans text-primary-foreground/70 text-sm leading-relaxed flex-1 mb-6">
+                      {item.description}
+                    </p>
+                    <Link
+                      to={item.href}
+                      className="group inline-flex items-center gap-2 text-accent font-sans text-sm font-medium tracking-wider transition-colors hover:text-accent/80"
+                    >
+                      {item.cta}
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </AnimatedSection>
+              );
+            })}
           </div>
 
           {/* Quarterly Events Preview */}
@@ -206,7 +256,7 @@ const KingsNetwork = () => {
           <AnimatedSection className="mb-24">
             <div className="flex items-end justify-between mb-8">
               <h3 className="font-sans text-3xl md:text-4xl font-bold text-foreground title-accent">
-                Global Elite Summer Program
+                {program.title}
               </h3>
               <Link
                 to="/summer-program"
@@ -217,12 +267,10 @@ const KingsNetwork = () => {
               </Link>
             </div>
             <p className="text-muted-foreground font-sans text-lg leading-relaxed mb-8 max-w-3xl">
-              Our flagship programme for the next generation — cultivating leadership,
-              global perspective, and lifelong connections with peers from distinguished
-              families worldwide.
+              {program.body}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {programPillars.map((pillar, index) => (
+              {program.pillars.map((pillar, index) => (
                 <motion.div
                   key={pillar.title}
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -253,18 +301,16 @@ const KingsNetwork = () => {
           <AnimatedSection>
             <div className="bg-primary rounded-lg p-8 lg:p-12 text-center">
               <h3 className="font-sans text-2xl md:text-3xl font-bold text-primary-foreground mb-4">
-                Membership by Invitation
+                {cta.title}
               </h3>
               <p className="text-primary-foreground/70 font-sans text-lg mb-6 max-w-2xl mx-auto">
-                The Kings Network is an invitation-only community. If you believe
-                your family would benefit from membership, we welcome a confidential
-                conversation.
+                {cta.body}
               </p>
               <Link
-                to="/contact"
+                to={cta.buttonHref}
                 className="inline-flex items-center px-8 py-3 bg-accent text-accent-foreground font-sans text-sm font-semibold tracking-wider rounded hover:bg-accent/90 transition-colors"
               >
-                REQUEST AN INTRODUCTION
+                {cta.buttonLabel}
               </Link>
             </div>
           </AnimatedSection>

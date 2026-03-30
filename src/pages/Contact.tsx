@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { z } from "zod";
 import { Mail, Phone, MapPin, Clock, AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
 const contactSchema = z.object({
   name: z
@@ -41,34 +43,43 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
-const contactChannels = [
+type ContactChannelIcon = "mail" | "phone" | "map-pin" | "clock";
+
+interface ContactChannel {
+  icon: ContactChannelIcon;
+  label: string;
+  value: string;
+  href?: string;
+}
+
+const fallbackContactChannels: ContactChannel[] = [
   {
-    icon: Mail,
+    icon: "mail",
     label: "Email",
     value: "info@king-armour.com",
     href: "mailto:info@king-armour.com",
   },
   {
-    icon: Phone,
+    icon: "phone",
     label: "Telephone",
     value: "+852 2111 2222",
     href: "tel:+85221112222",
   },
   {
-    icon: MapPin,
+    icon: "map-pin",
     label: "Office",
     value: "Hong Kong SAR",
     href: undefined,
   },
   {
-    icon: Clock,
+    icon: "clock",
     label: "Response Time",
     value: "Within 2 business days",
     href: undefined,
   },
 ];
 
-const presenceLocations = [
+const fallbackPresenceLocations = [
   "Hong Kong",
   "Singapore",
   "Vietnam",
@@ -87,6 +98,36 @@ const Contact = () => {
   });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
+  const { data: cmsBlocks, isError: cmsError } = useCmsBlocksByPage("contact");
+  const hero = resolveCmsBlock(cmsBlocks, "hero", {
+    title: "Contact Us",
+    subtitle: "Begin a confidential conversation about what matters most to your family.",
+    seoTitle: "Contact Us",
+    seoDescription:
+      "Begin a confidential conversation with King Armour Family Office. Reach us by email, phone, or through our enquiry form.",
+  });
+  const formCopy = resolveCmsBlock(cmsBlocks, "form_copy", {
+    title: "Send Us a Message",
+    subtitle: "All enquiries are treated with the strictest confidence.",
+  });
+  const formErrorCopy = resolveCmsBlock(cmsBlocks, "form_error_copy", {
+    title: "Unable to Send Message",
+    body: "Our online form is not yet connected to a delivery service. Please contact us directly using one of the methods below.",
+    backLabel: "← Back to Form",
+  });
+  const confidentialityCopy = resolveCmsBlock(cmsBlocks, "confidentiality", {
+    title: "CONFIDENTIALITY",
+    body: "All enquiries are handled with absolute discretion. We do not share your information with third parties. Read our",
+  });
+  const contactChannels = resolveCmsBlock(cmsBlocks, "contact_channels", fallbackContactChannels);
+  const presenceLocations = resolveCmsBlock(cmsBlocks, "presence_locations", fallbackPresenceLocations);
+  const iconMap = {
+    mail: Mail,
+    phone: Phone,
+    "map-pin": MapPin,
+    clock: Clock,
+  };
+  const resolveChannelIcon = (icon: ContactChannelIcon) => iconMap[icon] ?? Mail;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -129,8 +170,8 @@ const Contact = () => {
   return (
     <Layout>
       <SEOHead
-        title="Contact Us"
-        description="Begin a confidential conversation with King Armour Family Office. Reach us by email, phone, or through our enquiry form."
+        title={hero.seoTitle}
+        description={hero.seoDescription}
       />
       {/* Hero */}
       <section className="bg-primary text-primary-foreground py-32 lg:py-40">
@@ -138,11 +179,10 @@ const Contact = () => {
           <AnimatedSection>
             <div className="title-accent">
               <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
-                Contact Us
+                {hero.title}
               </h1>
               <p className="text-primary-foreground/65 font-sans text-lg md:text-xl max-w-2xl">
-                Begin a confidential conversation about what matters most to
-                your family.
+                {hero.subtitle}
               </p>
             </div>
           </AnimatedSection>
@@ -152,15 +192,24 @@ const Contact = () => {
       {/* Main Content */}
       <section className="bg-background py-20 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
+          {cmsError && (
+            <AnimatedSection className="mb-10">
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+                <p className="text-destructive font-sans text-sm">
+                  CMS content is temporarily unavailable. Showing fallback content.
+                </p>
+              </div>
+            </AnimatedSection>
+          )}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
             {/* Form — 3 cols */}
             <div className="lg:col-span-3">
               <AnimatedSection>
                 <h2 className="font-sans text-2xl md:text-3xl font-bold text-foreground mb-2">
-                  Send Us a Message
+                  {formCopy.title}
                 </h2>
                 <p className="text-muted-foreground font-sans mb-8">
-                  All enquiries are treated with the strictest confidence.
+                  {formCopy.subtitle}
                 </p>
 
                 {status === "success" ? (
@@ -192,12 +241,10 @@ const Contact = () => {
                   >
                     <AlertCircle className="w-10 h-10 text-destructive mx-auto mb-4" />
                     <h3 className="font-sans text-xl font-semibold text-foreground mb-2 text-center">
-                      Unable to Send Message
+                      {formErrorCopy.title}
                     </h3>
                     <p className="text-muted-foreground font-sans mb-6 text-center max-w-md mx-auto">
-                      Our online form is not yet connected to a delivery
-                      service. Please contact us directly using one of the
-                      methods below.
+                      {formErrorCopy.body}
                     </p>
                     <div className="flex flex-col items-center gap-3 mb-6">
                       <a
@@ -220,7 +267,7 @@ const Contact = () => {
                         onClick={resetForm}
                         className="text-muted-foreground font-sans text-sm font-medium tracking-wider hover:text-foreground transition-colors"
                       >
-                        ← Back to Form
+                        {formErrorCopy.backLabel}
                       </button>
                     </div>
                   </motion.div>
@@ -377,9 +424,11 @@ const Contact = () => {
                   Direct Contact
                 </h3>
                 <div className="space-y-5 mb-12">
-                  {contactChannels.map((channel) => (
+                  {contactChannels.map((channel) => {
+                    const ChannelIcon = resolveChannelIcon(channel.icon);
+                    return (
                     <div key={channel.label} className="flex items-start gap-3">
-                      <channel.icon className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                      <ChannelIcon className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="font-sans text-xs text-muted-foreground tracking-wider uppercase mb-0.5">
                           {channel.label}
@@ -398,7 +447,8 @@ const Contact = () => {
                         )}
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* Global Presence */}
@@ -423,11 +473,10 @@ const Contact = () => {
                 {/* Trust Note */}
                 <div className="bg-primary rounded-lg p-6">
                   <h4 className="font-sans text-sm font-semibold text-primary-foreground mb-2 tracking-wider">
-                    CONFIDENTIALITY
+                    {confidentialityCopy.title}
                   </h4>
                   <p className="font-sans text-primary-foreground/70 text-sm leading-relaxed">
-                    All enquiries are handled with absolute discretion. We do
-                    not share your information with third parties. Read our{" "}
+                    {confidentialityCopy.body}{" "}
                     <Link
                       to="/privacy"
                       className="text-accent hover:text-accent/80 transition-colors underline underline-offset-2"

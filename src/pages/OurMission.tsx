@@ -4,8 +4,16 @@ import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-home.jpg";
+import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
-const principles = [
+interface PrincipleItem {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const fallbackPrinciples: PrincipleItem[] = [
   {
     number: "01",
     title: "Stewardship Over Speculation",
@@ -39,11 +47,36 @@ const principles = [
 ];
 
 const OurMission = () => {
+  const { data: cmsBlocks, isError } = useCmsBlocksByPage("our-mission");
+  const hero = resolveCmsBlock(cmsBlocks, "hero", {
+    title: "Our Mission",
+    subtitle: "Purpose-Driven Stewardship for Families of Substance",
+    seoTitle: "Our Mission",
+    seoDescription:
+      "Purpose-driven stewardship for families of substance. King Armour's guiding principles and long-term philosophy for generational wealth preservation.",
+  });
+  const intro = resolveCmsBlock(cmsBlocks, "intro", {
+    headline:
+      "King Armour exists to safeguard the interests of distinguished families — ensuring that wealth, values, and vision are preserved and strengthened across generations.",
+    paragraph1:
+      "We believe that authentic family office stewardship goes beyond portfolio management. It requires a deep understanding of each family's unique aspirations, a commitment to long-term relationships, and the discipline to act with integrity in every circumstance.",
+    paragraph2:
+      "Our mission is to serve as a trusted partner — offering the expertise, discretion, and global perspective that families of substance require to navigate an increasingly complex world with confidence.",
+  });
+  const philosophy = resolveCmsBlock(cmsBlocks, "philosophy", {
+    title: "Our Long-Term Philosophy",
+    paragraph1:
+      "Short-term thinking erodes legacy. At King Armour, we take a measured, multi-generational view of every decision — from investment strategy to governance design, from succession planning to philanthropic commitment.",
+    paragraph2:
+      "This philosophy is informed by over six decades of operational experience within the Sunwah Group, where patience, foresight, and disciplined execution have consistently delivered enduring value.",
+  });
+  const principles = resolveCmsBlock(cmsBlocks, "principles", fallbackPrinciples);
+
   return (
     <Layout>
       <SEOHead
-        title="Our Mission"
-        description="Purpose-driven stewardship for families of substance. King Armour's guiding principles and long-term philosophy for generational wealth preservation."
+        title={hero.seoTitle}
+        description={hero.seoDescription}
         preloadImage={heroImage}
       />
       {/* Hero Section */}
@@ -63,10 +96,10 @@ const OurMission = () => {
             className="title-accent"
           >
             <h1 className="text-white font-sans text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
-              Our Mission
+              {hero.title}
             </h1>
             <h2 className="text-accent font-sans text-lg md:text-xl lg:text-2xl font-normal tracking-wide">
-              Purpose-Driven Stewardship for Families of Substance
+              {hero.subtitle}
             </h2>
           </motion.div>
         </div>
@@ -75,22 +108,24 @@ const OurMission = () => {
       {/* Mission Statement */}
       <section className="bg-background py-20 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
+          {isError && (
+            <AnimatedSection className="mb-10">
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+                <p className="text-destructive font-sans text-sm">
+                  CMS content is temporarily unavailable. Showing fallback content.
+                </p>
+              </div>
+            </AnimatedSection>
+          )}
           <AnimatedSection className="max-w-3xl mb-20">
             <p className="text-foreground font-sans text-xl md:text-2xl leading-relaxed mb-8 font-medium">
-              King Armour exists to safeguard the interests of distinguished families —
-              ensuring that wealth, values, and vision are preserved and strengthened
-              across generations.
+              {intro.headline}
             </p>
             <p className="text-muted-foreground font-sans text-lg leading-relaxed mb-6">
-              We believe that authentic family office stewardship goes beyond portfolio
-              management. It requires a deep understanding of each family's unique
-              aspirations, a commitment to long-term relationships, and the discipline
-              to act with integrity in every circumstance.
+              {intro.paragraph1}
             </p>
             <p className="text-muted-foreground font-sans text-lg leading-relaxed">
-              Our mission is to serve as a trusted partner — offering the expertise,
-              discretion, and global perspective that families of substance require to
-              navigate an increasingly complex world with confidence.
+              {intro.paragraph2}
             </p>
           </AnimatedSection>
 
@@ -98,18 +133,13 @@ const OurMission = () => {
           <AnimatedSection className="mb-20">
             <div className="border-t border-accent/30 pt-12">
               <h3 className="font-sans text-2xl md:text-3xl font-bold text-foreground mb-6">
-                Our Long-Term Philosophy
+                {philosophy.title}
               </h3>
               <p className="text-muted-foreground font-sans text-lg leading-relaxed max-w-3xl mb-6">
-                Short-term thinking erodes legacy. At King Armour, we take a measured,
-                multi-generational view of every decision — from investment strategy
-                to governance design, from succession planning to philanthropic
-                commitment.
+                {philosophy.paragraph1}
               </p>
               <p className="text-muted-foreground font-sans text-lg leading-relaxed max-w-3xl">
-                This philosophy is informed by over six decades of operational experience
-                within the Sunwah Group, where patience, foresight, and disciplined
-                execution have consistently delivered enduring value.
+                {philosophy.paragraph2}
               </p>
             </div>
           </AnimatedSection>

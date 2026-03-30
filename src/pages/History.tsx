@@ -6,8 +6,15 @@ import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-history.jpg";
 import portrait1 from "@/assets/portrait-1.jpg";
 import companyImage from "@/assets/company-large.jpg";
+import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
-const milestones = [
+interface MilestoneItem {
+  year: string;
+  event: string;
+}
+
+const fallbackMilestones: MilestoneItem[] = [
   { year: "1957", event: "Sunwah Group founded in Hong Kong as a trading enterprise." },
   { year: "1970s", event: "Expansion into finance and real estate across Southeast Asia." },
   { year: "1990s", event: "Strategic ventures in China, Vietnam, and Cambodia." },
@@ -16,11 +23,32 @@ const milestones = [
 ];
 
 const History = () => {
+  const { data: cmsBlocks, isError } = useCmsBlocksByPage("history");
+  const hero = resolveCmsBlock(cmsBlocks, "hero", {
+    title: "History",
+    subtitle: "From 1957 to the Future",
+    seoTitle: "History",
+    seoDescription:
+      "From 1957 to the future — the story of King Armour and the Sunwah Group legacy spanning six decades of global enterprise.",
+  });
+  const legacy = resolveCmsBlock(cmsBlocks, "legacy", {
+    title: "A Legacy Built on Trust",
+    paragraph1:
+      "The story of King Armour is deeply intertwined with the legacy of the Sunwah Group, a distinguished enterprise founded in 1957 by the visionary Dr. Jonathan Choi's father. What began as a modest trading company in Hong Kong has grown into a diversified conglomerate with interests spanning finance, real estate, technology, and infrastructure across Asia and beyond.",
+    paragraph2:
+      "King Armour Family Office was established to extend this legacy of stewardship to families seeking sophisticated wealth management solutions — drawing on decades of experience navigating complex markets and building lasting value.",
+  });
+  const milestones = resolveCmsBlock(cmsBlocks, "milestones", fallbackMilestones);
+  const globalConnections = resolveCmsBlock(cmsBlocks, "global_connections", {
+    title: "Global Connections",
+    body: "Under the leadership of Dr. Jonathan Choi, the Sunwah Group has expanded its global footprint — establishing strategic partnerships and ventures across China, Vietnam, Cambodia, Canada, and beyond. These connections form the foundation of King Armour's extensive network, providing our clients with unparalleled access to opportunities worldwide.",
+  });
+
   return (
     <Layout>
       <SEOHead
-        title="History"
-        description="From 1957 to the future — the story of King Armour and the Sunwah Group legacy spanning six decades of global enterprise."
+        title={hero.seoTitle}
+        description={hero.seoDescription}
         preloadImage={heroImage}
       />
       {/* Hero Section */}
@@ -40,10 +68,10 @@ const History = () => {
             className="title-accent"
           >
             <h1 className="text-white font-sans text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
-              History
+              {hero.title}
             </h1>
             <h2 className="text-accent font-sans text-lg md:text-xl lg:text-2xl font-normal tracking-wide">
-              From 1957 to the Future
+              {hero.subtitle}
             </h2>
           </motion.div>
         </div>
@@ -52,24 +80,25 @@ const History = () => {
       {/* Main Content */}
       <section className="bg-background py-20 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
+          {isError && (
+            <AnimatedSection className="mb-10">
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+                <p className="text-destructive font-sans text-sm">
+                  CMS content is temporarily unavailable. Showing fallback content.
+                </p>
+              </div>
+            </AnimatedSection>
+          )}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20">
             <AnimatedSection>
               <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground mb-6">
-                A Legacy Built on Trust
+                {legacy.title}
               </h2>
               <p className="text-muted-foreground font-sans text-lg leading-relaxed mb-6">
-                The story of King Armour is deeply intertwined with the legacy of the
-                Sunwah Group, a distinguished enterprise founded in 1957 by the visionary
-                Dr. Jonathan Choi's father. What began as a modest trading company in
-                Hong Kong has grown into a diversified conglomerate with interests
-                spanning finance, real estate, technology, and infrastructure across
-                Asia and beyond.
+                {legacy.paragraph1}
               </p>
               <p className="text-muted-foreground font-sans text-lg leading-relaxed">
-                King Armour Family Office was established to extend this legacy of
-                stewardship to families seeking sophisticated wealth management
-                solutions — drawing on decades of experience navigating complex
-                markets and building lasting value.
+                {legacy.paragraph2}
               </p>
             </AnimatedSection>
 
@@ -116,14 +145,10 @@ const History = () => {
           <AnimatedSection className="mb-20">
             <div className="border-t border-accent/30 pt-12">
               <h3 className="font-sans text-2xl md:text-3xl font-bold text-foreground mb-6">
-                Global Connections
+                {globalConnections.title}
               </h3>
               <p className="text-muted-foreground font-sans text-lg leading-relaxed max-w-3xl">
-                Under the leadership of Dr. Jonathan Choi, the Sunwah Group has expanded
-                its global footprint — establishing strategic partnerships and ventures
-                across China, Vietnam, Cambodia, Canada, and beyond. These connections
-                form the foundation of King Armour's extensive network, providing our
-                clients with unparalleled access to opportunities worldwide.
+                {globalConnections.body}
               </p>
             </div>
           </AnimatedSection>

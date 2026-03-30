@@ -3,8 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
-const navItems = [
+interface HeaderNavItem {
+  label: string;
+  href: string;
+  dropdown?: Array<{ label: string; href: string }>;
+}
+
+const fallbackNavItems: HeaderNavItem[] = [
   {
     label: "ABOUT US",
     href: "/",
@@ -39,6 +47,8 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const { data: cmsBlocks } = useCmsBlocksByPage("global");
+  const navItems = resolveCmsBlock(cmsBlocks, "header_nav", fallbackNavItems);
 
   useEffect(() => {
     const handleScroll = () => {

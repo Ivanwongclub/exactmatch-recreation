@@ -27,3 +27,19 @@ export interface ServicesPageCmsData {
   settings: CmsPageSettings | null;
   serviceItems: CmsServiceItem[];
 }
+
+export interface CmsContentBlock {
+  id: string;
+  page_slug: string;
+  block_key: string;
+  content_json: unknown;
+  is_published: boolean;
+  updated_at: string;
+}
+
+export interface CmsBlockInput {
+  page_slug: string;
+  block_key: string;
+  content_json: unknown;
+  is_published?: boolean;
+}
