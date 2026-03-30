@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCmsPreviewMode } from "@/hooks/useCmsBlocks";
+import { getCmsPreviewBannerState } from "@/lib/cms/previewBanner";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -12,7 +14,9 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
+  const { previewEnabled, previewRequested } = useCmsPreviewMode();
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const previewBanner = getCmsPreviewBannerState(previewRequested, previewEnabled);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -42,6 +46,19 @@ const Layout = ({ children }: LayoutProps) => {
         Skip to content
       </a>
       <Header />
+      {previewBanner.show && (
+        <div
+          className={`border-y px-4 py-2 text-center font-sans text-xs font-semibold tracking-wide ${
+            previewBanner.level === "success"
+              ? "border-emerald-300 bg-emerald-50 text-emerald-900"
+              : "border-amber-300 bg-amber-50 text-amber-900"
+          }`}
+          role="status"
+          aria-live="polite"
+        >
+          {previewBanner.message}
+        </div>
+      )}
       <motion.main
         id="main-content"
         key={location.pathname}
