@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-services.jpg";
+import { useCmsServicesPage } from "@/hooks/useCmsServicesPage";
+import type { CmsServiceCategory } from "@/lib/cms/types";
 
 const familyCouncilServices = [
   {
@@ -52,12 +54,58 @@ const investmentServices = [
   },
 ];
 
+const fallbackSettings = {
+  heroTitle: "Our Services",
+  heroSubtitle: "Fortify, Grow, Succeed",
+  intro1:
+    "At King Armour, we offer a comprehensive suite of services designed to address the unique needs of distinguished families. Our holistic approach integrates financial expertise with family dynamics, ensuring that every solution strengthens both your portfolio and your legacy.",
+  intro2:
+    "Our services are structured around two core pillars: Family Council Services and Investment Services. Together, they form a complete framework for multi-generational wealth preservation and growth.",
+  ctaTitle: "Begin a Confidential Conversation",
+  ctaBody:
+    "Every family's needs are unique. Contact us to discuss how our services can be tailored to your family's objectives.",
+  ctaButtonLabel: "CONTACT US",
+  ctaButtonHref: "/contact",
+  seoTitle: "Our Services",
+  seoDescription:
+    "Comprehensive family office services — from wealth planning and governance to alternative investments and trust administration. Fortify, grow, succeed.",
+};
+
 const Services = () => {
+  const { data: cmsData, isLoading, isError } = useCmsServicesPage();
+
+  const cmsSettings = cmsData?.settings;
+  const settings = {
+    heroTitle: cmsSettings?.hero_title ?? fallbackSettings.heroTitle,
+    heroSubtitle: cmsSettings?.hero_subtitle ?? fallbackSettings.heroSubtitle,
+    intro1: cmsSettings?.intro_paragraph_1 ?? fallbackSettings.intro1,
+    intro2: cmsSettings?.intro_paragraph_2 ?? fallbackSettings.intro2,
+    ctaTitle: cmsSettings?.cta_title ?? fallbackSettings.ctaTitle,
+    ctaBody: cmsSettings?.cta_body ?? fallbackSettings.ctaBody,
+    ctaButtonLabel: cmsSettings?.cta_button_label ?? fallbackSettings.ctaButtonLabel,
+    ctaButtonHref: cmsSettings?.cta_button_href ?? fallbackSettings.ctaButtonHref,
+    seoTitle: cmsSettings?.seo_title ?? fallbackSettings.seoTitle,
+    seoDescription: cmsSettings?.seo_description ?? fallbackSettings.seoDescription,
+  };
+
+  const cmsItems = cmsData?.serviceItems ?? [];
+  const byCategory = (category: CmsServiceCategory) =>
+    cmsItems
+      .filter((item) => item.category === category)
+      .map(({ title, description }) => ({ title, description }));
+
+  const familyCouncilData = byCategory("family_council");
+  const investmentData = byCategory("investment");
+  const resolvedFamilyCouncilServices =
+    familyCouncilData.length > 0 ? familyCouncilData : familyCouncilServices;
+  const resolvedInvestmentServices =
+    investmentData.length > 0 ? investmentData : investmentServices;
+
   return (
     <Layout>
       <SEOHead
-        title="Our Services"
-        description="Comprehensive family office services — from wealth planning and governance to alternative investments and trust administration. Fortify, grow, succeed."
+        title={settings.seoTitle}
+        description={settings.seoDescription}
         preloadImage={heroImage}
       />
       {/* Hero Section */}
@@ -77,10 +125,10 @@ const Services = () => {
             className="title-accent"
           >
             <h1 className="text-white font-sans text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
-              Our Services
+              {settings.heroTitle}
             </h1>
             <h2 className="text-accent font-sans text-lg md:text-xl lg:text-2xl font-normal tracking-wide">
-              Fortify, Grow, Succeed
+              {settings.heroSubtitle}
             </h2>
           </motion.div>
         </div>
@@ -89,17 +137,22 @@ const Services = () => {
       {/* Introduction */}
       <section className="bg-background py-20 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
+          {isError && (
+            <AnimatedSection className="mb-10">
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+                <p className="text-destructive font-sans text-sm">
+                  CMS content is temporarily unavailable. Showing fallback content.
+                </p>
+              </div>
+            </AnimatedSection>
+          )}
+
           <AnimatedSection className="max-w-3xl mb-20">
             <p className="text-muted-foreground font-sans text-lg leading-relaxed mb-6">
-              At King Armour, we offer a comprehensive suite of services designed
-              to address the unique needs of distinguished families. Our holistic
-              approach integrates financial expertise with family dynamics, ensuring
-              that every solution strengthens both your portfolio and your legacy.
+              {settings.intro1}
             </p>
             <p className="text-muted-foreground font-sans text-lg leading-relaxed">
-              Our services are structured around two core pillars: Family Council
-              Services and Investment Services. Together, they form a complete
-              framework for multi-generational wealth preservation and growth.
+              {settings.intro2}
             </p>
           </AnimatedSection>
 
@@ -109,7 +162,7 @@ const Services = () => {
               Family Council Services
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {familyCouncilServices.map((service, index) => (
+              {(isLoading ? familyCouncilServices : resolvedFamilyCouncilServices).map((service, index) => (
                 <motion.div
                   key={service.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -133,7 +186,7 @@ const Services = () => {
               Investment Services
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {investmentServices.map((service, index) => (
+              {(isLoading ? investmentServices : resolvedInvestmentServices).map((service, index) => (
                 <motion.div
                   key={service.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -155,17 +208,16 @@ const Services = () => {
           <AnimatedSection>
             <div className="bg-primary rounded-lg p-8 lg:p-12 text-center">
               <h3 className="font-sans text-2xl md:text-3xl font-bold text-primary-foreground mb-4">
-                Begin a Confidential Conversation
+                {settings.ctaTitle}
               </h3>
               <p className="text-primary-foreground/70 font-sans text-lg mb-6 max-w-2xl mx-auto">
-                Every family's needs are unique. Contact us to discuss how our
-                services can be tailored to your family's objectives.
+                {settings.ctaBody}
               </p>
               <Link
-                to="/contact"
+                to={settings.ctaButtonHref}
                 className="inline-flex items-center px-8 py-3 bg-accent text-accent-foreground font-sans text-sm font-semibold tracking-wider rounded hover:bg-accent/90 transition-colors"
               >
-                CONTACT US
+                {settings.ctaButtonLabel}
               </Link>
             </div>
           </AnimatedSection>
