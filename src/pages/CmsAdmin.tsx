@@ -93,7 +93,7 @@ const CmsAdmin = () => {
 
   return (
     <Layout>
-      <SEOHead title="CMS Admin" description="Manage dynamic CMS content blocks" noIndex />
+      <SEOHead title="CMS Admin" description="Manage dynamic CMS content blocks" noindex />
 
       <section className="bg-primary text-primary-foreground py-24 lg:py-32">
         <div className="container mx-auto px-6 lg:px-12">
