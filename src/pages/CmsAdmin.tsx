@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import type { CmsMediaKind } from "@/lib/cms/types";
 import { applyValueAtJsonPath } from "@/lib/cms/editorUtils";
+import { getBlockTemplate } from "@/lib/cms/blockTemplates";
 
 const starterExamples: Record<string, unknown> = {
   global_header_nav: [
@@ -83,6 +84,7 @@ const CmsAdmin = () => {
       return acc;
     }, {});
   }, [blocks]);
+  const blockTemplate = useMemo(() => getBlockTemplate(pageSlug, blockKey), [pageSlug, blockKey]);
 
   const canEdit = adminAccess?.canEdit ?? false;
 
@@ -217,6 +219,46 @@ const CmsAdmin = () => {
       toast.success(`Inserted media URL at path: ${jsonPathForInsert}`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to insert URL at path");
+    }
+  };
+
+  const handleApplyTemplate = () => {
+    if (!blockTemplate) {
+      toast.error("No template defined for this block.");
+      return;
+    }
+    setContentText(JSON.stringify(blockTemplate.defaultContent, null, 2));
+    toast.success(`Applied template: ${blockTemplate.name}`);
+  };
+
+  const handleTemplateFieldChange = (path: string, value: string) => {
+    try {
+      const parsed = JSON.parse(contentText);
+      const updated = applyValueAtJsonPath(parsed, path, value);
+      setContentText(JSON.stringify(updated, null, 2));
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Cannot update template field");
+    }
+  };
+
+  const getTemplateFieldValue = (path: string): string => {
+    try {
+      const parsed = JSON.parse(contentText) as Record<string, unknown>;
+      const segments = path.split(".").filter(Boolean);
+      let cursor: unknown = parsed;
+      for (const segment of segments) {
+        if (Array.isArray(cursor)) {
+          const index = Number(segment);
+          cursor = Number.isInteger(index) ? cursor[index] : undefined;
+        } else if (cursor && typeof cursor === "object") {
+          cursor = (cursor as Record<string, unknown>)[segment];
+        } else {
+          cursor = undefined;
+        }
+      }
+      return typeof cursor === "string" ? cursor : "";
+    } catch {
+      return "";
     }
   };
 
@@ -448,6 +490,54 @@ const CmsAdmin = () => {
                     Use Hero Template
                   </button>
                 </div>
+
+                {blockTemplate && (
+                  <div className="rounded-md border border-border p-3 mb-3">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="font-sans text-sm font-semibold text-foreground">
+                        Structured Editor: {blockTemplate.name}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleApplyTemplate}
+                        disabled={!canEdit}
+                        className="rounded border border-border px-2.5 py-1 text-xs font-sans text-foreground hover:border-accent hover:text-accent transition-colors disabled:opacity-60"
+                      >
+                        Apply Template
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {blockTemplate.fields.map((field) => (
+                        <div
+                          key={field.path}
+                          className={field.type === "textarea" ? "md:col-span-2" : ""}
+                        >
+                          <label className="block text-xs font-sans font-medium text-muted-foreground mb-1">
+                            {field.label}
+                          </label>
+                          {field.type === "textarea" ? (
+                            <textarea
+                              value={getTemplateFieldValue(field.path)}
+                              onChange={(e) => handleTemplateFieldChange(field.path, e.target.value)}
+                              rows={3}
+                              className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                              placeholder={field.placeholder}
+                              disabled={!canEdit}
+                            />
+                          ) : (
+                            <input
+                              value={getTemplateFieldValue(field.path)}
+                              onChange={(e) => handleTemplateFieldChange(field.path, e.target.value)}
+                              className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                              placeholder={field.placeholder}
+                              disabled={!canEdit}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 mb-3">
                   <div className="space-y-2">
