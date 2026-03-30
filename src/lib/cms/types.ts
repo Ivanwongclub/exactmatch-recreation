@@ -82,3 +82,14 @@ export interface CmsMediaAssetInput {
   kind?: CmsMediaKind;
   tags?: string[] | null;
 }
+
+export interface CmsMediaUploadInput {
+  file: File;
+  slug: string;
+  bucket?: string;
+}
+
+export interface CmsMediaUploadResult {
+  path: string;
+  publicUrl: string;
+}

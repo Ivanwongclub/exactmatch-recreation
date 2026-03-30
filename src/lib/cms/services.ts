@@ -6,6 +6,8 @@ import type {
   CmsContentRevision,
   CmsMediaAsset,
   CmsMediaAssetInput,
+  CmsMediaUploadInput,
+  CmsMediaUploadResult,
   CmsPageSettings,
   CmsServiceItem,
   ServicesPageCmsData,
@@ -260,4 +262,32 @@ export async function upsertCmsMediaAsset(input: CmsMediaAssetInput): Promise<Cm
   }
 
   return { ...data, kind: normalizeMediaKind(data.kind) };
+}
+
+export async function uploadCmsMediaFile(
+  input: CmsMediaUploadInput
+): Promise<CmsMediaUploadResult> {
+  if (!hasSupabaseEnv) {
+    throw new Error("Supabase environment variables are missing.");
+  }
+
+  const bucket = input.bucket ?? "cms-media";
+  const fileExtension = input.file.name.split(".").pop()?.toLowerCase() ?? "bin";
+  const fileName = `${input.slug.trim()}-${Date.now()}.${fileExtension}`;
+  const path = `assets/${fileName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(bucket)
+    .upload(path, input.file, { upsert: true, contentType: input.file.type || undefined });
+
+  if (uploadError) {
+    throw new Error(`CMS media upload failed: ${uploadError.message}`);
+  }
+
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  if (!data?.publicUrl) {
+    throw new Error("CMS media upload failed: could not resolve public URL");
+  }
+
+  return { path, publicUrl: data.publicUrl };
 }

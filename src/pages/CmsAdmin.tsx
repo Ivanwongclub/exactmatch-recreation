@@ -9,6 +9,7 @@ import {
   useCmsMediaAssets,
   useCmsSignIn,
   useCmsSignOut,
+  useUploadCmsMediaFile,
   useUpsertCmsBlock,
   useUpsertCmsMediaAsset,
 } from "@/hooks/useCmsBlocks";
@@ -16,6 +17,7 @@ import { hasSupabaseEnv } from "@/lib/supabase";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import type { CmsMediaKind } from "@/lib/cms/types";
+import { applyValueAtJsonPath } from "@/lib/cms/editorUtils";
 
 const starterExamples: Record<string, unknown> = {
   global_header_nav: [
@@ -48,6 +50,7 @@ const CmsAdmin = () => {
   const saveBlock = useUpsertCmsBlock();
   const { data: mediaAssets, isLoading: isMediaLoading } = useCmsMediaAssets();
   const saveMedia = useUpsertCmsMediaAsset();
+  const uploadMedia = useUploadCmsMediaFile();
   const signIn = useCmsSignIn();
   const signOut = useCmsSignOut();
 
@@ -62,7 +65,10 @@ const CmsAdmin = () => {
   const [mediaAltText, setMediaAltText] = useState("");
   const [mediaKind, setMediaKind] = useState<CmsMediaKind>("image");
   const [mediaTags, setMediaTags] = useState("");
+  const [mediaBucket, setMediaBucket] = useState("cms-media");
+  const [mediaUploadFile, setMediaUploadFile] = useState<File | null>(null);
   const [selectedMediaSlugForEditor, setSelectedMediaSlugForEditor] = useState("");
+  const [jsonPathForInsert, setJsonPathForInsert] = useState("");
   const [email, setEmail] = useState("");
 
   const { data: revisions, isLoading: isRevisionsLoading } = useCmsBlockRevisions(pageSlug, blockKey);
@@ -197,9 +203,48 @@ const CmsAdmin = () => {
       return;
     }
 
-    const nextContent = `${contentText}\n${selected.url}`;
-    setContentText(nextContent.trim());
-    toast.success(`Inserted media URL from ${selected.slug}`);
+    if (!jsonPathForInsert.trim()) {
+      const nextContent = `${contentText}\n${selected.url}`;
+      setContentText(nextContent.trim());
+      toast.success(`Appended media URL from ${selected.slug}`);
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(contentText);
+      const updated = applyValueAtJsonPath(parsed, jsonPathForInsert, selected.url);
+      setContentText(JSON.stringify(updated, null, 2));
+      toast.success(`Inserted media URL at path: ${jsonPathForInsert}`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to insert URL at path");
+    }
+  };
+
+  const handleUploadMediaFile = async () => {
+    if (!canEdit) {
+      toast.error("You do not have CMS edit permission.");
+      return;
+    }
+    if (!mediaUploadFile) {
+      toast.error("Please choose a file to upload.");
+      return;
+    }
+    if (!mediaSlug.trim()) {
+      toast.error("Please set Media Slug before upload.");
+      return;
+    }
+
+    try {
+      const uploadResult = await uploadMedia.mutateAsync({
+        file: mediaUploadFile,
+        slug: mediaSlug.trim(),
+        bucket: mediaBucket.trim() || "cms-media",
+      });
+      setMediaUrl(uploadResult.publicUrl);
+      toast.success("Media uploaded. URL has been populated.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Upload failed");
+    }
   };
 
   const roleLabel = adminAccess?.role ?? "viewer";
@@ -405,19 +450,28 @@ const CmsAdmin = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 mb-3">
-                  <select
-                    value={selectedMediaSlugForEditor}
-                    onChange={(e) => setSelectedMediaSlugForEditor(e.target.value)}
-                    className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
-                    disabled={!canEdit}
-                  >
-                    <option value="">Insert media URL into block JSON...</option>
-                    {(mediaAssets ?? []).map((asset) => (
-                      <option key={asset.id} value={asset.slug}>
-                        {asset.slug}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="space-y-2">
+                    <select
+                      value={selectedMediaSlugForEditor}
+                      onChange={(e) => setSelectedMediaSlugForEditor(e.target.value)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      disabled={!canEdit}
+                    >
+                      <option value="">Insert media URL into block JSON...</option>
+                      {(mediaAssets ?? []).map((asset) => (
+                        <option key={asset.id} value={asset.slug}>
+                          {asset.slug}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      value={jsonPathForInsert}
+                      onChange={(e) => setJsonPathForInsert(e.target.value)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Optional JSON path, e.g. hero.imageUrl or cards.0.image"
+                      disabled={!canEdit}
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={handleInsertMediaUrlIntoBlock}
@@ -520,6 +574,39 @@ const CmsAdmin = () => {
                       <option value="video">video</option>
                       <option value="file">file</option>
                     </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-sans font-medium text-foreground mb-1.5">Storage Bucket</label>
+                    <input
+                      value={mediaBucket}
+                      onChange={(e) => setMediaBucket(e.target.value)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="cms-media"
+                      disabled={!canEdit}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-sans font-medium text-foreground mb-1.5">Upload File</label>
+                    <input
+                      type="file"
+                      accept="image/*,video/*,.pdf,.doc,.docx"
+                      onChange={(e) => setMediaUploadFile(e.target.files?.[0] ?? null)}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-sm"
+                      disabled={!canEdit}
+                    />
+                  </div>
+                  <div className="flex items-end">
+                    <button
+                      type="button"
+                      onClick={handleUploadMediaFile}
+                      disabled={!canEdit || uploadMedia.isPending}
+                      className="w-full rounded border border-border px-3 py-2 text-sm font-sans text-foreground hover:border-accent hover:text-accent transition-colors disabled:opacity-60"
+                    >
+                      {uploadMedia.isPending ? "Uploading..." : "Upload"}
+                    </button>
                   </div>
                 </div>
 

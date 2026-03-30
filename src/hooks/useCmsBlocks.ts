@@ -8,10 +8,11 @@ import {
   fetchCmsMediaAssets,
   requestCmsSignIn,
   signOutCms,
+  uploadCmsMediaFile,
   upsertCmsBlock,
   upsertCmsMediaAsset,
 } from "@/lib/cms/services";
-import type { CmsBlockInput, CmsMediaAssetInput } from "@/lib/cms/types";
+import type { CmsBlockInput, CmsMediaAssetInput, CmsMediaUploadInput } from "@/lib/cms/types";
 
 export function useCmsBlocksByPage(pageSlug: string) {
   return useQuery({
@@ -107,5 +108,11 @@ export function useCmsMediaAssetBySlug(slug: string) {
     staleTime: 1000 * 60 * 5,
     retry: 1,
     enabled: Boolean(slug.trim()),
+  });
+}
+
+export function useUploadCmsMediaFile() {
+  return useMutation({
+    mutationFn: (input: CmsMediaUploadInput) => uploadCmsMediaFile(input),
   });
 }
