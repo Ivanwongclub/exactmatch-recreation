@@ -22,6 +22,20 @@ function valueMatchesFieldType(value: unknown, fieldType: CmsTemplateFieldType):
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 }
 
+function describeValueType(value: unknown): string {
+  if (value === undefined) {
+    return "missing";
+  }
+  if (value === null) {
+    return "null";
+  }
+  if (Array.isArray(value)) {
+    const hasOnlyStrings = value.every((item) => typeof item === "string");
+    return hasOnlyStrings ? "array<string>" : "array<mixed>";
+  }
+  return typeof value;
+}
+
 export function validateBlockContentForTemplate(
   pageSlug: string,
   blockKey: string,
@@ -42,8 +56,21 @@ export function validateBlockContentForTemplate(
   const errors: string[] = [];
   for (const field of template.fields) {
     const value = readValueAtJsonPath(content, field.path);
+    const isRequired = field.required ?? true;
+
+    if ((value === undefined || value === null) && !isRequired) {
+      continue;
+    }
+
+    if (isRequired && (value === undefined || value === null)) {
+      errors.push(`Field "${field.path}" is required but missing.`);
+      continue;
+    }
+
     if (!valueMatchesFieldType(value, field.type)) {
-      errors.push(`Field "${field.path}" must be ${field.type}.`);
+      errors.push(
+        `Field "${field.path}" must be ${field.type}; received ${describeValueType(value)}.`
+      );
     }
   }
 

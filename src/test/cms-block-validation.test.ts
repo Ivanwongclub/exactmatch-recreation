@@ -31,6 +31,7 @@ describe("cms block validation", () => {
     expect(result.valid).toBe(false);
     expect(result.errors[0]).toContain("title");
     expect(result.errors[0]).toContain("text");
+    expect(result.errors[0]).toContain("received number");
   });
 
   it("fails when list field is not a string array", () => {
@@ -43,6 +44,7 @@ describe("cms block validation", () => {
     expect(result.valid).toBe(false);
     expect(result.errors[0]).toContain("preferredHeroSlugs");
     expect(result.errors[0]).toContain("list");
+    expect(result.errors[0]).toContain("array<mixed>");
   });
 
   it("fails when a required template field is missing", () => {
@@ -53,6 +55,17 @@ describe("cms block validation", () => {
 
     expect(result.valid).toBe(false);
     expect(result.errors[0]).toContain("homepageCardsLimit");
-    expect(result.errors[0]).toContain("number");
+    expect(result.errors[0]).toContain("required");
+    expect(result.errors[0]).toContain("missing");
+  });
+
+  it("allows missing optional template fields", () => {
+    const result = validateBlockContentForTemplate("global", "render_config", {
+      enableAnimations: true,
+      homepageCardsLimit: 8,
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toEqual([]);
   });
 });

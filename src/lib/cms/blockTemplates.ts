@@ -4,6 +4,7 @@ export interface CmsTemplateField {
   label: string;
   path: string;
   type: CmsTemplateFieldType;
+  required?: boolean;
   placeholder?: string;
 }
 
@@ -117,9 +118,9 @@ const templates: Record<string, CmsBlockTemplate> = {
       preferredHeroSlugs: ["hero-home", "hero-services", "hero-network"],
     },
     fields: [
-      { label: "Enable Animations", path: "enableAnimations", type: "boolean" },
-      { label: "Homepage Cards Limit", path: "homepageCardsLimit", type: "number" },
-      { label: "Preferred Hero Slugs", path: "preferredHeroSlugs", type: "list" },
+      { label: "Enable Animations", path: "enableAnimations", type: "boolean", required: true },
+      { label: "Homepage Cards Limit", path: "homepageCardsLimit", type: "number", required: true },
+      { label: "Preferred Hero Slugs", path: "preferredHeroSlugs", type: "list", required: false },
     ],
   },
 };
