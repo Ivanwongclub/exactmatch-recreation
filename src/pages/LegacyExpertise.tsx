@@ -5,6 +5,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-network.jpg";
 import companyImage from "@/assets/company-large.jpg";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 
 const expertiseAreas = [
   {
@@ -30,18 +31,22 @@ const expertiseAreas = [
 ];
 
 const LegacyExpertise = () => {
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-network");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
+
   return (
     <Layout>
       <SEOHead
         title="Legacy & Business Expertise"
         description="Built on six decades of enterprise — King Armour's heritage in succession architecture, cross-border strategy, and family business advisory."
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

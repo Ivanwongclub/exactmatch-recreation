@@ -6,6 +6,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-home.jpg";
 import { GraduationCap, Globe, Users, Lightbulb, CheckCircle } from "lucide-react";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 
 const programPillars = [
   {
@@ -55,18 +56,22 @@ const statusLabels: Record<ProgramStatus, { label: string; color: string }> = {
 };
 
 const SummerProgram = () => {
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-home");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
+
   return (
     <Layout>
       <SEOHead
         title="Summer Program"
         description="The Global Elite Summer Program — cultivating leadership, global perspective, and lifelong connections for the next generation of distinguished families."
-      preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

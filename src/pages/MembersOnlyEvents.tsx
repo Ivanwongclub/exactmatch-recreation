@@ -6,6 +6,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-network.jpg";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 
 interface EventItem {
   title: string;
@@ -123,6 +124,8 @@ const EventCard = ({ event, index }: { event: EventItem; index: number }) => (
 );
 
 const MembersOnlyEvents = () => {
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-network");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
   const upcomingEvents = allEvents.filter((e) => e.status === "upcoming");
   const pastEvents = allEvents.filter((e) => e.status === "past");
 
@@ -131,13 +134,14 @@ const MembersOnlyEvents = () => {
       <SEOHead
         title="Members-Only Events"
         description="Curated quarterly gatherings for Kings Network members — exclusive dinners, delegation trips, art auctions, and innovation summits."
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

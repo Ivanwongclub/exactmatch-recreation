@@ -5,6 +5,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-services.jpg";
 import { Users } from "lucide-react";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 
 interface TeamMember {
   name: string;
@@ -65,18 +66,22 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => (
 );
 
 const ExecutiveTeam = () => {
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-services");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
+
   return (
     <Layout>
       <SEOHead
         title="Executive Team"
         description="Meet King Armour's leadership team — decades of experience in global finance, family governance, and cross-border enterprise."
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

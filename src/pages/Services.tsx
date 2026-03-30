@@ -6,6 +6,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-services.jpg";
 import { useCmsServicesPage } from "@/hooks/useCmsServicesPage";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 import type { CmsServiceCategory } from "@/lib/cms/types";
 
 const familyCouncilServices = [
@@ -73,6 +74,8 @@ const fallbackSettings = {
 
 const Services = () => {
   const { data: cmsData, isLoading, isError } = useCmsServicesPage();
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-services");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
 
   const cmsSettings = cmsData?.settings;
   const settings = {
@@ -106,13 +109,14 @@ const Services = () => {
       <SEOHead
         title={settings.seoTitle}
         description={settings.seoDescription}
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   fetchAllCmsBlocks,
   fetchCmsAdminAccess,
+  fetchCmsMediaAssetBySlug,
   fetchCmsBlockRevisions,
   fetchCmsBlocksByPage,
   fetchCmsMediaAssets,
@@ -96,5 +97,15 @@ export function useUpsertCmsMediaAsset() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cms", "media"] });
     },
+  });
+}
+
+export function useCmsMediaAssetBySlug(slug: string) {
+  return useQuery({
+    queryKey: ["cms", "media", "slug", slug],
+    queryFn: () => fetchCmsMediaAssetBySlug(slug),
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+    enabled: Boolean(slug.trim()),
   });
 }

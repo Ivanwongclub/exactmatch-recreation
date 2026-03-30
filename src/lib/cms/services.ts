@@ -210,6 +210,31 @@ export async function fetchCmsMediaAssets(): Promise<CmsMediaAsset[] | null> {
   return sortMediaByNewest(normalized);
 }
 
+export async function fetchCmsMediaAssetBySlug(slug: string): Promise<CmsMediaAsset | null> {
+  if (!hasSupabaseEnv) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("cms_media_assets")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle<Omit<CmsMediaAsset, "kind"> & { kind: string }>();
+
+  if (error) {
+    throw new Error(`CMS media by slug fetch failed: ${error.message}`);
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return {
+    ...data,
+    kind: normalizeMediaKind(data.kind),
+  };
+}
+
 export async function upsertCmsMediaAsset(input: CmsMediaAssetInput): Promise<CmsMediaAsset> {
   if (!hasSupabaseEnv) {
     throw new Error("Supabase environment variables are missing.");

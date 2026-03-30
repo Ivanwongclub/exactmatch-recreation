@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-home.jpg";
-import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { useCmsBlocksByPage, useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
 interface PrincipleItem {
@@ -48,6 +48,8 @@ const fallbackPrinciples: PrincipleItem[] = [
 
 const OurMission = () => {
   const { data: cmsBlocks, isError } = useCmsBlocksByPage("our-mission");
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-home");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
   const hero = resolveCmsBlock(cmsBlocks, "hero", {
     title: "Our Mission",
     subtitle: "Purpose-Driven Stewardship for Families of Substance",
@@ -77,13 +79,14 @@ const OurMission = () => {
       <SEOHead
         title={hero.seoTitle}
         description={hero.seoDescription}
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

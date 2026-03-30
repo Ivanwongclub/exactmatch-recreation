@@ -6,6 +6,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-network.jpg";
 import { Calendar, MapPin, Clock, AlertCircle } from "lucide-react";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 
 interface EventDetail {
   title: string;
@@ -34,18 +35,22 @@ const eventData: EventDetail = {
 };
 
 const EventPage = () => {
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-network");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
+
   return (
     <Layout>
       <SEOHead
         title="Event"
         description="Upcoming Kings Network event — exclusive gatherings and experiences for members and invited guests."
-      preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

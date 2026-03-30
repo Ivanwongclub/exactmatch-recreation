@@ -2,11 +2,15 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-home.jpg";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  heroImageSrc?: string;
+}
+
+const HeroSection = ({ heroImageSrc = heroImage }: HeroSectionProps) => {
   return (
     <section className="relative h-screen min-h-[700px] flex items-center">
       <img
-        src={heroImage}
+        src={heroImageSrc}
         alt=""
         aria-hidden="true"
         fetchPriority="high"

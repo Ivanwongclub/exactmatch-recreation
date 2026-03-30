@@ -6,7 +6,7 @@ import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-history.jpg";
 import portrait1 from "@/assets/portrait-1.jpg";
 import companyImage from "@/assets/company-large.jpg";
-import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
+import { useCmsBlocksByPage, useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
 interface MilestoneItem {
@@ -24,6 +24,8 @@ const fallbackMilestones: MilestoneItem[] = [
 
 const History = () => {
   const { data: cmsBlocks, isError } = useCmsBlocksByPage("history");
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-history");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
   const hero = resolveCmsBlock(cmsBlocks, "hero", {
     title: "History",
     subtitle: "From 1957 to the Future",
@@ -49,13 +51,14 @@ const History = () => {
       <SEOHead
         title={hero.seoTitle}
         description={hero.seoDescription}
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />

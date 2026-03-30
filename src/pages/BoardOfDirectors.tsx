@@ -5,6 +5,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import ResearchSection from "@/components/shared/ResearchSection";
 import heroImage from "@/assets/hero-history.jpg";
 import { Shield } from "lucide-react";
+import { useCmsMediaAssetBySlug } from "@/hooks/useCmsBlocks";
 
 interface BoardMember {
   name: string;
@@ -31,18 +32,22 @@ const boardMembers: BoardMember[] = [
 ];
 
 const BoardOfDirectors = () => {
+  const { data: heroMedia } = useCmsMediaAssetBySlug("hero-history");
+  const resolvedHeroImage = heroMedia?.url ?? heroImage;
+
   return (
     <Layout>
       <SEOHead
         title="Board of Directors"
         description="King Armour's Board of Directors provides independent oversight, strategic counsel, and the highest fiduciary standards for the families we serve."
-        preloadImage={heroImage}
+        preloadImage={resolvedHeroImage}
+        ogImage={resolvedHeroImage}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(${resolvedHeroImage})` }}
         />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 noise-bg opacity-30" />
