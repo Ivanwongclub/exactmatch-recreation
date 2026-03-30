@@ -15,7 +15,13 @@ import type {
 import { canEditCms, normalizeCmsRole, sortRevisionsByNewest } from "./adminUtils";
 import { normalizeMediaKind, sortMediaByNewest } from "./mediaUtils";
 
-export async function fetchServicesPageCmsData(): Promise<ServicesPageCmsData | null> {
+interface CmsFetchOptions {
+  includeDraft?: boolean;
+}
+
+export async function fetchServicesPageCmsData(
+  options?: CmsFetchOptions
+): Promise<ServicesPageCmsData | null> {
   if (!hasSupabaseEnv) {
     return null;
   }
@@ -26,15 +32,16 @@ export async function fetchServicesPageCmsData(): Promise<ServicesPageCmsData | 
     .eq("page_slug", "services")
     .maybeSingle();
 
-  const itemsQuery = supabase
-    .from("cms_service_items")
-    .select("*")
-    .eq("is_published", true)
+  let itemsQuery = supabase.from("cms_service_items").select("*");
+  if (!options?.includeDraft) {
+    itemsQuery = itemsQuery.eq("is_published", true);
+  }
+  const itemsResult = await itemsQuery
     .order("display_order", { ascending: true })
     .returns<CmsServiceItem[]>();
 
   const [{ data: settings, error: settingsError }, { data: serviceItems, error: itemsError }] =
-    await Promise.all([settingsQuery, itemsQuery]);
+    await Promise.all([settingsQuery, itemsResult]);
 
   if (settingsError || itemsError) {
     throw new Error(
@@ -48,16 +55,19 @@ export async function fetchServicesPageCmsData(): Promise<ServicesPageCmsData | 
   };
 }
 
-export async function fetchCmsBlocksByPage(pageSlug: string): Promise<CmsContentBlock[] | null> {
+export async function fetchCmsBlocksByPage(
+  pageSlug: string,
+  options?: CmsFetchOptions
+): Promise<CmsContentBlock[] | null> {
   if (!hasSupabaseEnv) {
     return null;
   }
 
-  const { data, error } = await supabase
-    .from("cms_content_blocks")
-    .select("*")
-    .eq("page_slug", pageSlug)
-    .eq("is_published", true)
+  let query = supabase.from("cms_content_blocks").select("*").eq("page_slug", pageSlug);
+  if (!options?.includeDraft) {
+    query = query.eq("is_published", true);
+  }
+  const { data, error } = await query
     .order("updated_at", { ascending: false })
     .returns<CmsContentBlock[]>();
 

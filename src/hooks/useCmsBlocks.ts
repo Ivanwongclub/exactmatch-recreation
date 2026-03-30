@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
 import {
   fetchAllCmsBlocks,
   fetchCmsAdminAccess,
@@ -12,12 +13,29 @@ import {
   upsertCmsBlock,
   upsertCmsMediaAsset,
 } from "@/lib/cms/services";
+import { hasCmsPreviewFlag, shouldUseCmsDraftPreview } from "@/lib/cms/previewUtils";
 import type { CmsBlockInput, CmsMediaAssetInput, CmsMediaUploadInput } from "@/lib/cms/types";
 
+export function useCmsPreviewMode() {
+  const location = useLocation();
+  const { data: adminAccess } = useCmsAdminAccess();
+  const canEdit = adminAccess?.canEdit ?? false;
+  const previewRequested = hasCmsPreviewFlag(location.search);
+  const previewEnabled = shouldUseCmsDraftPreview(location.search, canEdit);
+
+  return {
+    canEdit,
+    previewRequested,
+    previewEnabled,
+  };
+}
+
 export function useCmsBlocksByPage(pageSlug: string) {
+  const { previewEnabled } = useCmsPreviewMode();
+
   return useQuery({
-    queryKey: ["cms", "blocks", pageSlug],
-    queryFn: () => fetchCmsBlocksByPage(pageSlug),
+    queryKey: ["cms", "blocks", pageSlug, previewEnabled ? "preview" : "published"],
+    queryFn: () => fetchCmsBlocksByPage(pageSlug, { includeDraft: previewEnabled }),
     staleTime: 1000 * 60 * 5,
     retry: 1,
   });
