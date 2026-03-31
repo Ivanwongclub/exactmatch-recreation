@@ -73,7 +73,8 @@ export function useCmsAdminAccess() {
 
 export function useCmsSignIn() {
   return useMutation({
-    mutationFn: (email: string) => requestCmsSignIn(email),
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      requestCmsSignIn(email, password),
   });
 }
 

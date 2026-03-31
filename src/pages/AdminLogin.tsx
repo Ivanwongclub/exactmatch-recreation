@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import SEOHead from "@/components/shared/SEOHead";
 import { useCmsAdminAccess, useCmsSignIn } from "@/hooks/useCmsBlocks";
+import { requestCmsPasswordReset } from "@/lib/cms/services";
 import { hasSupabaseEnv } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
@@ -14,9 +15,8 @@ const AdminLogin = () => {
   const { data: adminAccess, isLoading: isAccessLoading } = useCmsAdminAccess();
   const signIn = useCmsSignIn();
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [password, setPassword] = useState("");
 
-  // Redirect authenticated users to CMS admin
   useEffect(() => {
     if (!isAccessLoading && adminAccess?.userId) {
       navigate("/admin/cms", { replace: true });
@@ -26,17 +26,31 @@ const AdminLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = email.trim().toLowerCase();
-    if (!trimmed) {
-      toast.error("Please enter your email.");
+    if (!trimmed || !password) {
+      toast.error("Please enter your email and password.");
       return;
     }
 
     try {
-      await signIn.mutateAsync(trimmed);
-      setSent(true);
-      toast.success("Magic link sent! Check your email.");
+      await signIn.mutateAsync({ email: trimmed, password });
+      toast.success("Signed in successfully.");
+      navigate("/admin/cms", { replace: true });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to send sign-in link");
+      toast.error(error instanceof Error ? error.message : "Sign-in failed");
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const trimmed = email.trim().toLowerCase();
+    if (!trimmed) {
+      toast.error("Enter your email first, then click Forgot Password.");
+      return;
+    }
+    try {
+      await requestCmsPasswordReset(trimmed);
+      toast.success("Password reset link sent. Check your email.");
+    } catch {
+      toast.error("Failed to send reset email.");
     }
   };
 
@@ -69,25 +83,6 @@ const AdminLogin = () => {
             <div className="text-center py-12">
               <p className="text-muted-foreground font-sans text-sm">Checking session...</p>
             </div>
-          ) : sent ? (
-            <div className="rounded-lg border border-border bg-card p-8 text-center">
-              <div className="text-4xl mb-4">✉️</div>
-              <h2 className="font-sans text-xl font-semibold text-foreground mb-2">
-                Check Your Email
-              </h2>
-              <p className="text-muted-foreground font-sans text-sm mb-6">
-                We sent a magic link to <strong className="text-foreground">{email}</strong>.
-                Click the link in the email to sign in.
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setSent(false)}
-                className="font-sans"
-              >
-                Try a different email
-              </Button>
-            </div>
           ) : (
             <form onSubmit={handleSubmit} className="rounded-lg border border-border bg-card p-8">
               <div className="space-y-4">
@@ -108,12 +103,39 @@ const AdminLogin = () => {
                   />
                 </div>
 
+                <div>
+                  <Label htmlFor="admin-password" className="font-sans text-sm font-medium text-foreground">
+                    Password
+                  </Label>
+                  <Input
+                    id="admin-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="mt-1.5"
+                    autoComplete="current-password"
+                    required
+                    disabled={!hasSupabaseEnv}
+                  />
+                </div>
+
                 <Button
                   type="submit"
                   disabled={!hasSupabaseEnv || signIn.isPending}
                   className="w-full font-sans font-semibold"
                 >
-                  {signIn.isPending ? "Sending..." : "Send Magic Link"}
+                  {signIn.isPending ? "Signing in..." : "Sign In"}
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="link"
+                  className="w-full font-sans text-sm text-muted-foreground"
+                  disabled={!hasSupabaseEnv}
+                  onClick={handleForgotPassword}
+                >
+                  Forgot password? Set / reset your password
                 </Button>
               </div>
 

@@ -179,18 +179,7 @@ const CmsAdmin = () => {
   };
 
   const handleRequestSignIn = async () => {
-    const trimmed = email.trim().toLowerCase();
-    if (!trimmed) {
-      toast.error("Please enter your email.");
-      return;
-    }
-
-    try {
-      await signIn.mutateAsync(trimmed);
-      toast.success("Sign-in link sent. Check your email and then click Refresh Access.");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to send sign-in link");
-    }
+    toast.info("Please sign in via /admin/login.");
   };
 
   const handleSignOut = async () => {
