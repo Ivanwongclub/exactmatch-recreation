@@ -161,4 +161,28 @@ describe("cms page wiring — resolveCmsBlock fallback safety", () => {
     const result = resolveCmsBlock(blocks, "hero", fallback);
     expect(result).toEqual(malformed); // no crash, returns stored value
   });
-});
+
+  it("returns array fallback when CMS nav data is not an array", () => {
+    const fallback = [{ label: "HOME", path: "/" }];
+    const blocks = [{ id: "1", page_slug: "global", block_key: "footer_nav", content_json: { text: "oops" }, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "footer_nav", fallback)).toEqual(fallback);
+  });
+
+  it("returns array fallback for header_nav when CMS data is a string", () => {
+    const fallback = [{ label: "ABOUT US", href: "/" }];
+    const blocks = [{ id: "1", page_slug: "global", block_key: "header_nav", content_json: "corrupt", is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "header_nav", fallback)).toEqual(fallback);
+  });
+
+  it("returns string fallback when CMS email data is an object", () => {
+    const fallback = "info@king-armour.com";
+    const blocks = [{ id: "1", page_slug: "global", block_key: "footer_email", content_json: { email: "oops" }, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "footer_email", fallback)).toEqual(fallback);
+  });
+
+  it("uses CMS array data when it is a valid array", () => {
+    const fallback = [{ label: "DEFAULT", path: "/" }];
+    const cmsNav = [{ label: "CMS NAV", path: "/custom" }];
+    const blocks = [{ id: "1", page_slug: "global", block_key: "footer_nav", content_json: cmsNav, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "footer_nav", fallback)).toEqual(cmsNav);
+  });
