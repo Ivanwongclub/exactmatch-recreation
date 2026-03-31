@@ -269,7 +269,7 @@ export async function upsertCmsMediaAsset(input: CmsMediaAssetInput): Promise<Cm
     .from("cms_media_assets")
     .upsert(payload, { onConflict: "slug" })
     .select("*")
-    .single<Omit<CmsMediaAsset, "kind"> & { kind: string }>();
+    .single();
 
   if (error || !data) {
     throw new Error(`CMS media save failed: ${error?.message ?? "Unknown error"}`);
