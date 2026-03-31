@@ -123,6 +123,111 @@ const templates: Record<string, CmsBlockTemplate> = {
       { label: "Preferred Hero Slugs", path: "preferredHeroSlugs", type: "list", required: false },
     ],
   },
+  "executive-team:hero": {
+    name: "Executive Team Hero",
+    defaultContent: {
+      title: "Executive Team",
+      subtitle: "The Leaders Behind King Armour",
+      seoTitle: "Executive Team",
+      seoDescription: "Meet the executive leadership of King Armour Family Office.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
+  "board-of-directors:hero": {
+    name: "Board of Directors Hero",
+    defaultContent: {
+      title: "Board of Directors",
+      subtitle: "Governance and Oversight",
+      seoTitle: "Board of Directors",
+      seoDescription: "The board of directors governing King Armour Family Office.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
+  "summer-program:hero": {
+    name: "Summer Program Hero",
+    defaultContent: {
+      title: "Summer Program",
+      subtitle: "Cultivating Next-Generation Leadership",
+      seoTitle: "Summer Program",
+      seoDescription: "King Armour summer program for next-generation family leaders.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
+  "members-only-events:hero": {
+    name: "Members Only Events Hero",
+    defaultContent: {
+      title: "Members-Only Events",
+      subtitle: "Exclusive Gatherings for Distinguished Families",
+      seoTitle: "Members-Only Events",
+      seoDescription: "Exclusive invitation-only events hosted by King Armour.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
+  "event:hero": {
+    name: "Event Page Hero",
+    defaultContent: {
+      title: "Upcoming Event",
+      subtitle: "Details and Registration",
+      seoTitle: "Event",
+      seoDescription: "Event details and registration for King Armour.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
+  "legacy-and-business-expertise:hero": {
+    name: "Legacy & Business Expertise Hero",
+    defaultContent: {
+      title: "Legacy & Business Expertise",
+      subtitle: "Decades of Strategic Enterprise",
+      seoTitle: "Legacy & Business Expertise",
+      seoDescription: "King Armour legacy spanning decades of global business expertise.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
+  "services:hero": {
+    name: "Services Hero",
+    defaultContent: {
+      title: "Our Services",
+      subtitle: "Comprehensive Family Office Solutions",
+      seoTitle: "Our Services",
+      seoDescription: "Comprehensive family office services by King Armour.",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Subtitle", path: "subtitle", type: "text" },
+      { label: "SEO Title", path: "seoTitle", type: "text" },
+      { label: "SEO Description", path: "seoDescription", type: "textarea" },
+    ],
+  },
 };
 
 export function getBlockTemplate(pageSlug: string, blockKey: string): CmsBlockTemplate | null {
