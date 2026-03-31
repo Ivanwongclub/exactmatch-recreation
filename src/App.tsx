@@ -18,6 +18,7 @@ import EventPage from "./pages/EventPage";
 import Contact from "./pages/Contact";
 import CmsAdmin from "./pages/CmsAdmin";
 import AdminLogin from "./pages/AdminLogin";
+import AdminResetPassword from "./pages/AdminResetPassword";
 import AdminRoute from "./components/shared/AdminRoute";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
