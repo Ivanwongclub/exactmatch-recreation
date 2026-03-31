@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getBlockTemplate } from "@/lib/cms/blockTemplates";
 import { validateBlockContentForTemplate } from "@/lib/cms/blockValidation";
+import { resolveCmsBlock } from "@/lib/cms/blockUtils";
 
 describe("cms block templates", () => {
   it("returns template for known block", () => {
