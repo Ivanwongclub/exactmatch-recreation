@@ -1,0 +1,17 @@
+name: Daily SEO Smoke
+
+on:
+  schedule:
+    - cron: "15 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  seo-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run SEO smoke checks (production)
+        run: bash scripts/run-daily-seo-smoke.sh https://ka.adaptive-app.com

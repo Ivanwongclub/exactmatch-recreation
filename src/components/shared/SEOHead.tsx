@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { getCanonicalPathname } from "@/lib/seo/urlCanonicalization";
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://ka.adaptive-app.com";
 const SITE_NAME = "King Armour Family Office";
@@ -25,7 +26,8 @@ const SEOHead = ({
   noindex = false,
 }: SEOHeadProps) => {
   const location = useLocation();
-  const fullCanonical = canonical || `${SITE_URL}${location.pathname}`;
+  const normalizedPath = getCanonicalPathname(location.pathname);
+  const fullCanonical = canonical || `${SITE_URL}${normalizedPath}`;
   const fullTitle = location.pathname === "/" ? title : `${title} | ${SITE_NAME}`;
   const fullOgImage = ogImage.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`;
 
