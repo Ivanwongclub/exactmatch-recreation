@@ -17,7 +17,6 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Redirect authenticated users to CMS admin
   useEffect(() => {
     if (!isAccessLoading && adminAccess?.userId) {
       navigate("/admin/cms", { replace: true });
@@ -38,6 +37,20 @@ const AdminLogin = () => {
       navigate("/admin/cms", { replace: true });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Sign-in failed");
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const trimmed = email.trim().toLowerCase();
+    if (!trimmed) {
+      toast.error("Enter your email first, then click Forgot Password.");
+      return;
+    }
+    try {
+      await requestCmsPasswordReset(trimmed);
+      toast.success("Password reset link sent. Check your email.");
+    } catch {
+      toast.error("Failed to send reset email.");
     }
   };
 
@@ -120,22 +133,9 @@ const AdminLogin = () => {
                   variant="link"
                   className="w-full font-sans text-sm text-muted-foreground"
                   disabled={!hasSupabaseEnv}
-                  onClick={async () => {
-                    const trimmed = email.trim().toLowerCase();
-                    if (!trimmed) {
-                      toast.error("Enter your email first, then click Forgot Password.");
-                      return;
-                    }
-                    try {
-                      await requestCmsPasswordReset(trimmed);
-                      toast.success("Password reset link sent. Check your email.");
-                    } catch {
-                      toast.error("Failed to send reset email.");
-                    }
-                  }}
+                  onClick={handleForgotPassword}
                 >
                   Forgot password? Set / reset your password
-                </Button>
                 </Button>
               </div>
 
