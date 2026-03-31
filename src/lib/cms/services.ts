@@ -1,4 +1,8 @@
-import { hasSupabaseEnv, supabase } from "@/lib/supabase";
+import { hasSupabaseEnv, supabase as typedSupabase } from "@/lib/supabase";
+
+// Cast to any to bypass strict typing — CMS tables exist in DB but aren't in auto-generated types yet.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const supabase = typedSupabase as any;
 import type {
   CmsAdminAccess,
   CmsBlockInput,
