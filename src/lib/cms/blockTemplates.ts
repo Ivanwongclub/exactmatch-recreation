@@ -398,6 +398,49 @@ const templates: Record<string, CmsBlockTemplate> = {
   },
 };
 
+/** All page slugs that have at least one template, with their block keys. */
+export function getAllTemplatePages(): Record<string, string[]> {
+  const pages: Record<string, string[]> = {};
+  for (const compositeKey of Object.keys(templates)) {
+    const [pageSlug, blockKey] = compositeKey.split(":");
+    if (!pages[pageSlug]) pages[pageSlug] = [];
+    pages[pageSlug].push(blockKey);
+  }
+  return pages;
+}
+
+/** Canonical page ordering for the CMS navigator. */
+export const CMS_PAGE_ORDER: string[] = [
+  "global",
+  "our-mission",
+  "history",
+  "services",
+  "kings-network",
+  "contact",
+  "executive-team",
+  "board-of-directors",
+  "members-only-events",
+  "summer-program",
+  "event",
+  "legacy-and-business-expertise",
+];
+
+/** Human-readable page labels. */
+export const CMS_PAGE_LABELS: Record<string, string> = {
+  global: "Global",
+  "our-mission": "Our Mission",
+  history: "History",
+  services: "Services",
+  "kings-network": "Kings Network",
+  contact: "Contact",
+  "executive-team": "Executive Team",
+  "board-of-directors": "Board of Directors",
+  "members-only-events": "Members-Only Events",
+  "summer-program": "Summer Program",
+  event: "Event",
+  "legacy-and-business-expertise": "Legacy & Business Expertise",
+};
+
 export function getBlockTemplate(pageSlug: string, blockKey: string): CmsBlockTemplate | null {
   const key = `${pageSlug.trim()}:${blockKey.trim()}`;
   return templates[key] ?? null;
