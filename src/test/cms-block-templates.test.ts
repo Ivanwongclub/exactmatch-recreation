@@ -48,6 +48,40 @@ describe("cms block templates", () => {
     expect(getBlockTemplate("kings-network", "intro")).not.toBeNull();
     expect(getBlockTemplate("kings-network", "highlights")).not.toBeNull();
   });
+
+  it("resolves global header_nav template", () => {
+    const tmpl = getBlockTemplate("global", "header_nav");
+    expect(tmpl).not.toBeNull();
+    expect(tmpl?.name).toBe("Header Navigation");
+    expect(Array.isArray(tmpl?.defaultContent)).toBe(true);
+    const items = tmpl?.defaultContent as Array<{ label: string; href: string; dropdown?: unknown[] }>;
+    expect(items.length).toBeGreaterThanOrEqual(4);
+    const aboutUs = items.find((i) => i.label === "ABOUT US");
+    expect(aboutUs?.dropdown).toBeDefined();
+    expect(Array.isArray(aboutUs?.dropdown)).toBe(true);
+  });
+
+  it("resolves global footer_nav template", () => {
+    const tmpl = getBlockTemplate("global", "footer_nav");
+    expect(tmpl).not.toBeNull();
+    expect(Array.isArray(tmpl?.defaultContent)).toBe(true);
+    const items = tmpl?.defaultContent as Array<{ label: string; path: string }>;
+    expect(items.length).toBeGreaterThanOrEqual(10);
+    expect(items[0]).toHaveProperty("label");
+    expect(items[0]).toHaveProperty("path");
+  });
+
+  it("resolves global footer_email template", () => {
+    const tmpl = getBlockTemplate("global", "footer_email");
+    expect(tmpl).not.toBeNull();
+    expect(typeof tmpl?.defaultContent).toBe("string");
+  });
+
+  it("resolves global footer_tagline template", () => {
+    const tmpl = getBlockTemplate("global", "footer_tagline");
+    expect(tmpl).not.toBeNull();
+    expect(typeof tmpl?.defaultContent).toBe("string");
+  });
 });
 
 describe("cms deep template validation", () => {
@@ -126,5 +160,30 @@ describe("cms page wiring — resolveCmsBlock fallback safety", () => {
     const blocks = [{ id: "1", page_slug: "test", block_key: "hero", content_json: malformed, is_published: true, updated_at: "" }];
     const result = resolveCmsBlock(blocks, "hero", fallback);
     expect(result).toEqual(malformed); // no crash, returns stored value
+  });
+
+  it("returns array fallback when CMS nav data is not an array", () => {
+    const fallback = [{ label: "HOME", path: "/" }];
+    const blocks = [{ id: "1", page_slug: "global", block_key: "footer_nav", content_json: { text: "oops" }, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "footer_nav", fallback)).toEqual(fallback);
+  });
+
+  it("returns array fallback for header_nav when CMS data is a string", () => {
+    const fallback = [{ label: "ABOUT US", href: "/" }];
+    const blocks = [{ id: "1", page_slug: "global", block_key: "header_nav", content_json: "corrupt", is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "header_nav", fallback)).toEqual(fallback);
+  });
+
+  it("returns string fallback when CMS email data is an object", () => {
+    const fallback = "info@king-armour.com";
+    const blocks = [{ id: "1", page_slug: "global", block_key: "footer_email", content_json: { email: "oops" }, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "footer_email", fallback)).toEqual(fallback);
+  });
+
+  it("uses CMS array data when it is a valid array", () => {
+    const fallback = [{ label: "DEFAULT", path: "/" }];
+    const cmsNav = [{ label: "CMS NAV", path: "/custom" }];
+    const blocks = [{ id: "1", page_slug: "global", block_key: "footer_nav", content_json: cmsNav, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "footer_nav", fallback)).toEqual(cmsNav);
   });
 });
