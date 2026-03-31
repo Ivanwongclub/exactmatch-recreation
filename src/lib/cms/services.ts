@@ -1,4 +1,8 @@
-import { hasSupabaseEnv, supabase } from "@/lib/supabase";
+import { hasSupabaseEnv, supabase as typedSupabase } from "@/lib/supabase";
+
+// Cast to any to bypass strict typing — CMS tables exist in DB but aren't in auto-generated types yet.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const supabase = typedSupabase as any;
 import type {
   CmsAdminAccess,
   CmsBlockInput,
@@ -38,7 +42,7 @@ export async function fetchServicesPageCmsData(
   }
   const itemsResult = await itemsQuery
     .order("display_order", { ascending: true })
-    .returns<CmsServiceItem[]>();
+    .returns();
 
   const [{ data: settings, error: settingsError }, { data: serviceItems, error: itemsError }] =
     await Promise.all([settingsQuery, itemsResult]);
@@ -69,7 +73,7 @@ export async function fetchCmsBlocksByPage(
   }
   const { data, error } = await query
     .order("updated_at", { ascending: false })
-    .returns<CmsContentBlock[]>();
+    .returns();
 
   if (error) {
     throw new Error(`CMS blocks fetch failed: ${error.message}`);
@@ -88,7 +92,7 @@ export async function fetchAllCmsBlocks(): Promise<CmsContentBlock[] | null> {
     .select("*")
     .order("page_slug", { ascending: true })
     .order("block_key", { ascending: true })
-    .returns<CmsContentBlock[]>();
+    .returns();
 
   if (error) {
     throw new Error(`CMS blocks list failed: ${error.message}`);
@@ -114,7 +118,7 @@ export async function upsertCmsBlock(input: CmsBlockInput): Promise<CmsContentBl
     .from("cms_content_blocks")
     .upsert(payload, { onConflict: "page_slug,block_key" })
     .select("*")
-    .single<CmsContentBlock>();
+    .single();
 
   if (error || !data) {
     throw new Error(`CMS block save failed: ${error?.message ?? "Unknown error"}`);
@@ -138,7 +142,7 @@ export async function fetchCmsAdminAccess(): Promise<CmsAdminAccess> {
     .from("cms_user_roles")
     .select("role")
     .eq("user_id", userId)
-    .maybeSingle<{ role: string }>();
+    .maybeSingle();
 
   if (roleError) {
     throw new Error(`CMS admin access fetch failed: ${roleError.message}`);
@@ -190,7 +194,7 @@ export async function fetchCmsBlockRevisions(
     .eq("page_slug", pageSlug)
     .eq("block_key", blockKey)
     .limit(30)
-    .returns<CmsContentRevision[]>();
+    .returns();
 
   if (error) {
     throw new Error(`CMS revisions fetch failed: ${error.message}`);

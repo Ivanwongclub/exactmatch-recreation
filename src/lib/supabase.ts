@@ -1,25 +1,12 @@
-import { createClient } from "@supabase/supabase-js";
+// Re-export the auto-generated Supabase client from Lovable Cloud integration.
+// CMS code imports from this file for backward compatibility.
+export { supabase } from "@/integrations/supabase/client";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const hasSupabaseEnv = Boolean(supabaseUrl && supabaseAnonKey);
-const fallbackSupabaseUrl = "https://placeholder.supabase.co";
-const fallbackSupabaseAnonKey = "placeholder-anon-key";
+const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+export const hasSupabaseEnv = Boolean(supabaseUrl && supabaseKey);
 
 if (!hasSupabaseEnv) {
-  // Keep runtime explicit for easier deployment debugging.
-  // CMS hooks handle this safely and fall back to static content.
   console.warn("Supabase environment variables are missing. CMS dynamic fetch is disabled.");
 }
-
-export const supabase = createClient(
-  hasSupabaseEnv ? supabaseUrl : fallbackSupabaseUrl,
-  hasSupabaseEnv ? supabaseAnonKey : fallbackSupabaseAnonKey,
-  {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-  },
-});
-
-export { hasSupabaseEnv };
