@@ -167,6 +167,20 @@ export async function requestCmsSignIn(email: string, password: string): Promise
   }
 }
 
+export async function requestCmsPasswordReset(email: string): Promise<void> {
+  if (!hasSupabaseEnv) {
+    throw new Error("Supabase environment variables are missing.");
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/admin/reset-password`,
+  });
+
+  if (error) {
+    throw new Error(`Failed to send password reset email.`);
+  }
+}
+
 export async function signOutCms(): Promise<void> {
   if (!hasSupabaseEnv) {
     return;
