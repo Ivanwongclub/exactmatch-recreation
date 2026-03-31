@@ -138,9 +138,7 @@ const templates: Record<string, CmsBlockTemplate> = {
       { label: "EXPERTISE", href: "/legacy-and-business-expertise" },
       { label: "CONTACT", href: "/contact" },
     ],
-    fields: [
-      { label: "Nav Items (JSON array)", path: "", type: "list", required: true },
-    ],
+    fields: [],
   },
   "global:footer_nav": {
     name: "Footer Navigation",
