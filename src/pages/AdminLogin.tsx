@@ -114,6 +114,29 @@ const AdminLogin = () => {
                 >
                   {signIn.isPending ? "Signing in..." : "Sign In"}
                 </Button>
+
+                <Button
+                  type="button"
+                  variant="link"
+                  className="w-full font-sans text-sm text-muted-foreground"
+                  disabled={!hasSupabaseEnv}
+                  onClick={async () => {
+                    const trimmed = email.trim().toLowerCase();
+                    if (!trimmed) {
+                      toast.error("Enter your email first, then click Forgot Password.");
+                      return;
+                    }
+                    try {
+                      await requestCmsPasswordReset(trimmed);
+                      toast.success("Password reset link sent. Check your email.");
+                    } catch {
+                      toast.error("Failed to send reset email.");
+                    }
+                  }}
+                >
+                  Forgot password? Set / reset your password
+                </Button>
+                </Button>
               </div>
 
               <p className="text-muted-foreground font-sans text-xs mt-4 text-center">
