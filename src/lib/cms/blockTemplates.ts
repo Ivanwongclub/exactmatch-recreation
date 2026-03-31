@@ -110,6 +110,72 @@ const templates: Record<string, CmsBlockTemplate> = {
       { label: "SEO Description", path: "seoDescription", type: "textarea" },
     ],
   },
+  "global:header_nav": {
+    name: "Header Navigation",
+    defaultContent: [
+      {
+        label: "ABOUT US",
+        href: "/",
+        dropdown: [
+          { label: "Home", href: "/" },
+          { label: "Our Mission", href: "/our-mission" },
+          { label: "History", href: "/history" },
+          { label: "Executive Team", href: "/executive-team" },
+          { label: "Board of Directors", href: "/board-of-directors" },
+        ],
+      },
+      { label: "SERVICES", href: "/services" },
+      {
+        label: "KINGS NETWORK",
+        href: "/kings-network",
+        dropdown: [
+          { label: "Overview", href: "/kings-network" },
+          { label: "Members-Only Events", href: "/members-only-events" },
+          { label: "Summer Program", href: "/summer-program" },
+          { label: "Event", href: "/event" },
+        ],
+      },
+      { label: "EXPERTISE", href: "/legacy-and-business-expertise" },
+      { label: "CONTACT", href: "/contact" },
+    ],
+    fields: [
+      { label: "Nav Items (JSON array)", path: "", type: "list", required: true },
+    ],
+  },
+  "global:footer_nav": {
+    name: "Footer Navigation",
+    defaultContent: [
+      { label: "ABOUT US", path: "/" },
+      { label: "OUR MISSION", path: "/our-mission" },
+      { label: "HISTORY", path: "/history" },
+      { label: "OUR SERVICES", path: "/services" },
+      { label: "KINGS NETWORK", path: "/kings-network" },
+      { label: "EXECUTIVE TEAM", path: "/executive-team" },
+      { label: "BOARD OF DIRECTORS", path: "/board-of-directors" },
+      { label: "EXPERTISE", path: "/legacy-and-business-expertise" },
+      { label: "EVENTS", path: "/members-only-events" },
+      { label: "SUMMER PROGRAM", path: "/summer-program" },
+      { label: "CONTACT US", path: "/contact" },
+      { label: "PRIVACY POLICY", path: "/privacy" },
+    ],
+    fields: [
+      { label: "Nav Items (JSON array)", path: "", type: "list", required: true },
+    ],
+  },
+  "global:footer_email": {
+    name: "Footer Email",
+    defaultContent: "info@king-armour.com",
+    fields: [
+      { label: "Email Address", path: "", type: "text", required: true },
+    ],
+  },
+  "global:footer_tagline": {
+    name: "Footer Tagline",
+    defaultContent: "Fortify Your Growth, Armour Your Assets, Unite Generations",
+    fields: [
+      { label: "Tagline", path: "", type: "text", required: true },
+    ],
+  },
   "global:render_config": {
     name: "Global Render Config",
     defaultContent: {
