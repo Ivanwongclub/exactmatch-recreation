@@ -152,20 +152,18 @@ export async function fetchCmsAdminAccess(): Promise<CmsAdminAccess> {
   return { userId, role, canEdit: canEditCms(role) };
 }
 
-export async function requestCmsSignIn(email: string): Promise<void> {
+export async function requestCmsSignIn(email: string, password: string): Promise<void> {
   if (!hasSupabaseEnv) {
     throw new Error("Supabase environment variables are missing.");
   }
 
-  const { error } = await supabase.auth.signInWithOtp({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
-    options: {
-      shouldCreateUser: false,
-    },
+    password,
   });
 
   if (error) {
-    throw new Error(`Failed to send sign-in link: ${error.message}`);
+    throw new Error(`Invalid email or password.`);
   }
 }
 
