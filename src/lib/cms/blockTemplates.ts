@@ -161,16 +161,12 @@ const templates: Record<string, CmsBlockTemplate> = {
   "global:footer_email": {
     name: "Footer Email",
     defaultContent: "info@king-armour.com",
-    fields: [
-      { label: "Email Address", path: "", type: "text", required: true },
-    ],
+    fields: [],
   },
   "global:footer_tagline": {
     name: "Footer Tagline",
     defaultContent: "Fortify Your Growth, Armour Your Assets, Unite Generations",
-    fields: [
-      { label: "Tagline", path: "", type: "text", required: true },
-    ],
+    fields: [],
   },
   "global:render_config": {
     name: "Global Render Config",
