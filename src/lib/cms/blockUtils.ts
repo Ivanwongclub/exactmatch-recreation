@@ -14,5 +14,17 @@ export function resolveCmsBlock<T>(
     return fallback;
   }
 
-  return block.content_json as T;
+  const data = block.content_json;
+
+  // Guard: if fallback is an array but CMS data is not, use fallback
+  if (Array.isArray(fallback) && !Array.isArray(data)) {
+    return fallback;
+  }
+
+  // Guard: if fallback is a string but CMS data is an object, use fallback
+  if (typeof fallback === "string" && typeof data === "object" && data !== null) {
+    return fallback;
+  }
+
+  return data as T;
 }
