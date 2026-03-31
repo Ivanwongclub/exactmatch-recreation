@@ -228,6 +228,174 @@ const templates: Record<string, CmsBlockTemplate> = {
       { label: "SEO Description", path: "seoDescription", type: "textarea" },
     ],
   },
+  "our-mission:philosophy": {
+    name: "Our Mission Philosophy",
+    defaultContent: {
+      headline: "Our Philosophy",
+      body: "We combine global perspective with deep local knowledge to preserve and grow multi-generational wealth.",
+      values: ["Integrity", "Discretion", "Excellence"],
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+      { label: "Values (list)", path: "values", type: "list" },
+    ],
+  },
+  "our-mission:principles": {
+    name: "Our Mission Principles",
+    defaultContent: {
+      headline: "Guiding Principles",
+      principles: ["Client-first stewardship", "Long-term alignment", "Transparent governance"],
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Principles (list)", path: "principles", type: "list" },
+    ],
+  },
+  "history:legacy": {
+    name: "History Legacy",
+    defaultContent: {
+      headline: "A Legacy of Enterprise",
+      body: "From humble beginnings in 1957, the Sunwah Group grew into a multi-sector global enterprise spanning real estate, financial services, and education.",
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+    ],
+  },
+  "history:milestones": {
+    name: "History Milestones",
+    defaultContent: {
+      headline: "Key Milestones",
+      milestones: ["1957 — Founded in Vietnam", "1975 — Relocated to Hong Kong", "2000s — Global expansion"],
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Milestones (list)", path: "milestones", type: "list" },
+    ],
+  },
+  "history:global_connections": {
+    name: "History Global Connections",
+    defaultContent: {
+      headline: "Global Connections",
+      body: "Today, the Sunwah Group operates across Asia, Europe, and North America with deep institutional relationships.",
+      regions: ["Hong Kong", "Vietnam", "Japan", "Canada", "France"],
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+      { label: "Regions (list)", path: "regions", type: "list" },
+    ],
+  },
+  "services:intro": {
+    name: "Services Intro",
+    defaultContent: {
+      headline: "Tailored Solutions for Families of Substance",
+      body: "Our services are designed to address the full spectrum of needs for distinguished families.",
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+    ],
+  },
+  "services:cta": {
+    name: "Services CTA",
+    defaultContent: {
+      title: "Ready to Begin?",
+      body: "Schedule a confidential consultation to discuss your family's needs.",
+      buttonLabel: "CONTACT US",
+      buttonHref: "/contact",
+    },
+    fields: [
+      { label: "Title", path: "title", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+      { label: "Button Label", path: "buttonLabel", type: "text" },
+      { label: "Button Link", path: "buttonHref", type: "text" },
+    ],
+  },
+  "contact:form_copy": {
+    name: "Contact Form Copy",
+    defaultContent: {
+      headline: "Send Us a Message",
+      disclaimer: "All inquiries are handled with the utmost confidentiality.",
+      submitLabel: "Send Message",
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Disclaimer", path: "disclaimer", type: "textarea" },
+      { label: "Submit Button Label", path: "submitLabel", type: "text" },
+    ],
+  },
+  "contact:form_error_copy": {
+    name: "Contact Form Error Copy",
+    defaultContent: {
+      fallbackHeadline: "We're unable to process your request right now",
+      fallbackBody: "Please reach out to us directly using the contact channels below.",
+    },
+    fields: [
+      { label: "Fallback Headline", path: "fallbackHeadline", type: "text" },
+      { label: "Fallback Body", path: "fallbackBody", type: "textarea" },
+    ],
+  },
+  "contact:confidentiality": {
+    name: "Contact Confidentiality",
+    defaultContent: {
+      headline: "Your Privacy Matters",
+      body: "King Armour treats every inquiry with strict confidentiality. Your information will never be shared with third parties.",
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+    ],
+  },
+  "contact:contact_channels": {
+    name: "Contact Channels",
+    defaultContent: {
+      headline: "Direct Contact",
+      email: "info@kingarmour.com",
+      phone: "+852 0000 0000",
+      address: "Hong Kong",
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Email", path: "email", type: "text" },
+      { label: "Phone", path: "phone", type: "text" },
+      { label: "Address", path: "address", type: "text" },
+    ],
+  },
+  "contact:presence_locations": {
+    name: "Contact Presence Locations",
+    defaultContent: {
+      headline: "Our Presence",
+      locations: ["Hong Kong", "Vietnam", "Japan", "Canada"],
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Locations (list)", path: "locations", type: "list" },
+    ],
+  },
+  "kings-network:intro": {
+    name: "Kings Network Intro",
+    defaultContent: {
+      headline: "A Curated Community",
+      body: "The Kings Network connects distinguished families through exclusive events, shared wisdom, and strategic introductions.",
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Body", path: "body", type: "textarea" },
+    ],
+  },
+  "kings-network:highlights": {
+    name: "Kings Network Highlights",
+    defaultContent: {
+      headline: "Network Highlights",
+      highlights: ["Curated peer introductions", "Exclusive investment forums", "Annual family summits"],
+    },
+    fields: [
+      { label: "Headline", path: "headline", type: "text" },
+      { label: "Highlights (list)", path: "highlights", type: "list" },
+    ],
+  },
 };
 
 export function getBlockTemplate(pageSlug: string, blockKey: string): CmsBlockTemplate | null {
