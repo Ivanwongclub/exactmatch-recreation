@@ -156,9 +156,7 @@ const templates: Record<string, CmsBlockTemplate> = {
       { label: "CONTACT US", path: "/contact" },
       { label: "PRIVACY POLICY", path: "/privacy" },
     ],
-    fields: [
-      { label: "Nav Items (JSON array)", path: "", type: "list", required: true },
-    ],
+    fields: [],
   },
   "global:footer_email": {
     name: "Footer Email",
