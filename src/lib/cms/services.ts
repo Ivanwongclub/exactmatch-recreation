@@ -212,7 +212,7 @@ export async function fetchCmsMediaAssets(): Promise<CmsMediaAsset[] | null> {
     .from("cms_media_assets")
     .select("*")
     .limit(200)
-    .returns<Array<Omit<CmsMediaAsset, "kind"> & { kind: string }>>();
+    .returns();
 
   if (error) {
     throw new Error(`CMS media fetch failed: ${error.message}`);
@@ -235,7 +235,7 @@ export async function fetchCmsMediaAssetBySlug(slug: string): Promise<CmsMediaAs
     .from("cms_media_assets")
     .select("*")
     .eq("slug", slug)
-    .maybeSingle<Omit<CmsMediaAsset, "kind"> & { kind: string }>();
+    .maybeSingle();
 
   if (error) {
     throw new Error(`CMS media by slug fetch failed: ${error.message}`);
@@ -269,7 +269,7 @@ export async function upsertCmsMediaAsset(input: CmsMediaAssetInput): Promise<Cm
     .from("cms_media_assets")
     .upsert(payload, { onConflict: "slug" })
     .select("*")
-    .single<Omit<CmsMediaAsset, "kind"> & { kind: string }>();
+    .single();
 
   if (error || !data) {
     throw new Error(`CMS media save failed: ${error?.message ?? "Unknown error"}`);
