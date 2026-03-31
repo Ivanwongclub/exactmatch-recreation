@@ -235,7 +235,7 @@ export async function fetchCmsMediaAssetBySlug(slug: string): Promise<CmsMediaAs
     .from("cms_media_assets")
     .select("*")
     .eq("slug", slug)
-    .maybeSingle<Omit<CmsMediaAsset, "kind"> & { kind: string }>();
+    .maybeSingle();
 
   if (error) {
     throw new Error(`CMS media by slug fetch failed: ${error.message}`);
