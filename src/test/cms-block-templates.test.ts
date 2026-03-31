@@ -89,7 +89,7 @@ describe("cms deep template validation", () => {
 });
 
 describe("cms page wiring — resolveCmsBlock fallback safety", () => {
-  const { resolveCmsBlock } = await import("@/lib/cms/blockUtils");
+  const { resolveCmsBlock } = await vi.importActual<typeof import("@/lib/cms/blockUtils")>("@/lib/cms/blockUtils");
 
   it("returns fallback when blocks array is null", () => {
     const fallback = { title: "Fallback" };
