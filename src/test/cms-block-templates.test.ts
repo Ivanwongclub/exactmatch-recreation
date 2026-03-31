@@ -90,7 +90,6 @@ describe("cms deep template validation", () => {
 });
 
 describe("cms page wiring — resolveCmsBlock fallback safety", () => {
-  const { resolveCmsBlock } = require("@/lib/cms/blockUtils") as typeof import("@/lib/cms/blockUtils");
 
   it("returns fallback when blocks array is null", () => {
     const fallback = { title: "Fallback" };
