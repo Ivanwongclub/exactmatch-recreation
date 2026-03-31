@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import SEOHead from "@/components/shared/SEOHead";
 import { useCmsAdminAccess, useCmsSignIn } from "@/hooks/useCmsBlocks";
+import { requestCmsPasswordReset } from "@/lib/cms/services";
 import { hasSupabaseEnv } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
