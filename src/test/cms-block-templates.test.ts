@@ -87,3 +87,44 @@ describe("cms deep template validation", () => {
     expect(result.errors.some((e) => e.includes("milestones") && e.includes("list"))).toBe(true);
   });
 });
+
+describe("cms page wiring — resolveCmsBlock fallback safety", () => {
+  const { resolveCmsBlock } = await import("@/lib/cms/blockUtils");
+
+  it("returns fallback when blocks array is null", () => {
+    const fallback = { title: "Fallback" };
+    expect(resolveCmsBlock(null, "hero", fallback)).toEqual(fallback);
+  });
+
+  it("returns fallback when blocks array is empty", () => {
+    const fallback = { title: "Fallback" };
+    expect(resolveCmsBlock([], "hero", fallback)).toEqual(fallback);
+  });
+
+  it("returns fallback when block key not found", () => {
+    const fallback = { title: "Fallback" };
+    const blocks = [{ id: "1", page_slug: "test", block_key: "other", content_json: { title: "CMS" }, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "hero", fallback)).toEqual(fallback);
+  });
+
+  it("returns CMS content when block exists", () => {
+    const fallback = { title: "Fallback" };
+    const cmsContent = { title: "From CMS" };
+    const blocks = [{ id: "1", page_slug: "test", block_key: "hero", content_json: cmsContent, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "hero", fallback)).toEqual(cmsContent);
+  });
+
+  it("returns fallback when content_json is null", () => {
+    const fallback = { title: "Fallback" };
+    const blocks = [{ id: "1", page_slug: "test", block_key: "hero", content_json: null, is_published: true, updated_at: "" }];
+    expect(resolveCmsBlock(blocks, "hero", fallback)).toEqual(fallback);
+  });
+
+  it("handles malformed JSON shape gracefully (returns whatever is stored)", () => {
+    const fallback = { title: "Fallback", subtitle: "Sub" };
+    const malformed = { unexpected: true };
+    const blocks = [{ id: "1", page_slug: "test", block_key: "hero", content_json: malformed, is_published: true, updated_at: "" }];
+    const result = resolveCmsBlock(blocks, "hero", fallback);
+    expect(result).toEqual(malformed); // no crash, returns stored value
+  });
+});
