@@ -186,3 +186,4 @@ describe("cms page wiring — resolveCmsBlock fallback safety", () => {
     const blocks = [{ id: "1", page_slug: "global", block_key: "footer_nav", content_json: cmsNav, is_published: true, updated_at: "" }];
     expect(resolveCmsBlock(blocks, "footer_nav", fallback)).toEqual(cmsNav);
   });
+});
