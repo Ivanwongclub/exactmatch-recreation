@@ -212,7 +212,7 @@ export async function fetchCmsMediaAssets(): Promise<CmsMediaAsset[] | null> {
     .from("cms_media_assets")
     .select("*")
     .limit(200)
-    .returns<Array<Omit<CmsMediaAsset, "kind"> & { kind: string }>>();
+    .returns();
 
   if (error) {
     throw new Error(`CMS media fetch failed: ${error.message}`);
