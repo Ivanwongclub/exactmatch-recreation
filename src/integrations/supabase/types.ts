@@ -216,6 +216,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      current_user_has_cms_role: {
+        Args: { _roles: string[] }
+        Returns: boolean
+      }
       has_cms_role: {
         Args: { _roles: string[]; _user_id: string }
         Returns: boolean
