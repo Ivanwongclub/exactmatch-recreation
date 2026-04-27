@@ -18,4 +18,17 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Production hardening: strip debug noise and disable sourcemaps so
+  // attackers can't read original source / stack traces from the bundle.
+  build: {
+    sourcemap: false,
+    minify: "esbuild",
+  },
+  esbuild:
+    mode === "production"
+      ? {
+          drop: ["console", "debugger"],
+          legalComments: "none",
+        }
+      : undefined,
 }));

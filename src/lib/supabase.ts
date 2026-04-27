@@ -7,6 +7,9 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta
 
 export const hasSupabaseEnv = Boolean(supabaseUrl && supabaseKey);
 
-if (!hasSupabaseEnv) {
+// Intentionally silent in production. Callers branch on `hasSupabaseEnv`
+// and surface user-facing messages where appropriate.
+if (!hasSupabaseEnv && import.meta.env.DEV) {
+  // eslint-disable-next-line no-console
   console.warn("Supabase environment variables are missing. CMS dynamic fetch is disabled.");
 }
