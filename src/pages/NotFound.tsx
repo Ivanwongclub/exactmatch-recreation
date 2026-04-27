@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import SEOHead from "@/components/shared/SEOHead";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -13,14 +12,10 @@ const recoveryLinks = [
 ];
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+  // Intentionally do not log the requested path — avoids leaking
+  // user-controlled data (potential XSS payload reflection) into
+  // browser consoles or any aggregating log sink.
+  useLocation();
 
   return (
     <Layout>
