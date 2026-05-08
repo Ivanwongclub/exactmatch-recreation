@@ -73,19 +73,23 @@ const Header = () => {
           : "bg-transparent"
       )}
     >
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between gap-6 h-20 lg:h-28">
-          <Link to="/" className="shrink-0 flex items-center" aria-label="King Armour Family Office Home">
+      <div className="container mx-auto px-6 lg:px-12 overflow-visible">
+        <div className="flex items-center justify-between gap-6 h-20 lg:h-28 overflow-visible">
+          <Link
+            to="/"
+            className="shrink-0 flex items-center relative z-10"
+            aria-label="King Armour Family Office Home"
+          >
             <img
               src={logoMark}
               alt="King Armour"
-              className="h-10 w-auto lg:hidden"
+              className="h-[60px] w-auto lg:hidden drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
               loading="eager"
             />
             <img
               src={logoFull}
               alt="King Armour Family Office"
-              className="hidden lg:block h-14 xl:h-20 w-auto"
+              className="hidden lg:block h-[84px] xl:h-[120px] w-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
               loading="eager"
             />
           </Link>
