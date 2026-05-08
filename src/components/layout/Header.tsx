@@ -198,6 +198,7 @@ const Header = () => {
                   )}
                 </motion.div>
               ))}
+              </div>
             </div>
           </motion.div>
         )}
