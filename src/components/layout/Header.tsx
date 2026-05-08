@@ -159,7 +159,17 @@ const Header = () => {
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed inset-y-0 right-0 w-full max-w-sm bg-primary shadow-2xl lg:hidden z-50"
           >
-            <div className="flex flex-col h-full pt-24 px-6 overflow-y-auto">
+            <div className="flex flex-col h-full overflow-y-auto">
+              <div className="flex items-center justify-center px-6 pt-6 pb-4 border-b border-primary-foreground/10">
+                <Link to="/" aria-label="King Armour Family Office Home" onClick={() => setIsMobileMenuOpen(false)}>
+                  <img
+                    src={logoFull}
+                    alt="King Armour Family Office"
+                    className="h-20 w-auto"
+                  />
+                </Link>
+              </div>
+              <div className="flex flex-col px-6 pt-4 pb-8">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.label}
@@ -188,6 +198,7 @@ const Header = () => {
                   )}
                 </motion.div>
               ))}
+              </div>
             </div>
           </motion.div>
         )}
