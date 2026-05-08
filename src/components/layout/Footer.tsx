@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
 import { resolveCmsBlock } from "@/lib/cms/blockUtils";
+import logoFull from "@/assets/king-armour-logo-full.png";
 
 interface FooterNavItem {
   label: string;
@@ -66,10 +67,12 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col justify-between">
-            <div className="ka-wordmark mb-6" aria-hidden="true" style={{ opacity: 0.7 }}>
-              <span className="ka-wordmark-kicker">KING</span>
-              <span className="ka-wordmark-main">ARMOUR</span>
-            </div>
+            <img
+              src={logoFull}
+              alt="King Armour Family Office"
+              className="h-20 lg:h-24 w-auto mb-6 opacity-90"
+              loading="lazy"
+            />
             <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-normal leading-tight text-primary-foreground">
               {tagline}
             </h2>

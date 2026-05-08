@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useCmsBlocksByPage } from "@/hooks/useCmsBlocks";
 import { resolveCmsBlock } from "@/lib/cms/blockUtils";
+import logoFull from "@/assets/king-armour-logo-full.png";
+import logoMark from "@/assets/king-armour-logo-mark.png";
 
 interface HeaderNavItem {
   label: string;
@@ -72,13 +74,23 @@ const Header = () => {
       )}
     >
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-20 lg:h-24">
-          <Link to="/" className="ka-wordmark" aria-label="King Armour Home">
-            <span className="ka-wordmark-kicker">KING</span>
-            <span className="ka-wordmark-main">ARMOUR</span>
+        <div className="flex items-center justify-between gap-6 h-20 lg:h-28">
+          <Link to="/" className="shrink-0 flex items-center" aria-label="King Armour Family Office Home">
+            <img
+              src={logoMark}
+              alt="King Armour"
+              className="h-10 w-auto lg:hidden"
+              loading="eager"
+            />
+            <img
+              src={logoFull}
+              alt="King Armour Family Office"
+              className="hidden lg:block h-14 xl:h-20 w-auto"
+              loading="eager"
+            />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-8 min-w-0" aria-label="Main navigation">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -91,7 +103,7 @@ const Header = () => {
                 <Link
                   to={item.href}
                   className={cn(
-                    "flex items-center gap-1 text-primary-foreground/90 hover:text-accent font-sans text-sm font-semibold tracking-wider transition-colors",
+                    "flex items-center gap-1 text-primary-foreground/90 hover:text-accent font-sans text-[13px] xl:text-sm font-semibold tracking-wider transition-colors whitespace-nowrap",
                     location.pathname === item.href && "text-accent"
                   )}
                 >
