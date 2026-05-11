@@ -164,7 +164,7 @@ const Header = () => {
             className="fixed inset-y-0 right-0 w-full max-w-sm bg-primary shadow-2xl lg:hidden z-50"
           >
             <div className="flex flex-col h-full overflow-y-auto">
-              <div className="flex items-center justify-center px-6 pt-6 pb-4 border-b border-primary-foreground/10">
+              <div className="relative flex items-center justify-center px-6 pt-6 pb-4 border-b border-primary-foreground/10">
                 <Link to="/" aria-label="King Armour Family Office Home" onClick={() => setIsMobileMenuOpen(false)}>
                   <img
                     src={logoFull}
@@ -172,6 +172,14 @@ const Header = () => {
                     className="h-20 w-auto"
                   />
                 </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  aria-label="Close menu"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-primary-foreground/80 hover:text-accent p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  <X className="w-6 h-6" />
+                </button>
               </div>
               <div className="flex flex-col px-6 pt-4 pb-8">
               {navItems.map((item, index) => (
