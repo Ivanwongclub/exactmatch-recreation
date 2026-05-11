@@ -77,7 +77,7 @@ const Header = () => {
         <div className="flex items-center justify-between gap-6 h-20 lg:h-28 overflow-visible">
           <Link
             to="/"
-            className="shrink-0 flex items-center relative z-10"
+            className="shrink-0 flex items-center relative z-10 self-start mt-4"
             aria-label="King Armour Family Office Home"
           >
             <img
